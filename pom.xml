@@ -39,6 +39,8 @@
 		<mvn.surefire.plugin.version>3.0.0-M4</mvn.surefire.plugin.version>
 		<mvn.javadoc.plugin.version>3.1.1</mvn.javadoc.plugin.version>
 		<mvn.format.plugin.version>2.10.0</mvn.format.plugin.version>
+		<mvn.dependency.plugin.version>3.1.1</mvn.dependency.plugin.version>
+		<mvn.source.plugin.version>3.2.0</mvn.source.plugin.version>
 
 		<doc-lint>none</doc-lint>
 		<!-- If true skips UT test execution -->
@@ -54,10 +56,10 @@
 
 		<lombok.version>1.18.12</lombok.version>
 		<slf4j.api.version>1.7.25</slf4j.api.version>
-		<junit.version>5.5.2</junit.version>
-		<mockito.version>3.2.4</mockito.version>
+		<junit.version>5.6.2</junit.version>
+		<mockito.version>3.3.3</mockito.version>
 		<log4j.bridge.version>2.9.0</log4j.bridge.version>
-		<log4j.version>2.11.1</log4j.version>
+		<log4j.version>2.13.3</log4j.version>
 		<derby.version>10.12.1.1</derby.version>
 		<db-util.version>1.0.001</db-util.version>
 		<cypher-util.version>1.0.001</cypher-util.version>
@@ -72,7 +74,7 @@
 			<version>${lombok.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
@@ -99,7 +101,7 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j.api.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-slf4j-impl</artifactId>
@@ -249,6 +251,7 @@
 
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${mvn.javadoc.plugin.version}</version>
 				<configuration>
 					<doclint>${doc-lint}</doclint>
 				</configuration>
@@ -290,6 +293,38 @@
 					<execution>
 						<goals>
 							<goal>format</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>${mvn.dependency.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<includeArtifactIds>lombok</includeArtifactIds>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${mvn.source.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
 						</goals>
 					</execution>
 				</executions>
