@@ -30,12 +30,13 @@ public class CuentaXUsuarioEjb {
         try {
             DBConnection.getInstance()
                     .setPst(DBConnection.getInstance().getCon().prepareStatement(ConstantesQuery.INSERT_CUENTAXUSER));
-            DBConnection.getInstance().getPst().setLong(1, c.getCodigousuario());
-            DBConnection.getInstance().getPst().setString(2, c.getNombreCuenta());
-            DBConnection.getInstance().getPst().setString(3, c.getUsername());
-            DBConnection.getInstance().getPst().setString(4, c.getPassword());
-            DBConnection.getInstance().getPst().setString(5, c.getUrl());
-            DBConnection.getInstance().getPst().setDate(6,
+            DBConnection.getInstance().getPst().setLong(1, c.getCodigocuenta());
+            DBConnection.getInstance().getPst().setLong(2, c.getCodigousuario());
+            DBConnection.getInstance().getPst().setString(3, c.getNombreCuenta());
+            DBConnection.getInstance().getPst().setString(4, c.getUsername());
+            DBConnection.getInstance().getPst().setString(5, c.getPassword());
+            DBConnection.getInstance().getPst().setString(6, c.getUrl());
+            DBConnection.getInstance().getPst().setDate(7,
                     new java.sql.Date(Calendar.getInstance().getTime().getTime()));
             DBConnection.getInstance().getPst().executeUpdate();
             retorno = Boolean.TRUE;

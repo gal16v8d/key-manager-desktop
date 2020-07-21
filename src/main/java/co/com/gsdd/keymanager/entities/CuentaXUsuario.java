@@ -1,6 +1,8 @@
 package co.com.gsdd.keymanager.entities;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.Random;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,25 +19,16 @@ import lombok.Setter;
 public class CuentaXUsuario implements Serializable {
 
     private static final long serialVersionUID = 8137178755748222207L;
-    /**
-     * Usuario dueño de la cuenta.
-     */
+    private Long codigocuenta;
     private Long codigousuario;
-    /**
-     * Pk de la tabla.
-     */
     private String nombreCuenta;
-    /**
-     * Usuario de la cuenta.
-     */
     private String username;
-    /**
-     * Pass de la cuenta.
-     */
     private String password;
-    /**
-     * Indica una URL opcional.
-     */
     private String url;
+    private Date fecha;
+
+    public CuentaXUsuario() {
+        codigocuenta = System.nanoTime() * new Random().nextInt();
+    }
 
 }
