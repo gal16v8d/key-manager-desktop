@@ -26,9 +26,9 @@ public class CuentaXUsuario implements Serializable {
     private String password;
     private String url;
     private Date fecha;
-    
+
     public CuentaXUsuario() {
-    	codigocuenta = System.nanoTime() * new Random().nextInt();
+        codigocuenta = System.nanoTime() * new Random().nextInt();
     }
 
 }

@@ -36,7 +36,7 @@ public final class ConstantesQuery {
 
     // INSERT QUERY
     public static final String INSERT_CUENTAXUSER = "INSERT INTO cuentaxusuario(codigocuenta,codigousuario,nombrecuenta,username,password,url,fecha)"
-    		+ " VALUES (?,?,?,?,?,?,?)";
+            + " VALUES (?,?,?,?,?,?,?)";
     public static final String INSERT_USER = "INSERT INTO usuario VALUES (?,?,?,?,?,?)";
 
     // LIST QUERY
