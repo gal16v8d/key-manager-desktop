@@ -35,7 +35,8 @@ public final class ConstantesQuery {
     public static final String DELETE_USER = DELETE + FROM + "usuario" + WHERE + "codigousuario" + IGUAL_PARAM;
 
     // INSERT QUERY
-    public static final String INSERT_CUENTAXUSER = "INSERT INTO cuentaxusuario VALUES (?,?,?,?,?,?)";
+    public static final String INSERT_CUENTAXUSER = "INSERT INTO cuentaxusuario(codigocuenta,codigousuario,nombrecuenta,username,password,url,fecha)"
+    		+ " VALUES (?,?,?,?,?,?,?)";
     public static final String INSERT_USER = "INSERT INTO usuario VALUES (?,?,?,?,?,?)";
 
     // LIST QUERY

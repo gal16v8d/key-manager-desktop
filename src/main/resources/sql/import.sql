@@ -1,4 +1,4 @@
-CREATE TABLE usuario (codigousuario BIGINT NOT NULL, primer_nombre VARCHAR(16) NOT NULL, primer_apellido VARCHAR(16) NOT NULL, username VARCHAR(64) NOT NULL, password VARCHAR(512) NOT NULL, rol BIGINT NOT NULL, PRIMARY KEY (codigousuario), UNIQUE (username));
-CREATE TABLE cuentaxusuario (codigousuario BIGINT NOT NULL, nombrecuenta VARCHAR(64) NOT NULL, username VARCHAR(64) NOT NULL, password VARCHAR(128) NOT NULL, url VARCHAR(512), fecha DATE NOT NULL, PRIMARY KEY (codigousuario, nombrecuenta));
+CREATE TABLE usuario (codigousuario BIGINT NOT NULL, primer_nombre VARCHAR(16) NOT NULL, primer_apellido VARCHAR(16) NOT NULL, username VARCHAR(64) NOT NULL, password VARCHAR(128) NOT NULL, rol BIGINT NOT NULL, PRIMARY KEY (codigousuario), UNIQUE (username));
+CREATE TABLE cuentaxusuario (codigocuenta BIGINT NOT NULL, codigousuario BIGINT NOT NULL, nombrecuenta VARCHAR(64) NOT NULL, username VARCHAR(64) NOT NULL, password VARCHAR(128) NOT NULL, url VARCHAR(512), fecha DATE NOT NULL, PRIMARY KEY (codigocuenta), UNIQUE (codigousuario, nombrecuenta));
 ALTER TABLE cuentaxusuario ADD CONSTRAINT fk_usuario FOREIGN KEY (codigousuario) REFERENCES usuario (codigousuario) ON DELETE CASCADE;
 INSERT INTO usuario VALUES (1, 'Administrador', 'KeyManager', 'admin', 'i9f+EBnazPE1Z9GDTVEvTg==', 1);
