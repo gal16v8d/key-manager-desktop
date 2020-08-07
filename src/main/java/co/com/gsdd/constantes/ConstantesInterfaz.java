@@ -44,9 +44,6 @@ public final class ConstantesInterfaz {
 
     public static final String LABEL_C_NOMBRE = "Nombre Cuenta:";
 
-    public static final String MENU_ADMON = "Administración";
-    public static final String MENU_INFO = "Información";
-    public static final String MENU_SESION = "Sesión";
     public static final String MENUITEM_EXPORTAR = "Exportar Datos";
     public static final String MENUITEM_SESION = "Cerrar Sesión";
     public static final String MENUITEM_CREDITOS = "Créditos";

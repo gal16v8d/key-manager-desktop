@@ -28,6 +28,7 @@ import co.com.gsdd.keymanager.controller.PrincipalController;
 import co.com.gsdd.keymanager.controller.UsuarioController;
 import co.com.gsdd.keymanager.enums.OpcionMenu;
 import co.com.gsdd.keymanager.enums.RolEnum;
+import co.com.gsdd.keymanager.lang.KeyManagerLanguage;
 import co.com.gsdd.keymanager.util.EjecutorKey;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,7 +51,6 @@ public class PrincipalView extends JFrame {
      */
     private static final long serialVersionUID = 1L;
     private JMenu menuAdmon;
-    private JMenu menuInfo;
     private JMenu menuSesion;
     private JMenuItem itemCuenta;
     private JMenuItem itemCuentaXUsuario;
@@ -71,6 +71,7 @@ public class PrincipalView extends JFrame {
      */
     private PrincipalView() {
         try {
+        	KeyManagerLanguage.initBundle(getLocale());
             buildMenu();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -126,15 +127,15 @@ public class PrincipalView extends JFrame {
     private void buildMenu() {
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
-        menuAdmon = new JMenu(ConstantesInterfaz.MENU_ADMON);
+        menuAdmon = new JMenu(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_ADMON));
         menuBar.add(menuAdmon);
-        menuSesion = new JMenu(ConstantesInterfaz.MENU_SESION);
+        menuSesion = new JMenu(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_SESSION));
         menuBar.add(menuSesion);
-        menuInfo = new JMenu(ConstantesInterfaz.MENU_INFO);
+        JMenu menuInfo = new JMenu(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_INFO));
         menuBar.add(menuInfo);
         EjecutorKey.getInstance().getExecutor().execute(() -> agregarItemsAdmon());
         EjecutorKey.getInstance().getExecutor().execute(() -> agregarItemsSesion());
-        EjecutorKey.getInstance().getExecutor().execute(() -> agregarItemsInfo());
+        EjecutorKey.getInstance().getExecutor().execute(() -> agregarItemsInfo(menuInfo));
         setIconImage(new ImageIcon(getClass().getResource(ConstantesInterfaz.IMAGE_ICON)).getImage());
     }
 
@@ -217,7 +218,7 @@ public class PrincipalView extends JFrame {
     /**
      * Permite agregar los items al menú de info.
      */
-    private void agregarItemsInfo() {
+    private void agregarItemsInfo(JMenu menuInfo) {
         itemCreditos = new JMenuItem(ConstantesInterfaz.MENUITEM_CREDITOS);
         itemCreditos.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionMenu.CREDITOS));
         menuInfo.add(itemCreditos);
