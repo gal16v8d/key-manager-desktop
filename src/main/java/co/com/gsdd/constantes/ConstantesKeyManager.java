@@ -1,5 +1,6 @@
 package co.com.gsdd.constantes;
 
+import java.io.File;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -22,7 +23,8 @@ import lombok.NoArgsConstructor;
 public final class ConstantesKeyManager {
 
     public static final String DERBY_CONNECTION = "org.apache.derby.jdbc.EmbeddedDriver";
-    public static final String DERBY_LOCATION = "jdbc:derby:.\\kmgr\\kmgr.DB;create=true";
+    public static final String DERBY_LOCATION = "jdbc:derby:." + File.separator + "kmgr" + File.separator
+            + "kmgr.DB;create=true";
     public static final String DERBY_MAIN_TABLE = "USUARIO";
     public static final String DERBY_MAIN_SCHEMA = "APP";
     public static final String DERBY_DATE_FORMAT = "yyyy-MM-dd";

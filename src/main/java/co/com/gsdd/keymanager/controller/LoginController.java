@@ -7,6 +7,7 @@ import co.com.gsdd.gui.util.JOptionUtil;
 import co.com.gsdd.keymanager.ejb.UsuarioEjb;
 import co.com.gsdd.keymanager.entities.Usuario;
 import co.com.gsdd.keymanager.enums.RolEnum;
+import co.com.gsdd.keymanager.lang.KeyManagerLanguage;
 import co.com.gsdd.keymanager.view.LoginView;
 import lombok.Getter;
 import lombok.Setter;
@@ -97,7 +98,8 @@ public class LoginController {
                 // acciones de seteo de login.
                 getLoged();
                 dto.setUsername(username);
-                PrincipalController.getInstance().changeTitle(ConstantesInterfaz.TITULO_LOGIN);
+                PrincipalController.getInstance()
+                        .changeTitle(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_LOGIN));
                 String sesion = ConstantesInterfaz.LABEL_LOGGED + dto.getPrimerNombre() + " " + dto.getPrimerApellido();
                 PrincipalController.getInstance().getView().getMenuSesion().setText(sesion);
                 PrincipalController.getInstance().getLoControl().setDto(dto);

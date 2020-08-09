@@ -21,6 +21,7 @@ import co.com.gsdd.keymanager.ejb.UsuarioEjb;
 import co.com.gsdd.keymanager.entities.CuentaXUsuario;
 import co.com.gsdd.keymanager.entities.dto.CuentaXUsuarioDto;
 import co.com.gsdd.keymanager.enums.RolEnum;
+import co.com.gsdd.keymanager.lang.KeyManagerLanguage;
 import co.com.gsdd.keymanager.util.CifradoKeyManager;
 import co.com.gsdd.keymanager.view.CuentaXUsuarioView;
 import lombok.Getter;
@@ -236,7 +237,7 @@ public class CuentaXUsuarioController implements InterfaceController {
             if (validateData(datos)) {
                 Boolean retorno = modelo.save(datos);
                 if (retorno) {
-                    String msg = ConstantesInterfaz.I_MSJ_GUARDADO + datos.getNombreCuenta();
+                    String msg = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_SAVE) + datos.getNombreCuenta();
                     log.info(msg);
                     fillTable(view.getTableCuentaXUsuario());
                     JOptionUtil.showAppMessage(ConstantesInterfaz.JOP_TITULO_EXITO, msg,
@@ -265,7 +266,7 @@ public class CuentaXUsuarioController implements InterfaceController {
             if (validateData(datos)) {
                 Boolean retorno = modelo.update(datos, old.getNombreCuenta(), old.getCodigousuario());
                 if (retorno) {
-                    String msg = ConstantesInterfaz.I_MSJ_ACTUALIZADO + datos.getUsername();
+                    String msg = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_UPDATE) + datos.getUsername();
                     log.info(msg);
                     fillTable(view.getTableCuentaXUsuario());
                     JOptionUtil.showAppMessage(ConstantesInterfaz.JOP_TITULO_EXITO, msg,
@@ -294,7 +295,7 @@ public class CuentaXUsuarioController implements InterfaceController {
             CuentaXUsuario datos = getDataFromForm();
             Boolean retorno = modelo.delete(datos);
             if (retorno) {
-                String msg = ConstantesInterfaz.I_MSJ_BORRADO + datos.getUsername();
+                String msg = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_DELETE) + datos.getUsername();
                 log.info(msg);
                 fillTable(view.getTableCuentaXUsuario());
                 JOptionUtil.showAppMessage(ConstantesInterfaz.JOP_TITULO_EXITO, msg, JOptionPane.INFORMATION_MESSAGE);
@@ -318,7 +319,7 @@ public class CuentaXUsuarioController implements InterfaceController {
         try {
             List<String> param = modelo.suggest();
             JOptionListBox jolb = new JOptionListBox(param, ConstantesInterfaz.JOP_TITULO_BUSCAR,
-                    ConstantesInterfaz.LABEL_U_USER);
+                    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_U_USER));
             String nombreCuenta = jolb.getSelectedValue();
             if (nombreCuenta != null) {
                 CuentaXUsuario c = modelo.search(nombreCuenta);
@@ -340,14 +341,15 @@ public class CuentaXUsuarioController implements InterfaceController {
      * Permite mostrar u ocultar la contraseña.
      */
     public void eventoMostrar() {
-        if (ConstantesInterfaz.TOOL_MOSTRAR.equals(view.getBMostrar().getToolTipText())) {
+        if (KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_SHOW)
+                .equals(view.getBMostrar().getToolTipText())) {
             view.getTextPass().setEchoChar((char) 0);
-            view.getBMostrar().setToolTipText(ConstantesInterfaz.TOOL_ESCONDER);
-            view.getBMostrar().setText(ConstantesInterfaz.TOOL_ESCONDER);
+            view.getBMostrar().setToolTipText(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_HIDE));
+            view.getBMostrar().setText(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_HIDE));
         } else {
             view.getTextPass().setEchoChar(ConstantesInterfaz.ESCONDER_TEXTO);
-            view.getBMostrar().setToolTipText(ConstantesInterfaz.TOOL_MOSTRAR);
-            view.getBMostrar().setText(ConstantesInterfaz.TOOL_MOSTRAR);
+            view.getBMostrar().setToolTipText(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_SHOW));
+            view.getBMostrar().setText(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_SHOW));
         }
     }
 

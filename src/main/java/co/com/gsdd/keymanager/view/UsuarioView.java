@@ -15,6 +15,7 @@ import co.com.gsdd.keymanager.controller.PrincipalController;
 import co.com.gsdd.keymanager.controller.UsuarioController;
 import co.com.gsdd.keymanager.enums.OpcionBoton;
 import co.com.gsdd.keymanager.enums.OpcionMenu;
+import co.com.gsdd.keymanager.lang.KeyManagerLanguage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -77,11 +78,11 @@ public class UsuarioView extends AbstractCommonView {
         labelPk.setBounds(0, 0, 0, 0);
         labelPk.setVisible(false);
 
-        addLabel(ConstantesInterfaz.LABEL_U_PN, INI_X_LABEL_C1, posYFila1);
-        addLabel(ConstantesInterfaz.LABEL_U_PA, INI_X_LABEL_C2, posYFila1);
-        addLabel(ConstantesInterfaz.LABEL_U_USER, INI_X_LABEL_C1, posYFila2);
-        addLabel(ConstantesInterfaz.LABEL_U_PASS, INI_X_LABEL_C2, posYFila2);
-        addLabel(ConstantesInterfaz.LABEL_U_ROL, INI_X_LABEL_C1, posYFila3);
+        addLabel(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_U_FN), INI_X_LABEL_C1, posYFila1);
+        addLabel(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_U_LN), INI_X_LABEL_C2, posYFila1);
+        addLabel(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_U_USER), INI_X_LABEL_C1, posYFila2);
+        addLabel(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_U_PASS), INI_X_LABEL_C2, posYFila2);
+        addLabel(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_U_ROLE), INI_X_LABEL_C1, posYFila3);
     }
 
     /**
@@ -89,13 +90,16 @@ public class UsuarioView extends AbstractCommonView {
      */
     public void initFields() {
         textPNombre = addValidateTextField(posInixTextC1, posYFila1);
-        textPNombre.setTextProperties(RegexConstants.TEXT, DEF_TAMANO_TEXTO, ConstantesInterfaz.TOOL_TEXT);
+        textPNombre.setTextProperties(RegexConstants.TEXT, DEF_TAMANO_TEXTO,
+                KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_TEXT));
 
         textPApellido = addValidateTextField(posInixTextC2, posYFila1);
-        textPApellido.setTextProperties(RegexConstants.TEXT, DEF_TAMANO_TEXTO, ConstantesInterfaz.TOOL_TEXT);
+        textPApellido.setTextProperties(RegexConstants.TEXT, DEF_TAMANO_TEXTO,
+                KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_TEXT));
 
         textUserName = addValidateTextField(posInixTextC1, posYFila2);
-        textUserName.setTextProperties(RegexConstants.ALFA, DEF_TAMANO_TEXTO, ConstantesInterfaz.TOOL_ALFA);
+        textUserName.setTextProperties(RegexConstants.ALFA, DEF_TAMANO_TEXTO,
+                KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_ALFA));
 
         textPass = new JPasswordField();
         textPass.setBounds(posInixTextC2, posYFila2, DEF_ANCHO, DEF_ALTO);
@@ -109,19 +113,24 @@ public class UsuarioView extends AbstractCommonView {
      */
     public void initButtons() {
         final int posYButton = 210;
-        bGuardar = addButton(ConstantesInterfaz.BOTON_GUARDAR, INI_X_LABEL_C1, posYButton);
+        bGuardar = addButton(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_SAVE), INI_X_LABEL_C1,
+                posYButton);
         bGuardar.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionBoton.GUARDAR));
 
-        bActualizar = addButton(ConstantesInterfaz.BOTON_ACTUALIZAR, posInixTextC1, posYButton);
+        bActualizar = addButton(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_UPDATE), posInixTextC1,
+                posYButton);
         bActualizar.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionBoton.ACTUALIZAR));
 
-        bEliminar = addButton(ConstantesInterfaz.BOTON_ELIMINAR, INI_X_LABEL_C2, posYButton);
+        bEliminar = addButton(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_DELETE), INI_X_LABEL_C2,
+                posYButton);
         bEliminar.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionBoton.ELIMINAR));
 
-        bConsultar = addButton(ConstantesInterfaz.BOTON_CONSULTAR, posInixTextC2, posYButton);
+        bConsultar = addButton(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_SEARCH), posInixTextC2,
+                posYButton);
         bConsultar.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionBoton.CONSULTAR));
 
-        bVolver = addButton(ConstantesInterfaz.BOTON_VOLVER, posInixTextC3, posYButton);
+        bVolver = addButton(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_BACK), posInixTextC3,
+                posYButton);
         bVolver.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionBoton.VOLVER));
     }
 
@@ -153,7 +162,8 @@ public class UsuarioView extends AbstractCommonView {
             UsuarioController.getInstance().eventoConsultar();
             break;
         case VOLVER:
-            PrincipalController.getInstance().sendRedirect(OpcionMenu.LOGIN.name(), ConstantesInterfaz.TITULO_LOGIN);
+            PrincipalController.getInstance().sendRedirect(OpcionMenu.LOGIN.name(),
+                    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_LOGIN));
             break;
         default:
             break;

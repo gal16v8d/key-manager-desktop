@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 
 import co.com.gsdd.constantes.ConstantesInterfaz;
 import co.com.gsdd.keymanager.controller.LoginController;
+import co.com.gsdd.keymanager.lang.KeyManagerLanguage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -78,7 +79,8 @@ public class LoginView extends AbstractCommonView {
      * Inicializa/Crea los botones.
      */
     public void initButtons() {
-        btnIngresar = addButton(ConstantesInterfaz.BOTON_LOGIN, POS_INI_X_TEXTO, POS_INI_Y_LABEL + (ESPACIO_Y * 2));
+        btnIngresar = addButton(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_LOGIN), POS_INI_X_TEXTO,
+                POS_INI_Y_LABEL + (ESPACIO_Y * 2));
         btnIngresar.addActionListener((ActionEvent evt) -> autenticar(evt));
     }
 

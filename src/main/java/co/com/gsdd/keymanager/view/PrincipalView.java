@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
@@ -71,7 +72,7 @@ public class PrincipalView extends JFrame {
      */
     private PrincipalView() {
         try {
-        	KeyManagerLanguage.initBundle(getLocale());
+            KeyManagerLanguage.initBundle(getLocale());
             buildMenu();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -156,7 +157,7 @@ public class PrincipalView extends JFrame {
      * Permite agregar en presentación el menuitem de consultas.
      */
     private void agregarMenuItemConsulta() {
-        itemConsulta = new JMenuItem(ConstantesInterfaz.MENUITEM_CONSULTA);
+        itemConsulta = new JMenuItem(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_ITEM_SEARCH));
         itemConsulta.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionMenu.CONSULTA));
         menuAdmon.add(itemConsulta);
     }
@@ -165,7 +166,8 @@ public class PrincipalView extends JFrame {
      * Permite agregar en presentación el menuitem de cuentaxusuario.
      */
     private void agregarMenuItemCuentaXUsuario() {
-        itemCuentaXUsuario = new JMenuItem(ConstantesInterfaz.MENUITEM_CUENTAXUSUARIO);
+        itemCuentaXUsuario = new JMenuItem(
+                KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_ITEM_CUENTAXUSUARIO));
         itemCuentaXUsuario.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionMenu.CUENTAXUSUARIO));
         menuAdmon.add(itemCuentaXUsuario);
     }
@@ -174,7 +176,7 @@ public class PrincipalView extends JFrame {
      * Permite agregar en presentación el menuitem de usuario.
      */
     private void agregarMenuItemUsuario() {
-        itemUsuario = new JMenuItem(ConstantesInterfaz.MENUITEM_USUARIO);
+        itemUsuario = new JMenuItem(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_ITEM_USUARIO));
         itemUsuario.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionMenu.USUARIO));
         menuAdmon.add(itemUsuario);
     }
@@ -183,7 +185,7 @@ public class PrincipalView extends JFrame {
      * Permite agregar en presentación el menuitem de exportar.
      */
     private void agregarMenuItemExportar() {
-        itemExportar = new JMenuItem(ConstantesInterfaz.MENUITEM_EXPORTAR);
+        itemExportar = new JMenuItem(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_ITEM_EXPORT));
         itemExportar.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionMenu.EXPORTAR));
         menuAdmon.add(itemExportar);
     }
@@ -201,7 +203,7 @@ public class PrincipalView extends JFrame {
      * Permite agregar en presentación el menuitem de sesion.
      */
     private void agregarMenuItemSesion() {
-        itemSesion = new JMenuItem(ConstantesInterfaz.MENUITEM_SESION);
+        itemSesion = new JMenuItem(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_ITEM_SESSION));
         itemSesion.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionMenu.SESION));
         menuSesion.add(itemSesion);
     }
@@ -210,7 +212,7 @@ public class PrincipalView extends JFrame {
      * Permite agregar en presentación el menuitem de salir.
      */
     private void agregarMenuItemSalir() {
-        itemSalir = new JMenuItem(ConstantesInterfaz.MENUITEM_SALIR);
+        itemSalir = new JMenuItem(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_ITEM_EXIT));
         itemSalir.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionMenu.SALIR));
         menuSesion.add(itemSalir);
     }
@@ -219,7 +221,7 @@ public class PrincipalView extends JFrame {
      * Permite agregar los items al menú de info.
      */
     private void agregarItemsInfo(JMenu menuInfo) {
-        itemCreditos = new JMenuItem(ConstantesInterfaz.MENUITEM_CREDITOS);
+        itemCreditos = new JMenuItem(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_ITEM_INFO));
         itemCreditos.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionMenu.CREDITOS));
         menuInfo.add(itemCreditos);
     }
@@ -255,7 +257,7 @@ public class PrincipalView extends JFrame {
         case CUENTAXUSUARIO:
             if (PrincipalController.getInstance().getLoControl().getDto() != null) {
                 addPanel(CuentaXUsuarioController.getInstance().getView(), OpcionMenu.CUENTAXUSUARIO.name(),
-                        ConstantesInterfaz.TITULO_CUENTAXUSER);
+                        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_CUENTAXUSER));
                 if (PrincipalController.getInstance().getReload().equals(Boolean.TRUE)) {
                     // Refresca los combos con datos
                     CuentaXUsuarioController.getInstance().clearCombo();
@@ -283,7 +285,7 @@ public class PrincipalView extends JFrame {
         case USUARIO:
             if (PrincipalController.getInstance().getLoControl().getDto() != null) {
                 addPanel(UsuarioController.getInstance().getView(), OpcionMenu.USUARIO.name(),
-                        ConstantesInterfaz.TITULO_USUARIO);
+                        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_USUARIO));
             } else {
                 JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_LOGIN);
             }
@@ -318,8 +320,9 @@ public class PrincipalView extends JFrame {
     private static void iniciarBD() {
         DBConnection.getInstance();
         try {
-            System.setProperty("derby.system.home", "./kmgr/");
-            System.setProperty("derby.stream.error.file", "../KMgr-log/derby.log");
+            System.setProperty("derby.system.home", "." + File.separator + "kmgr" + File.separator);
+            System.setProperty("derby.stream.error.file",
+                    ".." + File.separator + "KMgr-log" + File.separator + "derby.log");
             Boolean b = DBQueryUtil.dbExist(ConstantesKeyManager.DERBY_MAIN_TABLE,
                     ConstantesKeyManager.DERBY_CONNECTION, ConstantesKeyManager.DERBY_LOCATION, GralConstants.EMPTY,
                     GralConstants.EMPTY);
