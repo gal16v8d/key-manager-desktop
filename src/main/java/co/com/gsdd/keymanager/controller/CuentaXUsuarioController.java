@@ -9,7 +9,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import co.com.gsdd.constantes.ConstantesInterfaz;
 import co.com.gsdd.constantes.ConstantesKeyManager;
 import co.com.gsdd.constants.GUIConstants;
 import co.com.gsdd.constants.GralConstants;
@@ -170,8 +169,8 @@ public class CuentaXUsuarioController implements InterfaceController {
     public void setTableModel(JPaginateTable tabla) {
         Class[] types = new Class[] { java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class };
-        tabla.setTableModel(ConstantesInterfaz.getTablaCuentaxuser(), types);
-        tabla.setItemsPerPage(ConstantesInterfaz.LIMITE_TABLA_PAG);
+        tabla.setTableModel(ConstantesKeyManager.getAccountXUserTableModel(), types);
+        tabla.setItemsPerPage(ConstantesKeyManager.TBL_PAGE_SIZE);
     }
 
     @Override
@@ -199,7 +198,7 @@ public class CuentaXUsuarioController implements InterfaceController {
                 Date fa = new java.sql.Date(Calendar.getInstance().getTime().getTime());
                 String fecha = ConstantesKeyManager.getFormater().format(fd);
                 dtm.setValueAt(fecha, i, 5);
-                dtm.setValueAt(ConstantesKeyManager.getRecomendacion(fa, fd), i, 6);
+                dtm.setValueAt(ConstantesKeyManager.getSuggestion(fa, fd), i, 6);
             }
         }
         tabla.setPaginateSorter(new TableRowSorter<TableModel>(dtm));
@@ -215,7 +214,7 @@ public class CuentaXUsuarioController implements InterfaceController {
      * @return
      */
     private String obtenerPass(String ePass, Boolean mostrar) {
-        return mostrar ? CifradoKeyManager.descifrarKM(ePass) : ConstantesInterfaz.MASK_TEXTO;
+        return mostrar ? CifradoKeyManager.descifrarKM(ePass) : ConstantesKeyManager.MASK_TEXTO;
     }
 
     /**
@@ -237,19 +236,23 @@ public class CuentaXUsuarioController implements InterfaceController {
             if (validateData(datos)) {
                 Boolean retorno = modelo.save(datos);
                 if (retorno) {
-                    String msg = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_SAVE) + datos.getNombreCuenta();
+                    String msg = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_SAVE)
+                            + datos.getNombreCuenta();
                     log.info(msg);
                     fillTable(view.getTableCuentaXUsuario());
-                    JOptionUtil.showAppMessage(ConstantesInterfaz.JOP_TITULO_EXITO, msg,
+                    JOptionUtil.showAppMessage(
+                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SUCCESS), msg,
                             JOptionPane.INFORMATION_MESSAGE);
                     clearFields();
                     clearCombo();
                     fillCombo();
                 } else {
-                    JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_INESPERADO);
+                    JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
                 }
             } else {
-                JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_DATOS);
+                JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_DATA));
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -266,20 +269,24 @@ public class CuentaXUsuarioController implements InterfaceController {
             if (validateData(datos)) {
                 Boolean retorno = modelo.update(datos, old.getNombreCuenta(), old.getCodigousuario());
                 if (retorno) {
-                    String msg = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_UPDATE) + datos.getUsername();
+                    String msg = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_UPDATE)
+                            + datos.getUsername();
                     log.info(msg);
                     fillTable(view.getTableCuentaXUsuario());
-                    JOptionUtil.showAppMessage(ConstantesInterfaz.JOP_TITULO_EXITO, msg,
+                    JOptionUtil.showAppMessage(
+                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SUCCESS), msg,
                             JOptionPane.INFORMATION_MESSAGE);
                     clearFields();
                     clearCombo();
                     fillCombo();
                     startButtons(false);
                 } else {
-                    JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_INESPERADO);
+                    JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
                 }
             } else {
-                JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_DATOS);
+                JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_DATA));
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -295,16 +302,19 @@ public class CuentaXUsuarioController implements InterfaceController {
             CuentaXUsuario datos = getDataFromForm();
             Boolean retorno = modelo.delete(datos);
             if (retorno) {
-                String msg = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_DELETE) + datos.getUsername();
+                String msg = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_DELETE)
+                        + datos.getUsername();
                 log.info(msg);
                 fillTable(view.getTableCuentaXUsuario());
-                JOptionUtil.showAppMessage(ConstantesInterfaz.JOP_TITULO_EXITO, msg, JOptionPane.INFORMATION_MESSAGE);
+                JOptionUtil.showAppMessage(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SUCCESS),
+                        msg, JOptionPane.INFORMATION_MESSAGE);
                 clearFields();
                 clearCombo();
                 fillCombo();
                 startButtons(false);
             } else {
-                JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_INESPERADO);
+                JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -318,7 +328,8 @@ public class CuentaXUsuarioController implements InterfaceController {
     public void eventoConsultar() {
         try {
             List<String> param = modelo.suggest();
-            JOptionListBox jolb = new JOptionListBox(param, ConstantesInterfaz.JOP_TITULO_BUSCAR,
+            JOptionListBox jolb = new JOptionListBox(param,
+                    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SEARCH),
                     KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_U_USER));
             String nombreCuenta = jolb.getSelectedValue();
             if (nombreCuenta != null) {
@@ -328,7 +339,8 @@ public class CuentaXUsuarioController implements InterfaceController {
                     old = c;
                     startButtons(true);
                 } else {
-                    JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_INESPERADO);
+                    JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
                 }
             }
         } catch (Exception e) {
@@ -347,7 +359,7 @@ public class CuentaXUsuarioController implements InterfaceController {
             view.getBMostrar().setToolTipText(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_HIDE));
             view.getBMostrar().setText(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_HIDE));
         } else {
-            view.getTextPass().setEchoChar(ConstantesInterfaz.ESCONDER_TEXTO);
+            view.getTextPass().setEchoChar(ConstantesKeyManager.HIDE_TEXT);
             view.getBMostrar().setToolTipText(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_SHOW));
             view.getBMostrar().setText(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_SHOW));
         }

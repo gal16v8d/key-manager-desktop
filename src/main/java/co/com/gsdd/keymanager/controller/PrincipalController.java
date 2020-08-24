@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 
-import co.com.gsdd.constantes.ConstantesInterfaz;
 import co.com.gsdd.constantes.ConstantesKeyManager;
 import co.com.gsdd.constants.GUIConstants;
 import co.com.gsdd.constants.GralConstants;
@@ -140,8 +139,10 @@ public class PrincipalController {
             JTextArea areaMC = new JTextArea();
             areaMC.setVisible(true);
             areaMC.setEditable(false);
-            areaMC.setText(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_AUTHOR) + "\n" + KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_CP));
-            JOptionPane.showMessageDialog(null, areaMC, KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_VERSION),
+            areaMC.setText(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_AUTHOR) + "\n"
+                    + KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_CP));
+            JOptionPane.showMessageDialog(null, areaMC,
+                    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_VERSION),
                     JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -155,18 +156,24 @@ public class PrincipalController {
         try {
             if (PrincipalController.getInstance().getLoControl().getDto().getRol()
                     .equals(Long.valueOf(RolEnum.ADMIN.getCode()))) {
-                JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_EXPORT);
+                JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_EXPORT));
             } else {
                 String out = getDirectory(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_FILECHOOSER));
                 if (out == null) {
-                    JOptionUtil.showAppMessage(ConstantesInterfaz.JOP_TITULO_EXPORTAR,
-                    		KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_EXPORT), JOptionPane.INFORMATION_MESSAGE);
+                    JOptionUtil.showAppMessage(
+                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_EXPORT),
+                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_EXPORT),
+                            JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     Boolean e = exportData(out);
                     if (!e) {
-                        JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_XLS);
+                        JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                                KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_XLS));
                     } else {
-                        JOptionUtil.showAppMessage(ConstantesInterfaz.JOP_TITULO_EXITO, ConstantesInterfaz.JOP_EXITO,
+                        JOptionUtil.showAppMessage(
+                                KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SUCCESS),
+                                KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SUCCESS),
                                 JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
@@ -180,8 +187,9 @@ public class PrincipalController {
      * El evento de salir de la app.
      */
     public void eventoSalir() {
-        int z = JOptionPane.showConfirmDialog(null, KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_EXIT), KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_VERSION),
-                JOptionPane.YES_NO_OPTION);
+        int z = JOptionPane.showConfirmDialog(null,
+                KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_EXIT),
+                KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_VERSION), JOptionPane.YES_NO_OPTION);
         if (z == JOptionPane.YES_OPTION) {
             view.setVisible(false);
             log.info("Cerrando...");
@@ -238,12 +246,14 @@ public class PrincipalController {
     private Boolean exportData(String out) {
         String passw = null;
         JPanel panel = new JPanel();
-        JLabel label = new JLabel(ConstantesInterfaz.JOP_PASS_MSJ);
+        JLabel label = new JLabel(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_PASS_MSG));
         JPasswordField pass = new JPasswordField(32);
         panel.add(label);
         panel.add(pass);
-        String[] options = new String[] { ConstantesInterfaz.JOP_PASS_OK, ConstantesInterfaz.JOP_PASS_CANCEL };
-        int option = JOptionPane.showOptionDialog(null, panel, ConstantesInterfaz.JOP_PASS, JOptionPane.NO_OPTION,
+        String[] options = new String[] { KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_PASS_OK),
+                KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_PASS_CANCEL) };
+        int option = JOptionPane.showOptionDialog(null, panel,
+                KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_PASS), JOptionPane.NO_OPTION,
                 JOptionPane.PLAIN_MESSAGE, null, options, options[1]);
         // 0 : Boton Aceptar
         if (option == 0) {
@@ -266,7 +276,8 @@ public class PrincipalController {
                 }
             }
         } else {
-            JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_PASS);
+            JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_PASS));
         }
 
         return Boolean.FALSE;

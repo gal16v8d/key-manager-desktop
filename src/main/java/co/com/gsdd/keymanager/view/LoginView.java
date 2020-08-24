@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import co.com.gsdd.constantes.ConstantesInterfaz;
+import co.com.gsdd.constantes.ConstantesKeyManager;
 import co.com.gsdd.keymanager.controller.LoginController;
 import co.com.gsdd.keymanager.lang.KeyManagerLanguage;
 import lombok.Getter;
@@ -48,15 +48,17 @@ public class LoginView extends AbstractCommonView {
         initLabels();
         initFields();
         initButtons();
-        initBackGround(ConstantesInterfaz.IMAGE_PPAL);
+        initBackGround(ConstantesKeyManager.IMAGE_PPAL);
     }
 
     /**
      * Inicializa/Crea los labels.
      */
     public void initLabels() {
-        labelUsuario = addLabel(ConstantesInterfaz.LABEL_USUARIO, POS_INI_X_LABEL, POS_INI_Y_LABEL);
-        labelPass = addLabel(ConstantesInterfaz.LABEL_PASS, POS_INI_X_LABEL, POS_INI_Y_LABEL + ESPACIO_Y);
+        labelUsuario = addLabel(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_USER), POS_INI_X_LABEL,
+                POS_INI_Y_LABEL);
+        labelPass = addLabel(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_PASS), POS_INI_X_LABEL,
+                POS_INI_Y_LABEL + ESPACIO_Y);
     }
 
     /**

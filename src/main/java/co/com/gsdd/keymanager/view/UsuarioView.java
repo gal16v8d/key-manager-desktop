@@ -6,7 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 
-import co.com.gsdd.constantes.ConstantesInterfaz;
+import co.com.gsdd.constantes.ConstantesKeyManager;
 import co.com.gsdd.constants.GralConstants;
 import co.com.gsdd.constants.RegexConstants;
 import co.com.gsdd.gui.util.JPaginateTable;
@@ -66,7 +66,7 @@ public class UsuarioView extends AbstractCommonView {
         initFields();
         initButtons();
         initTable();
-        initBackGround(ConstantesInterfaz.IMAGE_USER);
+        initBackGround(ConstantesKeyManager.IMAGE_USER);
     }
 
     /**

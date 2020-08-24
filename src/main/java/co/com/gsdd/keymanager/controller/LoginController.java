@@ -1,6 +1,5 @@
 package co.com.gsdd.keymanager.controller;
 
-import co.com.gsdd.constantes.ConstantesInterfaz;
 import co.com.gsdd.constants.GUIConstants;
 import co.com.gsdd.constants.GralConstants;
 import co.com.gsdd.gui.util.JOptionUtil;
@@ -100,7 +99,8 @@ public class LoginController {
                 dto.setUsername(username);
                 PrincipalController.getInstance()
                         .changeTitle(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_LOGIN));
-                String sesion = ConstantesInterfaz.LABEL_LOGGED + dto.getPrimerNombre() + " " + dto.getPrimerApellido();
+                String sesion = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_LOGGED)
+                        + dto.getPrimerNombre() + " " + dto.getPrimerApellido();
                 PrincipalController.getInstance().getView().getMenuSesion().setText(sesion);
                 PrincipalController.getInstance().getLoControl().setDto(dto);
                 if (!RolEnum.ADMIN.getCode().equals(String.valueOf(dto.getRol()))) {
@@ -108,8 +108,9 @@ public class LoginController {
                             .remove(PrincipalController.getInstance().getView().getItemConsulta());
                 }
             } else {
-                log.info(ConstantesInterfaz.E_MSJ_NO_EXISTE);
-                JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_NO_EXISTE);
+                String msg = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_USER_NE);
+                log.info("{}", msg);
+                JOptionUtil.showErrorMessage(GUIConstants.ERROR, msg);
                 view.getTextPass().setText(GralConstants.EMPTY);
             }
         } catch (Exception e) {

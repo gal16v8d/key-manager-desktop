@@ -12,9 +12,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import co.com.gsdd.constantes.ConstantesInterfaz;
 import co.com.gsdd.constantes.ConstantesKeyManager;
 import co.com.gsdd.keymanager.entities.dto.CuentaXUsuarioDto;
+import co.com.gsdd.keymanager.lang.KeyManagerLanguage;
 import co.com.gsdd.xls.util.XLSUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -85,9 +85,10 @@ public class XLSWriter {
     public Boolean writeExcel(List<CuentaXUsuarioDto> listR, String excelFilePath) {
         try {
             log.info(excelFilePath);
-            workbook = XLSUtil.getWorkbook(null, excelFilePath, ConstantesKeyManager.FILE_MSJ);
+            workbook = XLSUtil.getWorkbook(null, excelFilePath,
+                    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_XLS));
             if (!listR.isEmpty()) {
-                buildSheet(listR, ConstantesKeyManager.EXPORT_NAME, ConstantesInterfaz.getTablaCuentaxuser(),
+                buildSheet(listR, ConstantesKeyManager.EXPORT_NAME, ConstantesKeyManager.getAccountXUserTableModel(),
                         excelFilePath);
             }
             return Boolean.TRUE;
@@ -153,6 +154,6 @@ public class XLSWriter {
         Cell cnf = row.createCell(5);
         cnf.setCellValue(fecha);
         Cell cnr = row.createCell(6);
-        cnr.setCellValue(ConstantesKeyManager.getRecomendacion(fa, fd));
+        cnr.setCellValue(ConstantesKeyManager.getSuggestion(fa, fd));
     }
 }

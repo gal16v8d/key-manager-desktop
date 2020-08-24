@@ -6,7 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPasswordField;
 
-import co.com.gsdd.constantes.ConstantesInterfaz;
+import co.com.gsdd.constantes.ConstantesKeyManager;
 import co.com.gsdd.gui.util.JPaginateTable;
 import co.com.gsdd.gui.util.JValidateTextField;
 import co.com.gsdd.keymanager.controller.CuentaXUsuarioController;
@@ -62,7 +62,7 @@ public class CuentaXUsuarioView extends AbstractCommonView {
         initFields();
         initButtons();
         initTable();
-        initBackGround(ConstantesInterfaz.IMAGE_CXU);
+        initBackGround(ConstantesKeyManager.IMAGE_CXU);
     }
 
     /**

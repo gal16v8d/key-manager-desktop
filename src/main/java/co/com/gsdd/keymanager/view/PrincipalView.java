@@ -16,7 +16,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
-import co.com.gsdd.constantes.ConstantesInterfaz;
 import co.com.gsdd.constantes.ConstantesKeyManager;
 import co.com.gsdd.constants.GUIConstants;
 import co.com.gsdd.constants.GralConstants;
@@ -137,7 +136,7 @@ public class PrincipalView extends JFrame {
         EjecutorKey.getInstance().getExecutor().execute(() -> agregarItemsAdmon());
         EjecutorKey.getInstance().getExecutor().execute(() -> agregarItemsSesion());
         EjecutorKey.getInstance().getExecutor().execute(() -> agregarItemsInfo(menuInfo));
-        setIconImage(new ImageIcon(getClass().getResource(ConstantesInterfaz.IMAGE_ICON)).getImage());
+        setIconImage(new ImageIcon(getClass().getResource(ConstantesKeyManager.IMAGE_ICON)).getImage());
     }
 
     /**
@@ -226,6 +225,11 @@ public class PrincipalView extends JFrame {
         menuInfo.add(itemCreditos);
     }
 
+    private void showMessageBasedOnLogin() {
+        JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_LOGIN));
+    }
+
     /**
      * Selecciona la opción según el menú.
      * 
@@ -238,7 +242,8 @@ public class PrincipalView extends JFrame {
             if (PrincipalController.getInstance().getLoControl().getDto() != null) {
                 Long rolAdmin = Long.parseLong(RolEnum.ADMIN.getCode());
                 if (PrincipalController.getInstance().getLoControl().getDto().getRol().equals(rolAdmin)) {
-                    String query = JOptionPane.showInputDialog(null, ConstantesInterfaz.JOP_TITULO_CONSULTA);
+                    String query = JOptionPane.showInputDialog(null,
+                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_QUERY));
                     if (query != null && !query.isEmpty()) {
                         try {
                             DBConnection.getInstance().setSt(DBConnection.getInstance().getCon().createStatement());
@@ -248,10 +253,11 @@ public class PrincipalView extends JFrame {
                         }
                     }
                 } else {
-                    JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_ADMIN);
+                    JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_ADMIN));
                 }
             } else {
-                JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_LOGIN);
+                showMessageBasedOnLogin();
             }
             break;
         case CUENTAXUSUARIO:
@@ -267,7 +273,7 @@ public class PrincipalView extends JFrame {
                     PrincipalController.getInstance().setReload(Boolean.FALSE);
                 }
             } else {
-                JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_LOGIN);
+                showMessageBasedOnLogin();
             }
             break;
         case CREDITOS:
@@ -287,7 +293,7 @@ public class PrincipalView extends JFrame {
                 addPanel(UsuarioController.getInstance().getView(), OpcionMenu.USUARIO.name(),
                         KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_USUARIO));
             } else {
-                JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_LOGIN);
+                showMessageBasedOnLogin();
             }
             break;
         default:
@@ -329,7 +335,7 @@ public class PrincipalView extends JFrame {
             log.info("BD existe -> {}", b);
             if (!b) {
                 DBConnection.getInstance().executeImport(Boolean.TRUE);
-                log.info(ConstantesKeyManager.OK);
+                log.info("[OK]");
             }
             if (DBConnection.getInstance().getCon() == null) {
                 DBConnection.getInstance().connectDB(ConstantesKeyManager.DERBY_CONNECTION,
@@ -337,7 +343,7 @@ public class PrincipalView extends JFrame {
             }
             log.info("{}", DBConnection.getInstance().getCon().toString());
         } catch (TechnicalException e) {
-            log.error(ConstantesKeyManager.FALLO + GralConstants.COLON + e, e);
+            log.error("[FALLO]: {}", e, e);
         }
     }
 
