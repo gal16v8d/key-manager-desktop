@@ -7,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import co.com.gsdd.constantes.ConstantesInterfaz;
+import co.com.gsdd.constantes.ConstantesKeyManager;
 import co.com.gsdd.constants.GUIConstants;
 import co.com.gsdd.constants.GralConstants;
 import co.com.gsdd.gui.util.JOptionListBox;
@@ -16,6 +16,7 @@ import co.com.gsdd.gui.util.JPaginateTable;
 import co.com.gsdd.keymanager.ejb.UsuarioEjb;
 import co.com.gsdd.keymanager.entities.Usuario;
 import co.com.gsdd.keymanager.enums.RolEnum;
+import co.com.gsdd.keymanager.lang.KeyManagerLanguage;
 import co.com.gsdd.keymanager.util.CifradoKeyManager;
 import co.com.gsdd.keymanager.view.UsuarioView;
 import lombok.Getter;
@@ -141,8 +142,8 @@ public class UsuarioController implements InterfaceController {
     public void setTableModel(JPaginateTable tabla) {
         Class[] types = new Class[] { java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
                 java.lang.Object.class };
-        tabla.setTableModel(ConstantesInterfaz.getTablaUsuario(), types);
-        tabla.setItemsPerPage(ConstantesInterfaz.LIMITE_TABLA_PAG);
+        tabla.setTableModel(ConstantesKeyManager.getUserTableModel(), types);
+        tabla.setItemsPerPage(ConstantesKeyManager.TBL_PAGE_SIZE);
     }
 
     @Override
@@ -187,18 +188,22 @@ public class UsuarioController implements InterfaceController {
             if (validateData(datos)) {
                 Boolean retorno = modelo.save(datos);
                 if (retorno) {
-                    String msg = ConstantesInterfaz.I_MSJ_GUARDADO + datos.getUsername();
+                    String msg = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_SAVE)
+                            + datos.getUsername();
                     log.info(msg);
                     fillTable(view.getTableUsuario());
-                    JOptionUtil.showAppMessage(ConstantesInterfaz.JOP_TITULO_EXITO, msg,
+                    JOptionUtil.showAppMessage(
+                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SUCCESS), msg,
                             JOptionPane.INFORMATION_MESSAGE);
                     PrincipalController.getInstance().setReload(Boolean.TRUE);
                     clearFields();
                 } else {
-                    JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_INESPERADO);
+                    JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
                 }
             } else {
-                JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_DATOS);
+                JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_DATA));
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -215,19 +220,23 @@ public class UsuarioController implements InterfaceController {
             if (validateData(datos)) {
                 Boolean retorno = modelo.update(datos);
                 if (retorno) {
-                    String msg = ConstantesInterfaz.I_MSJ_ACTUALIZADO + datos.getUsername();
+                    String msg = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_UPDATE)
+                            + datos.getUsername();
                     log.info(msg);
                     fillTable(view.getTableUsuario());
-                    JOptionUtil.showAppMessage(ConstantesInterfaz.JOP_TITULO_EXITO, msg,
+                    JOptionUtil.showAppMessage(
+                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SUCCESS), msg,
                             JOptionPane.INFORMATION_MESSAGE);
                     PrincipalController.getInstance().setReload(Boolean.TRUE);
                     clearFields();
                     startButtons(false);
                 } else {
-                    JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_INESPERADO);
+                    JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
                 }
             } else {
-                JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_DATOS);
+                JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_DATA));
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -243,15 +252,18 @@ public class UsuarioController implements InterfaceController {
             Usuario datos = getDataFromForm();
             Boolean retorno = modelo.delete(datos);
             if (retorno) {
-                String msg = ConstantesInterfaz.I_MSJ_BORRADO + datos.getUsername();
+                String msg = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_DELETE)
+                        + datos.getUsername();
                 log.info(msg);
                 fillTable(view.getTableUsuario());
-                JOptionUtil.showAppMessage(ConstantesInterfaz.JOP_TITULO_EXITO, msg, JOptionPane.INFORMATION_MESSAGE);
+                JOptionUtil.showAppMessage(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SUCCESS),
+                        msg, JOptionPane.INFORMATION_MESSAGE);
                 PrincipalController.getInstance().setReload(Boolean.TRUE);
                 clearFields();
                 startButtons(false);
             } else {
-                JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_INESPERADO);
+                JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -265,8 +277,9 @@ public class UsuarioController implements InterfaceController {
     public void eventoConsultar() {
         try {
             List<String> param = modelo.suggest();
-            JOptionListBox jolb = new JOptionListBox(param, ConstantesInterfaz.JOP_TITULO_BUSCAR,
-                    ConstantesInterfaz.LABEL_U_USER);
+            JOptionListBox jolb = new JOptionListBox(param,
+                    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SEARCH),
+                    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_U_USER));
             String username = jolb.getSelectedValue();
             if (username != null) {
                 Usuario u = modelo.search(username);
@@ -274,7 +287,8 @@ public class UsuarioController implements InterfaceController {
                     setFields(u);
                     startButtons(true);
                 } else {
-                    JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_INESPERADO);
+                    JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
                 }
             }
         } catch (Exception e) {

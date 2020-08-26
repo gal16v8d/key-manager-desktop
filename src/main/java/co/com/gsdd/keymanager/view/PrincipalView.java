@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
@@ -15,7 +16,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
-import co.com.gsdd.constantes.ConstantesInterfaz;
 import co.com.gsdd.constantes.ConstantesKeyManager;
 import co.com.gsdd.constants.GUIConstants;
 import co.com.gsdd.constants.GralConstants;
@@ -28,6 +28,7 @@ import co.com.gsdd.keymanager.controller.PrincipalController;
 import co.com.gsdd.keymanager.controller.UsuarioController;
 import co.com.gsdd.keymanager.enums.OpcionMenu;
 import co.com.gsdd.keymanager.enums.RolEnum;
+import co.com.gsdd.keymanager.lang.KeyManagerLanguage;
 import co.com.gsdd.keymanager.util.EjecutorKey;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,7 +51,6 @@ public class PrincipalView extends JFrame {
      */
     private static final long serialVersionUID = 1L;
     private JMenu menuAdmon;
-    private JMenu menuInfo;
     private JMenu menuSesion;
     private JMenuItem itemCuenta;
     private JMenuItem itemCuentaXUsuario;
@@ -71,6 +71,7 @@ public class PrincipalView extends JFrame {
      */
     private PrincipalView() {
         try {
+            KeyManagerLanguage.initBundle(getLocale());
             buildMenu();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -126,16 +127,16 @@ public class PrincipalView extends JFrame {
     private void buildMenu() {
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
-        menuAdmon = new JMenu(ConstantesInterfaz.MENU_ADMON);
+        menuAdmon = new JMenu(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_ADMON));
         menuBar.add(menuAdmon);
-        menuSesion = new JMenu(ConstantesInterfaz.MENU_SESION);
+        menuSesion = new JMenu(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_SESSION));
         menuBar.add(menuSesion);
-        menuInfo = new JMenu(ConstantesInterfaz.MENU_INFO);
+        JMenu menuInfo = new JMenu(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_INFO));
         menuBar.add(menuInfo);
         EjecutorKey.getInstance().getExecutor().execute(() -> agregarItemsAdmon());
         EjecutorKey.getInstance().getExecutor().execute(() -> agregarItemsSesion());
-        EjecutorKey.getInstance().getExecutor().execute(() -> agregarItemsInfo());
-        setIconImage(new ImageIcon(getClass().getResource(ConstantesInterfaz.IMAGE_ICON)).getImage());
+        EjecutorKey.getInstance().getExecutor().execute(() -> agregarItemsInfo(menuInfo));
+        setIconImage(new ImageIcon(getClass().getResource(ConstantesKeyManager.IMAGE_ICON)).getImage());
     }
 
     /**
@@ -155,7 +156,7 @@ public class PrincipalView extends JFrame {
      * Permite agregar en presentación el menuitem de consultas.
      */
     private void agregarMenuItemConsulta() {
-        itemConsulta = new JMenuItem(ConstantesInterfaz.MENUITEM_CONSULTA);
+        itemConsulta = new JMenuItem(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_ITEM_SEARCH));
         itemConsulta.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionMenu.CONSULTA));
         menuAdmon.add(itemConsulta);
     }
@@ -164,7 +165,8 @@ public class PrincipalView extends JFrame {
      * Permite agregar en presentación el menuitem de cuentaxusuario.
      */
     private void agregarMenuItemCuentaXUsuario() {
-        itemCuentaXUsuario = new JMenuItem(ConstantesInterfaz.MENUITEM_CUENTAXUSUARIO);
+        itemCuentaXUsuario = new JMenuItem(
+                KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_ITEM_CUENTAXUSUARIO));
         itemCuentaXUsuario.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionMenu.CUENTAXUSUARIO));
         menuAdmon.add(itemCuentaXUsuario);
     }
@@ -173,7 +175,7 @@ public class PrincipalView extends JFrame {
      * Permite agregar en presentación el menuitem de usuario.
      */
     private void agregarMenuItemUsuario() {
-        itemUsuario = new JMenuItem(ConstantesInterfaz.MENUITEM_USUARIO);
+        itemUsuario = new JMenuItem(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_ITEM_USUARIO));
         itemUsuario.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionMenu.USUARIO));
         menuAdmon.add(itemUsuario);
     }
@@ -182,7 +184,7 @@ public class PrincipalView extends JFrame {
      * Permite agregar en presentación el menuitem de exportar.
      */
     private void agregarMenuItemExportar() {
-        itemExportar = new JMenuItem(ConstantesInterfaz.MENUITEM_EXPORTAR);
+        itemExportar = new JMenuItem(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_ITEM_EXPORT));
         itemExportar.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionMenu.EXPORTAR));
         menuAdmon.add(itemExportar);
     }
@@ -200,7 +202,7 @@ public class PrincipalView extends JFrame {
      * Permite agregar en presentación el menuitem de sesion.
      */
     private void agregarMenuItemSesion() {
-        itemSesion = new JMenuItem(ConstantesInterfaz.MENUITEM_SESION);
+        itemSesion = new JMenuItem(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_ITEM_SESSION));
         itemSesion.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionMenu.SESION));
         menuSesion.add(itemSesion);
     }
@@ -209,7 +211,7 @@ public class PrincipalView extends JFrame {
      * Permite agregar en presentación el menuitem de salir.
      */
     private void agregarMenuItemSalir() {
-        itemSalir = new JMenuItem(ConstantesInterfaz.MENUITEM_SALIR);
+        itemSalir = new JMenuItem(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_ITEM_EXIT));
         itemSalir.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionMenu.SALIR));
         menuSesion.add(itemSalir);
     }
@@ -217,10 +219,15 @@ public class PrincipalView extends JFrame {
     /**
      * Permite agregar los items al menú de info.
      */
-    private void agregarItemsInfo() {
-        itemCreditos = new JMenuItem(ConstantesInterfaz.MENUITEM_CREDITOS);
+    private void agregarItemsInfo(JMenu menuInfo) {
+        itemCreditos = new JMenuItem(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_ITEM_INFO));
         itemCreditos.addActionListener((ActionEvent evt) -> seleccionarOpcion(OpcionMenu.CREDITOS));
         menuInfo.add(itemCreditos);
+    }
+
+    private void showMessageBasedOnLogin() {
+        JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_LOGIN));
     }
 
     /**
@@ -235,7 +242,8 @@ public class PrincipalView extends JFrame {
             if (PrincipalController.getInstance().getLoControl().getDto() != null) {
                 Long rolAdmin = Long.parseLong(RolEnum.ADMIN.getCode());
                 if (PrincipalController.getInstance().getLoControl().getDto().getRol().equals(rolAdmin)) {
-                    String query = JOptionPane.showInputDialog(null, ConstantesInterfaz.JOP_TITULO_CONSULTA);
+                    String query = JOptionPane.showInputDialog(null,
+                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_QUERY));
                     if (query != null && !query.isEmpty()) {
                         try {
                             DBConnection.getInstance().setSt(DBConnection.getInstance().getCon().createStatement());
@@ -245,16 +253,17 @@ public class PrincipalView extends JFrame {
                         }
                     }
                 } else {
-                    JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_ADMIN);
+                    JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_ADMIN));
                 }
             } else {
-                JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_LOGIN);
+                showMessageBasedOnLogin();
             }
             break;
         case CUENTAXUSUARIO:
             if (PrincipalController.getInstance().getLoControl().getDto() != null) {
                 addPanel(CuentaXUsuarioController.getInstance().getView(), OpcionMenu.CUENTAXUSUARIO.name(),
-                        ConstantesInterfaz.TITULO_CUENTAXUSER);
+                        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_CUENTAXUSER));
                 if (PrincipalController.getInstance().getReload().equals(Boolean.TRUE)) {
                     // Refresca los combos con datos
                     CuentaXUsuarioController.getInstance().clearCombo();
@@ -264,7 +273,7 @@ public class PrincipalView extends JFrame {
                     PrincipalController.getInstance().setReload(Boolean.FALSE);
                 }
             } else {
-                JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_LOGIN);
+                showMessageBasedOnLogin();
             }
             break;
         case CREDITOS:
@@ -282,9 +291,9 @@ public class PrincipalView extends JFrame {
         case USUARIO:
             if (PrincipalController.getInstance().getLoControl().getDto() != null) {
                 addPanel(UsuarioController.getInstance().getView(), OpcionMenu.USUARIO.name(),
-                        ConstantesInterfaz.TITULO_USUARIO);
+                        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_USUARIO));
             } else {
-                JOptionUtil.showErrorMessage(GUIConstants.ERROR, ConstantesInterfaz.E_MSJ_LOGIN);
+                showMessageBasedOnLogin();
             }
             break;
         default:
@@ -317,15 +326,16 @@ public class PrincipalView extends JFrame {
     private static void iniciarBD() {
         DBConnection.getInstance();
         try {
-            System.setProperty("derby.system.home", "./kmgr/");
-            System.setProperty("derby.stream.error.file", "../KMgr-log/derby.log");
+            System.setProperty("derby.system.home", "." + File.separator + "kmgr" + File.separator);
+            System.setProperty("derby.stream.error.file",
+                    ".." + File.separator + "KMgr-log" + File.separator + "derby.log");
             Boolean b = DBQueryUtil.dbExist(ConstantesKeyManager.DERBY_MAIN_TABLE,
                     ConstantesKeyManager.DERBY_CONNECTION, ConstantesKeyManager.DERBY_LOCATION, GralConstants.EMPTY,
                     GralConstants.EMPTY);
             log.info("BD existe -> {}", b);
             if (!b) {
                 DBConnection.getInstance().executeImport(Boolean.TRUE);
-                log.info(ConstantesKeyManager.OK);
+                log.info("[OK]");
             }
             if (DBConnection.getInstance().getCon() == null) {
                 DBConnection.getInstance().connectDB(ConstantesKeyManager.DERBY_CONNECTION,
@@ -333,7 +343,7 @@ public class PrincipalView extends JFrame {
             }
             log.info("{}", DBConnection.getInstance().getCon().toString());
         } catch (TechnicalException e) {
-            log.error(ConstantesKeyManager.FALLO + GralConstants.COLON + e, e);
+            log.error("[FALLO]: {}", e, e);
         }
     }
 
