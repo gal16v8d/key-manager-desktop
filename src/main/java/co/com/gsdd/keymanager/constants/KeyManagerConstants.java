@@ -1,4 +1,4 @@
-package co.com.gsdd.constantes;
+package co.com.gsdd.keymanager.constants;
 
 import java.io.File;
 import java.sql.Date;
@@ -21,15 +21,18 @@ import lombok.NoArgsConstructor;
  * 
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class ConstantesKeyManager {
+public final class KeyManagerConstants {
 
     public static final String DERBY_CONNECTION = "org.apache.derby.jdbc.EmbeddedDriver";
-    public static final String DERBY_LOCATION = "jdbc:derby:." + File.separator + "kmgr" + File.separator
-            + "kmgr.DB;create=true";
+    public static final String DERBY_DB_NAME = "." + File.separator + "kmgr" + File.separator + "kmgr.DB";
+    public static final String DERBY_LOCATION = "jdbc:derby:" + DERBY_DB_NAME + ";";
+    public static final String DERBY_CREATE = "create=true";
+    public static final String DERBY_SHUTDOWN = "shutdown=true";
     public static final String DERBY_MAIN_TABLE = "USUARIO";
     public static final String DERBY_MAIN_SCHEMA = "APP";
     public static final String DERBY_DATE_FORMAT = "yyyy-MM-dd";
 
+    public static final String QUERY_PROPS = "/query/query.properties";
     public static final String IMAGE_ICON = "/images/KeyMgr-Icon.png";
     public static final String IMAGE_CXU = "/images/KeyMgr-CXU.png";
     public static final String IMAGE_CUENTA = "/images/KeyMgr-Cuenta.png";
@@ -88,7 +91,7 @@ public final class ConstantesKeyManager {
      *            date in database.
      * @return suggestion depending on time.
      */
-    public static final String getSuggestion(Date currentDate, Date dbDate) {
+    public static String getSuggestion(Date currentDate, Date dbDate) {
         long duration = currentDate.getTime() - dbDate.getTime();
         long days = TimeUnit.MILLISECONDS.toDays(duration);
         if (days >= TIME_TO_CHANGE) {

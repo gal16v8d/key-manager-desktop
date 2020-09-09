@@ -1,14 +1,11 @@
 package co.com.gsdd.keymanager.view;
 
-import java.awt.event.ActionEvent;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import co.com.gsdd.constantes.ConstantesKeyManager;
-import co.com.gsdd.keymanager.controller.LoginController;
+import co.com.gsdd.keymanager.constants.KeyManagerConstants;
 import co.com.gsdd.keymanager.lang.KeyManagerLanguage;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,74 +28,45 @@ public class LoginView extends AbstractCommonView {
     private JTextField textUsuario;
     private JPasswordField textPass;
 
-    private JButton btnIngresar;
+    private JButton loginButton;
 
     private static final int POS_INI_X_LABEL = 100;
     private static final int POS_INI_Y_LABEL = 100;
     private static final int POS_INI_X_TEXTO = 210;
-    private static final int ESPACIO_Y = 30;
+    private static final int SPACE_Y = 30;
 
-    private static final LoginView INSTANCE = new LoginView();
+    private static final int COL_LENGTH = 16;
 
-    /**
-     * Create the panel.
-     */
-    private LoginView() {
+    public LoginView() {
         setLayout(null);
         initLabels();
         initFields();
         initButtons();
-        initBackGround(ConstantesKeyManager.IMAGE_PPAL);
+        initBackGround(KeyManagerConstants.IMAGE_PPAL);
     }
 
-    /**
-     * Inicializa/Crea los labels.
-     */
-    public void initLabels() {
+    private void initLabels() {
         labelUsuario = addLabel(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_USER), POS_INI_X_LABEL,
                 POS_INI_Y_LABEL);
         labelPass = addLabel(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_PASS), POS_INI_X_LABEL,
-                POS_INI_Y_LABEL + ESPACIO_Y);
+                POS_INI_Y_LABEL + SPACE_Y);
     }
 
-    /**
-     * Inicializa/Crea los campos gestionables.
-     */
-    public void initFields() {
-        final int colLenght1 = 16;
+    private void initFields() {
         textUsuario = new JTextField();
-        textUsuario.setBounds(POS_INI_X_TEXTO, POS_INI_Y_LABEL, DEF_ANCHO, DEF_ALTO);
-        textUsuario.setColumns(colLenght1);
+        textUsuario.setBounds(POS_INI_X_TEXTO, POS_INI_Y_LABEL, DEF_WIDTH, DEF_HEIGHT);
+        textUsuario.setColumns(COL_LENGTH);
         add(textUsuario);
 
         textPass = new JPasswordField();
-        textPass.setBounds(POS_INI_X_TEXTO, POS_INI_Y_LABEL + ESPACIO_Y, DEF_ANCHO, DEF_ALTO);
-        textPass.setColumns(colLenght1);
+        textPass.setBounds(POS_INI_X_TEXTO, POS_INI_Y_LABEL + SPACE_Y, DEF_WIDTH, DEF_HEIGHT);
+        textPass.setColumns(COL_LENGTH);
         add(textPass);
     }
 
-    /**
-     * Inicializa/Crea los botones.
-     */
-    public void initButtons() {
-        btnIngresar = addButton(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_LOGIN), POS_INI_X_TEXTO,
-                POS_INI_Y_LABEL + (ESPACIO_Y * 2));
-        btnIngresar.addActionListener((ActionEvent evt) -> autenticar(evt));
-    }
-
-    /**
-     * @param evt
-     *            el evento de oprimir boton Ingresar.
-     */
-    public void autenticar(ActionEvent evt) {
-        LoginController.getInstance().autenticar();
-    }
-
-    /**
-     * @return the instance
-     */
-    public static LoginView getInstance() {
-        return INSTANCE;
+    private void initButtons() {
+        loginButton = addButton(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_LOGIN), POS_INI_X_TEXTO,
+                POS_INI_Y_LABEL + (SPACE_Y * 2));
     }
 
 }

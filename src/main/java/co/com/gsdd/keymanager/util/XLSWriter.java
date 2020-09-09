@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Date;
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -12,7 +12,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import co.com.gsdd.constantes.ConstantesKeyManager;
+import co.com.gsdd.keymanager.constants.KeyManagerConstants;
 import co.com.gsdd.keymanager.entities.dto.CuentaXUsuarioDto;
 import co.com.gsdd.keymanager.lang.KeyManagerLanguage;
 import co.com.gsdd.xls.util.XLSUtil;
@@ -82,16 +82,16 @@ public class XLSWriter {
      *            ruta de salida de excel.
      * @return true si se genera correctamente.
      */
-    public Boolean writeExcel(List<CuentaXUsuarioDto> listR, String excelFilePath) {
+    public boolean writeExcel(List<CuentaXUsuarioDto> listR, String excelFilePath) {
         try {
             log.info(excelFilePath);
             workbook = XLSUtil.getWorkbook(null, excelFilePath,
                     KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_XLS));
             if (!listR.isEmpty()) {
-                buildSheet(listR, ConstantesKeyManager.EXPORT_NAME, ConstantesKeyManager.getAccountXUserTableModel(),
+                buildSheet(listR, KeyManagerConstants.EXPORT_NAME, KeyManagerConstants.getAccountXUserTableModel(),
                         excelFilePath);
             }
-            return Boolean.TRUE;
+            return true;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         } finally {
@@ -103,7 +103,7 @@ public class XLSWriter {
                 log.error(e.getMessage(), e);
             }
         }
-        return Boolean.FALSE;
+        return false;
     }
 
     /**
@@ -141,19 +141,17 @@ public class XLSWriter {
         cnc.setCellValue(dto.getNombrecuenta());
         Cell cnuc = row.createCell(2);
         cnuc.setCellValue(dto.getUsuario());
-        // Muestra la clave desencriptada
-        String dp = CifradoKeyManager.descifrarKM(dto.getPass());
+        String dp = CypherKeyManager.decodeKM(dto.getPass());
         Cell cncp = row.createCell(3);
         cncp.setCellValue(dp);
         Cell curl = row.createCell(4);
         curl.setCellValue(dto.getUrl());
-        // Muestra la fecha
         Date fd = dto.getFecha();
-        Date fa = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-        String fecha = ConstantesKeyManager.getFormater().format(fd);
+        Date fa = Date.valueOf(LocalDate.now());
+        String fecha = KeyManagerConstants.getFormater().format(fd);
         Cell cnf = row.createCell(5);
         cnf.setCellValue(fecha);
         Cell cnr = row.createCell(6);
-        cnr.setCellValue(ConstantesKeyManager.getSuggestion(fa, fd));
+        cnr.setCellValue(KeyManagerConstants.getSuggestion(fa, fd));
     }
 }

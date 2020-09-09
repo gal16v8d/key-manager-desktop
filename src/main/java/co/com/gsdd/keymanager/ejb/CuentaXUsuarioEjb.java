@@ -1,136 +1,76 @@
 package co.com.gsdd.keymanager.ejb;
 
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-import co.com.gsdd.constantes.ConstantesQuery;
+import org.slf4j.Logger;
+
 import co.com.gsdd.dbutil.DBConnection;
-import co.com.gsdd.keymanager.controller.PrincipalController;
+import co.com.gsdd.keymanager.constants.QueryConstants;
 import co.com.gsdd.keymanager.entities.CuentaXUsuario;
 import co.com.gsdd.keymanager.entities.dto.CuentaXUsuarioDto;
 import co.com.gsdd.keymanager.enums.RolEnum;
+import co.com.gsdd.keymanager.util.SessionData;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class CuentaXUsuarioEjb {
+public class CuentaXUsuarioEjb implements Ejb<CuentaXUsuario> {
 
-    private static final CuentaXUsuarioEjb INSTANCE = new CuentaXUsuarioEjb();
-
-    /**
-     * Guarda datos de usuario en la aplicación.
-     * 
-     * @param c
-     *            la cuenta a guardar.
-     * @return TRUE si el proceso se completa exitosamente.
-     */
-    public Boolean save(CuentaXUsuario c) {
-        boolean retorno = Boolean.FALSE;
-        try {
-            DBConnection.getInstance()
-                    .setPst(DBConnection.getInstance().getCon().prepareStatement(ConstantesQuery.INSERT_CUENTAXUSER));
-            DBConnection.getInstance().getPst().setLong(1, c.getCodigocuenta());
-            DBConnection.getInstance().getPst().setLong(2, c.getCodigousuario());
-            DBConnection.getInstance().getPst().setString(3, c.getNombreCuenta());
-            DBConnection.getInstance().getPst().setString(4, c.getUsername());
-            DBConnection.getInstance().getPst().setString(5, c.getPassword());
-            DBConnection.getInstance().getPst().setString(6, c.getUrl());
-            DBConnection.getInstance().getPst().setDate(7,
-                    new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-            DBConnection.getInstance().getPst().executeUpdate();
-            retorno = Boolean.TRUE;
-        } catch (SQLException e) {
-            log.error(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().closeQuery();
-        }
-        return retorno;
+    @Override
+    public Logger getLogger() {
+        return log;
     }
 
-    /**
-     * Guarda datos de usuario en la aplicación.
-     * 
-     * @param c
-     *            la cuenta a actualizar.
-     * @param cc
-     *            codigocuenta anterior.
-     * @param cu
-     *            codigousuario anterior.
-     * @return TRUE si el proceso se completa exitosamente.
-     */
-    public Boolean update(CuentaXUsuario c, String cc, Long cu) {
-        boolean retorno = Boolean.FALSE;
-        try {
-            DBConnection.getInstance()
-                    .setPst(DBConnection.getInstance().getCon().prepareStatement(ConstantesQuery.UPDATE_CUENTAXUSER));
-            DBConnection.getInstance().getPst().setString(1, c.getNombreCuenta());
-            // Obtiene el usuario de la sesion
-            DBConnection.getInstance().getPst().setLong(2,
-                    PrincipalController.getInstance().getLoControl().getDto().getCodigousuario());
-            DBConnection.getInstance().getPst().setString(3, c.getUsername());
-            DBConnection.getInstance().getPst().setString(4, c.getPassword());
-            DBConnection.getInstance().getPst().setString(5, c.getUrl());
-            DBConnection.getInstance().getPst().setDate(6,
-                    new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-            // Datos anteriores
-            DBConnection.getInstance().getPst().setString(7, cc);
-            DBConnection.getInstance().getPst().setLong(8, cu);
-            DBConnection.getInstance().getPst().executeUpdate();
-            retorno = Boolean.TRUE;
-        } catch (SQLException e) {
-            log.error(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().closeQuery();
-        }
-        return retorno;
+    @Override
+    public void defineInsertData(CuentaXUsuario c) throws SQLException {
+        DBConnection.getInstance()
+                .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNTXUSER_INSERT));
+        DBConnection.getInstance().getPst().setLong(1, c.getCodigocuenta());
+        DBConnection.getInstance().getPst().setLong(2, c.getCodigousuario());
+        DBConnection.getInstance().getPst().setString(3, c.getNombreCuenta());
+        DBConnection.getInstance().getPst().setString(4, c.getUsername());
+        DBConnection.getInstance().getPst().setString(5, c.getPassword());
+        DBConnection.getInstance().getPst().setString(6, c.getUrl());
+        DBConnection.getInstance().getPst().setDate(7, Date.valueOf(LocalDate.now()));
     }
 
-    /**
-     * Guarda datos de usuario en la aplicación.
-     * 
-     * @param c
-     *            la cuenta a eliminar.
-     * @return TRUE si el proceso se completa exitosamente.
-     */
-    public Boolean delete(CuentaXUsuario c) {
-        boolean retorno = Boolean.FALSE;
-        try {
-            // Elimina la cuenta
-            DBConnection.getInstance()
-                    .setPst(DBConnection.getInstance().getCon().prepareStatement(ConstantesQuery.DELETE_CUENTAXUSER));
-            DBConnection.getInstance().getPst().setString(1, c.getNombreCuenta());
-            // Obtiene el usuario de la sesion
-            DBConnection.getInstance().getPst().setLong(2,
-                    PrincipalController.getInstance().getLoControl().getDto().getCodigousuario());
-            DBConnection.getInstance().getPst().executeUpdate();
-            retorno = Boolean.TRUE;
-        } catch (SQLException e) {
-            log.error(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().closeQuery();
-        }
-        return retorno;
+    @Override
+    public void defineUpdateData(CuentaXUsuario cxu, CuentaXUsuario old) throws SQLException {
+        DBConnection.getInstance()
+                .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNTXUSER_UPDATE));
+        DBConnection.getInstance().getPst().setString(1, cxu.getNombreCuenta());
+        DBConnection.getInstance().getPst().setLong(2, SessionData.getInstance().getSessionDto().getCodigousuario());
+        DBConnection.getInstance().getPst().setString(3, cxu.getUsername());
+        DBConnection.getInstance().getPst().setString(4, cxu.getPassword());
+        DBConnection.getInstance().getPst().setString(5, cxu.getUrl());
+        DBConnection.getInstance().getPst().setDate(6, Date.valueOf(LocalDate.now()));
+        // where filter
+        DBConnection.getInstance().getPst().setString(7, old.getNombreCuenta());
+        DBConnection.getInstance().getPst().setLong(8, old.getCodigousuario());
     }
 
-    /**
-     * Lista las cuentas presentes en la BD.
-     * 
-     * @return la lista de cuentas.
-     */
+    @Override
+    public void defineDeleteData(CuentaXUsuario cxu) throws SQLException {
+        DBConnection.getInstance()
+                .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNTXUSER_DELETE));
+        DBConnection.getInstance().getPst().setString(1, cxu.getNombreCuenta());
+        DBConnection.getInstance().getPst().setLong(2, SessionData.getInstance().getSessionDto().getCodigousuario());
+    }
+
     public List<CuentaXUsuarioDto> list() {
         List<CuentaXUsuarioDto> lc = new ArrayList<>();
         try {
-            if (PrincipalController.getInstance().getLoControl().getDto().getRol()
-                    .equals(Long.valueOf(RolEnum.ADMIN.getCode()))) {
+            if (SessionData.getInstance().getSessionDto().getRol().equals(Long.valueOf(RolEnum.ADMIN.getCode()))) {
                 DBConnection.getInstance().setPst(
-                        DBConnection.getInstance().getCon().prepareStatement(ConstantesQuery.LISTAR_CUENTAXUSER_ADMIN));
+                        DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNTXUSER_LIST_ADMIN));
             } else {
-                DBConnection.getInstance().setPst(
-                        DBConnection.getInstance().getCon().prepareStatement(ConstantesQuery.LISTAR_CUENTAXUSER));
-                // Toma el codigo de usuario de la sesion
+                DBConnection.getInstance()
+                        .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNTXUSER_LIST));
                 DBConnection.getInstance().getPst().setLong(1,
-                        PrincipalController.getInstance().getLoControl().getDto().getCodigousuario());
+                        SessionData.getInstance().getSessionDto().getCodigousuario());
             }
             DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
             while (DBConnection.getInstance().getRs().next()) {
@@ -152,16 +92,12 @@ public class CuentaXUsuarioEjb {
         return lc;
     }
 
-    /**
-     * Obtiene la lista de resultados como parametro para busqueda.
-     * 
-     * @return la lista de parametro.
-     */
+    @Override
     public List<String> suggest() {
         List<String> lc = new ArrayList<>();
         try {
             DBConnection.getInstance()
-                    .setPst(DBConnection.getInstance().getCon().prepareStatement(ConstantesQuery.LISTAR_CUENTAS));
+                    .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_LIST));
             DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
             while (DBConnection.getInstance().getRs().next()) {
                 lc.add(DBConnection.getInstance().getRs().getString(1));
@@ -174,29 +110,23 @@ public class CuentaXUsuarioEjb {
         return lc;
     }
 
-    /**
-     * Retorna una cuenta dependiendo de su id.
-     * 
-     * @param nombreCuenta.
-     * @return la cuenta con dicha clave.
-     */
+    @Override
     public CuentaXUsuario search(String nombreCuenta) {
         CuentaXUsuario c = null;
         try {
             DBConnection.getInstance()
-                    .setPst(DBConnection.getInstance().getCon().prepareStatement(ConstantesQuery.SEARCH_CUENTAXUSER));
+                    .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNTXUSER_SEARCH));
             DBConnection.getInstance().getPst().setString(1, nombreCuenta);
-            // Usuario de la sesion (evita que admin lo modifique)
             DBConnection.getInstance().getPst().setLong(2,
-                    PrincipalController.getInstance().getLoControl().getDto().getCodigousuario());
+                    SessionData.getInstance().getSessionDto().getCodigousuario());
             DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
             while (DBConnection.getInstance().getRs().next()) {
                 c = new CuentaXUsuario();
                 c.setCodigousuario(DBConnection.getInstance().getRs().getLong(1));
-                c.setUsername(DBConnection.getInstance().getRs().getString(2));
-                c.setPassword(DBConnection.getInstance().getRs().getString(3));
-                c.setNombreCuenta(DBConnection.getInstance().getRs().getString(4));
-                c.setUrl(DBConnection.getInstance().getRs().getString(5));
+                c.setUsername(DBConnection.getInstance().getRs().getString(5));
+                c.setPassword(DBConnection.getInstance().getRs().getString(6));
+                c.setNombreCuenta(DBConnection.getInstance().getRs().getString(2));
+                c.setUrl(DBConnection.getInstance().getRs().getString(4));
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -204,13 +134,6 @@ public class CuentaXUsuarioEjb {
             DBConnection.getInstance().closeQuery();
         }
         return c;
-    }
-
-    /**
-     * @return the instance
-     */
-    public static CuentaXUsuarioEjb getInstance() {
-        return INSTANCE;
     }
 
 }

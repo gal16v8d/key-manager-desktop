@@ -2,22 +2,19 @@ package co.com.gsdd.keymanager.controller;
 
 import java.util.List;
 
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
-import co.com.gsdd.constantes.ConstantesKeyManager;
-import co.com.gsdd.constants.GUIConstants;
+import org.slf4j.Logger;
+
 import co.com.gsdd.constants.GralConstants;
-import co.com.gsdd.gui.util.JOptionListBox;
-import co.com.gsdd.gui.util.JOptionUtil;
 import co.com.gsdd.gui.util.JPaginateTable;
+import co.com.gsdd.keymanager.constants.KeyManagerConstants;
 import co.com.gsdd.keymanager.ejb.UsuarioEjb;
 import co.com.gsdd.keymanager.entities.Usuario;
 import co.com.gsdd.keymanager.enums.RolEnum;
 import co.com.gsdd.keymanager.lang.KeyManagerLanguage;
-import co.com.gsdd.keymanager.util.CifradoKeyManager;
+import co.com.gsdd.keymanager.util.CypherKeyManager;
+import co.com.gsdd.keymanager.view.MainView;
 import co.com.gsdd.keymanager.view.UsuarioView;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,76 +30,78 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Getter
 @Setter
-public class UsuarioController implements InterfaceController {
-    /**
-     * La instancia definida para la vista.
-     */
-    private UsuarioView view;
-    /**
-     * La instancia definida como modelo.
-     */
-    private UsuarioEjb modelo;
-    /**
-     * La instancia definida de la clase.
-     */
-    private static final UsuarioController INSTANCE = new UsuarioController();
+public class UsuarioController implements CrudController<Usuario> {
 
-    /**
-     * Constructor por Defecto.
-     */
-    private UsuarioController() {
-        this.modelo = UsuarioEjb.getInstance();
-        this.view = UsuarioView.getInstance();
-        buildVistaInicial();
+    private final UsuarioEjb model;
+    private final UsuarioView view;
+    private final MainView parentFrame;
+    private Usuario old;
+
+    public UsuarioController(MainView parentFrame) {
+        this.model = new UsuarioEjb();
+        this.view = new UsuarioView();
+        this.parentFrame = parentFrame;
+        loadView();
     }
 
-    @Override
-    public void buildVistaInicial() {
+    private void loadView() {
         try {
-            startButtons(false);
-            startTable();
+            buildView();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
     }
 
-    /**
-     * Inicializa y crea la tabla.
-     */
-    public void startTable() {
-        setTableModel(view.getTableUsuario());
-        fillTable(view.getTableUsuario());
+    @Override
+    public Logger getLogger() {
+        return log;
     }
 
-    /**
-     * @param flag
-     *            habilita/deshabilita los botones.
-     */
-    public void startButtons(boolean flag) {
-        view.getBActualizar().setEnabled(flag);
-        view.getBEliminar().setEnabled(flag);
-        view.getBGuardar().setEnabled(!flag);
+    @Override
+    @SuppressWarnings("unchecked")
+    public UsuarioEjb getEjbModel() {
+        return getModel();
     }
 
-    /**
-     * Obtiene los datos del formulario y los mapea a un DTO.
-     * 
-     * @return el dto si supera el proceso de validacion.
-     */
+    @Override
+    @SuppressWarnings("rawtypes")
+    public void setTableModel(JPaginateTable tabla) {
+        Class[] types = new Class[] { java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class };
+        tabla.setTableModel(KeyManagerConstants.getUserTableModel(), types);
+        tabla.setItemsPerPage(KeyManagerConstants.TBL_PAGE_SIZE);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void updateTableModel(DefaultTableModel dtm, List<?> data) {
+        List<Usuario> listDB = (List<Usuario>) data;
+        int i = 0;
+        for (Usuario u : listDB) {
+            dtm.addRow(new Object[1]);
+            dtm.setValueAt(u.getPrimerNombre(), i, 0);
+            dtm.setValueAt(u.getPrimerApellido(), i, 1);
+            dtm.setValueAt(u.getUsername(), i, 2);
+            dtm.setValueAt(String.valueOf(u.getRol()).equals(RolEnum.ADMIN.getCode()) ? RolEnum.ADMIN.name()
+                    : RolEnum.USER.name(), i, 3);
+            i++;
+        }
+    }
+
+    @Override
     public Usuario getDataFromForm() {
         Usuario datos = null;
         try {
             datos = new Usuario();
-            String textoLabel = view.getLabelPk().getText();
+            String textoLabel = getView().getLabelPk().getText();
             Long id = (textoLabel != null && !textoLabel.equals(GralConstants.EMPTY) ? Long.parseLong(textoLabel.trim())
                     : (long) (System.nanoTime() * (Math.random())));
             datos.setCodigousuario(id);
-            datos.setPrimerNombre(view.getTextPNombre().getText().trim());
-            datos.setPrimerApellido(view.getTextPApellido().getText().trim());
-            datos.setUsername(view.getTextUserName().getText().trim());
-            // Clave encriptada
-            datos.setPassword(CifradoKeyManager.cifrarKM(new String(view.getTextPass().getPassword()).trim()));
-            datos.setRol(view.getLabelVRol().getText().equals(RolEnum.ADMIN.name())
+            datos.setPrimerNombre(getView().getTextPNombre().getText().trim());
+            datos.setPrimerApellido(getView().getTextPApellido().getText().trim());
+            datos.setUsername(getView().getTextUserName().getText().trim());
+            datos.setPassword(CypherKeyManager.encodeKM(String.valueOf(getView().getTextPass().getPassword()).trim()));
+            datos.setRol(RolEnum.ADMIN.name().equals(getView().getLabelVRol().getText())
                     ? Long.valueOf(RolEnum.ADMIN.getCode()) : Long.valueOf(RolEnum.USER.getCode()));
             return datos;
         } catch (Exception e) {
@@ -111,197 +110,57 @@ public class UsuarioController implements InterfaceController {
         }
     }
 
-    /**
-     * Llena los campos del formulario con lo obtenido en base de datos.
-     * 
-     * @param dto
-     *            el resultado obtenido de base de datos.
-     */
-    public void setFields(Usuario dto) {
-        view.getLabelPk().setText(String.valueOf(dto.getCodigousuario()));
-        view.getTextPNombre().setText(dto.getPrimerNombre());
-        view.getTextPApellido().setText(dto.getPrimerApellido());
-        view.getTextUserName().setText(dto.getUsername());
-        // Desencriptando clave
-        view.getTextPass().setText(CifradoKeyManager.descifrarKM(dto.getPassword()));
-        view.getLabelVRol().setText((String.valueOf(dto.getRol()).equals(RolEnum.ADMIN.getCode()))
-                ? RolEnum.ADMIN.name() : RolEnum.USER.name());
+    @Override
+    public boolean validateData(Usuario data) {
+        return (data != null && data.getPrimerNombre() != null && data.getPrimerApellido() != null
+                && data.getUsername() != null && data.getPassword() != null);
+    }
+
+    @Override
+    public String getSuccessMsg(String loadMsg, Usuario data) {
+        return KeyManagerLanguage.getMessageByLocale(loadMsg) + data.getUsername();
     }
 
     @Override
     public void clearFields() {
-        view.getLabelPk().setText(GralConstants.EMPTY);
-        view.getTextPNombre().setText(GralConstants.EMPTY);
-        view.getTextPApellido().setText(GralConstants.EMPTY);
-        view.getTextUserName().setText(GralConstants.EMPTY);
-        view.getTextPass().setText(GralConstants.EMPTY);
+        getView().getLabelPk().setText(GralConstants.EMPTY);
+        getView().getTextPNombre().setText(GralConstants.EMPTY);
+        getView().getTextPApellido().setText(GralConstants.EMPTY);
+        getView().getTextUserName().setText(GralConstants.EMPTY);
+        getView().getTextPass().setText(GralConstants.EMPTY);
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
-    public void setTableModel(JPaginateTable tabla) {
-        Class[] types = new Class[] { java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class };
-        tabla.setTableModel(ConstantesKeyManager.getUserTableModel(), types);
-        tabla.setItemsPerPage(ConstantesKeyManager.TBL_PAGE_SIZE);
+    public void performUIActionsAfterSave() {
+        clearFields();
     }
 
     @Override
-    public void fillTable(JPaginateTable tabla) {
-        List<Usuario> listaBD = modelo.list();
-        DefaultTableModel dtm = (DefaultTableModel) tabla.getModel();
-        int tam = dtm.getRowCount();
-        for (int i = 0; i < tam; i++) {
-            dtm.removeRow(dtm.getRowCount() - 1);
-        }
-        if (listaBD != null) {
-            for (int i = 0; i < listaBD.size(); i++) {
-                dtm.addRow(new Object[1]);
-                dtm.setValueAt(listaBD.get(i).getPrimerNombre(), i, 0);
-                dtm.setValueAt(listaBD.get(i).getPrimerApellido(), i, 1);
-                dtm.setValueAt(listaBD.get(i).getUsername(), i, 2);
-                dtm.setValueAt(String.valueOf(listaBD.get(i).getRol()).equals(RolEnum.ADMIN.getCode())
-                        ? RolEnum.ADMIN.name() : RolEnum.USER.name(), i, 3);
-            }
-        }
-        tabla.setPaginateSorter(new TableRowSorter<TableModel>(dtm));
-        tabla.setRowSorter(tabla.getPaginateSorter());
-        tabla.initFilterAndButton(tabla.getPaginateSorter(), tabla.getItemsPerPage());
-    }
-
-    /**
-     * Valida que los datos ingresados sean correctos.
-     * 
-     * @param datos
-     *            objeto a validar.
-     * @return TRUE si los campos obligatorios han sido diligenciados.
-     */
-    private Boolean validateData(Usuario datos) {
-        return (datos != null && datos.getPrimerNombre() != null && datos.getPrimerApellido() != null
-                && datos.getUsername() != null && datos.getPassword() != null);
+    public void performUIActionsAfterUpdate() {
+        performUIActionsAfterSave();
+        startButtons(false);
+        fillTable(getView().getDataTable());
     }
 
     @Override
-    public void eventoGuardar() {
-        try {
-            Usuario datos = getDataFromForm();
-            if (validateData(datos)) {
-                Boolean retorno = modelo.save(datos);
-                if (retorno) {
-                    String msg = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_SAVE)
-                            + datos.getUsername();
-                    log.info(msg);
-                    fillTable(view.getTableUsuario());
-                    JOptionUtil.showAppMessage(
-                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SUCCESS), msg,
-                            JOptionPane.INFORMATION_MESSAGE);
-                    PrincipalController.getInstance().setReload(Boolean.TRUE);
-                    clearFields();
-                } else {
-                    JOptionUtil.showErrorMessage(GUIConstants.ERROR,
-                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
-                }
-            } else {
-                JOptionUtil.showErrorMessage(GUIConstants.ERROR,
-                        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_DATA));
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            JOptionUtil.showErrorMessage(GUIConstants.ERROR, e.getMessage());
-        }
+    public void performUIActionsAfterDelete() {
+        performUIActionsAfterUpdate();
     }
 
-    /**
-     * Toma los datos del formulario y los actualiza en base de datos.
-     */
-    public void eventoActualizar() {
-        try {
-            Usuario datos = getDataFromForm();
-            if (validateData(datos)) {
-                Boolean retorno = modelo.update(datos);
-                if (retorno) {
-                    String msg = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_UPDATE)
-                            + datos.getUsername();
-                    log.info(msg);
-                    fillTable(view.getTableUsuario());
-                    JOptionUtil.showAppMessage(
-                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SUCCESS), msg,
-                            JOptionPane.INFORMATION_MESSAGE);
-                    PrincipalController.getInstance().setReload(Boolean.TRUE);
-                    clearFields();
-                    startButtons(false);
-                } else {
-                    JOptionUtil.showErrorMessage(GUIConstants.ERROR,
-                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
-                }
-            } else {
-                JOptionUtil.showErrorMessage(GUIConstants.ERROR,
-                        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_DATA));
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            JOptionUtil.showErrorMessage(GUIConstants.ERROR, e.getMessage());
-        }
+    @Override
+    public void performUIActionsAfterSearch(Usuario searchData) {
+        setFields(searchData);
+        startButtons(true);
     }
 
-    /**
-     * Toma los datos del formulario y los actualiza en base de datos.
-     */
-    public void eventoEliminar() {
-        try {
-            Usuario datos = getDataFromForm();
-            Boolean retorno = modelo.delete(datos);
-            if (retorno) {
-                String msg = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_DELETE)
-                        + datos.getUsername();
-                log.info(msg);
-                fillTable(view.getTableUsuario());
-                JOptionUtil.showAppMessage(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SUCCESS),
-                        msg, JOptionPane.INFORMATION_MESSAGE);
-                PrincipalController.getInstance().setReload(Boolean.TRUE);
-                clearFields();
-                startButtons(false);
-            } else {
-                JOptionUtil.showErrorMessage(GUIConstants.ERROR,
-                        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            JOptionUtil.showErrorMessage(GUIConstants.ERROR, e.getMessage());
-        }
-    }
-
-    /**
-     * Busca mediante los datos ingresados el usuario correspondiente.
-     */
-    public void eventoConsultar() {
-        try {
-            List<String> param = modelo.suggest();
-            JOptionListBox jolb = new JOptionListBox(param,
-                    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SEARCH),
-                    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_U_USER));
-            String username = jolb.getSelectedValue();
-            if (username != null) {
-                Usuario u = modelo.search(username);
-                if (u != null) {
-                    setFields(u);
-                    startButtons(true);
-                } else {
-                    JOptionUtil.showErrorMessage(GUIConstants.ERROR,
-                            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
-                }
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            JOptionUtil.showErrorMessage(GUIConstants.ERROR, e.getMessage());
-        }
-    }
-
-    /**
-     * @return the instance
-     */
-    public static UsuarioController getInstance() {
-        return INSTANCE;
+    public void setFields(Usuario dto) {
+        getView().getLabelPk().setText(String.valueOf(dto.getCodigousuario()));
+        getView().getTextPNombre().setText(dto.getPrimerNombre());
+        getView().getTextPApellido().setText(dto.getPrimerApellido());
+        getView().getTextUserName().setText(dto.getUsername());
+        getView().getTextPass().setText(CypherKeyManager.decodeKM(dto.getPassword()));
+        getView().getLabelVRol().setText((RolEnum.ADMIN.getCode().equals(String.valueOf(dto.getRol())))
+                ? RolEnum.ADMIN.name() : RolEnum.USER.name());
     }
 
 }
