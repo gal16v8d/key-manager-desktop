@@ -45,7 +45,6 @@ public final class KeyManagerLanguage {
     public static final String MENU_ITEM_EXPORT = "menu.item.export";
     public static final String MENU_ITEM_SESSION = "menu.item.session";
     public static final String MENU_ITEM_INFO = "menu.item.info";
-    public static final String MENU_ITEM_SEARCH = "menu.item.search";
     public static final String MENU_ITEM_CUENTAXUSUARIO = "menu.item.cuentaxusuario";
     public static final String MENU_ITEM_USUARIO = "menu.item.usuario";
     public static final String MENU_ITEM_EXIT = "menu.item.exit";
