@@ -14,7 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class QueryConstants {
 
-    public static final String USER_INSERT = "INSERT INTO usuario VALUES (?,?,?,?,?,?)";
+    public static final String USER_INSERT = "INSERT INTO usuario(codigousuario,primer_nombre,primer_apellido,username,password,rol)"
+    		+ " VALUES (?,?,?,?,?,?)";
     public static final String USER_DELETE = "DELETE FROM usuario WHERE codigousuario=?";
     public static final String USER_UPDATE = "UPDATE usuario SET primer_nombre = ?, primer_apellido = ?, "
             + "username = ?, password = ? WHERE codigousuario = ?";
@@ -26,7 +27,7 @@ public final class QueryConstants {
     public static final String USER_SEARCH = USER_SELECT + "FROM usuario WHERE username = ?";
 
     public static final String VALIDATE_DATA = "SELECT COUNT(codigousuario) FROM usuario";
-    public static final String ACCOUNT_LIST = "SELECT cxu.nombrecuenta FROM cuentaxusuario cxu ORDER BY cxu.nombrecuenta ASC";
+    public static final String ACCOUNT_LIST = "SELECT cxu.nombrecuenta FROM cuentaxusuario cxu WHERE cxu.codigousuario = ? ORDER BY cxu.nombrecuenta ASC";
     public static final String ACCOUNTXUSER_INSERT = "INSERT INTO cuentaxusuario(codigocuenta,codigousuario,nombrecuenta,username,"
             + "password,url,fecha) VALUES (?,?,?,?,?,?,?)";
     public static final String ACCOUNTXUSER_DELETE = "DELETE FROM cuentaxusuario cxu WHERE cxu.nombrecuenta=? AND cxu.codigousuario=?";

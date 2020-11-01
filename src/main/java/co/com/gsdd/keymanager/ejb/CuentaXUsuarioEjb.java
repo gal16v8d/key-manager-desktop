@@ -98,6 +98,8 @@ public class CuentaXUsuarioEjb implements Ejb<CuentaXUsuario> {
         try {
             DBConnection.getInstance()
                     .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_LIST));
+            DBConnection.getInstance().getPst().setLong(1,
+                    SessionData.getInstance().getSessionDto().getCodigousuario());
             DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
             while (DBConnection.getInstance().getRs().next()) {
                 lc.add(DBConnection.getInstance().getRs().getString(1));
