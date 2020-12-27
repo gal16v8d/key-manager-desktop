@@ -1,7 +1,6 @@
 package co.com.gsdd.keymanager.entities;
 
 import java.io.Serializable;
-import java.util.Random;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +25,7 @@ public class Usuario implements Serializable {
     private Long rol;
 
     public Usuario() {
-        codigousuario = System.nanoTime() * new Random().nextInt();
+        codigousuario = System.nanoTime();
     }
 
 }
