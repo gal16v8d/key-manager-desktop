@@ -2,7 +2,6 @@ package co.com.gsdd.keymanager.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Random;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +27,7 @@ public class CuentaXUsuario implements Serializable {
     private Date fecha;
 
     public CuentaXUsuario() {
-        codigocuenta = System.nanoTime() * new Random().nextInt();
+        codigocuenta = System.nanoTime();
     }
 
 }
