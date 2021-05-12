@@ -126,17 +126,15 @@ public class MainController {
         }
     }
 
-    private void navigateToCuentaXUsuario() {
-        if (SessionData.getInstance().getSessionDto() != null) {
-            if (getCuentaXUsuarioController() == null) {
-                setCuentaXUsuarioController(new CuentaXUsuarioController(getView()));
-            }
-            addPanel(getCuentaXUsuarioController().getView(), MenuOption.CUENTAXUSUARIO.name(),
-                    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_CUENTAXUSER));
-        } else {
-            showMessageBasedOnLogin();
-        }
-    }
+	private void navigateToCuentaXUsuario() {
+		if (SessionData.getInstance().getSessionDto() != null) {
+			setCuentaXUsuarioController(new CuentaXUsuarioController(getView()));
+			addPanel(getCuentaXUsuarioController().getView(), MenuOption.CUENTAXUSUARIO.name(),
+					KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_CUENTAXUSER));
+		} else {
+			showMessageBasedOnLogin();
+		}
+	}
 
     private void closeSession() {
         getView().sendRedirect(MenuOption.LOGIN.name(),
