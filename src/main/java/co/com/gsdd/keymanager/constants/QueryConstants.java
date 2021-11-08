@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public final class QueryConstants {
 
     public static final String USER_INSERT = "INSERT INTO usuario(codigousuario,primer_nombre,primer_apellido,username,password,rol)"
-    		+ " VALUES (?,?,?,?,?,?)";
+            + " VALUES (?,?,?,?,?,?)";
     public static final String USER_DELETE = "DELETE FROM usuario WHERE codigousuario=?";
     public static final String USER_UPDATE = "UPDATE usuario SET primer_nombre = ?, primer_apellido = ?, "
             + "username = ?, password = ? WHERE codigousuario = ?";
