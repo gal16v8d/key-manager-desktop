@@ -8,11 +8,11 @@
 	<version>2.1.006</version>
 	<packaging>jar</packaging>
 
+	<name>key-manager-desktop</name>
 	<organization>
 		<name>GSDD</name>
 	</organization>
-	<name>key-manager-desktop</name>
-
+	
 	<repositories>
 		<repository>
 			<id>central</id>
