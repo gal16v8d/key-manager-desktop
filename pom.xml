@@ -58,7 +58,7 @@
 		<slf4j.api.version>1.7.32</slf4j.api.version>
 		<junit.version>5.7.2</junit.version>
 		<mockito.version>3.9.0</mockito.version>
-		<log4j.version>2.15.0</log4j.version>
+		<log4j.version>2.16.0</log4j.version>
 		<derby.version>10.12.1.1</derby.version>
 		<db-util.version>1.0.001</db-util.version>
 		<cypher-util.version>1.0.001</cypher-util.version>
@@ -283,6 +283,7 @@
 				<version>${mvn.format.plugin.version}</version>
 				<configuration>
 					<configFile>${project.basedir}/eclipse-java-google-style.xml</configFile>
+					<lineEnding>CRLF</lineEnding>
 					<excludes>
 						<exclude>com/gsdd/keymanager/enums/OpcionBoton.java</exclude>
 						<exclude>com/gsdd/keymanager/enums/OpcionMenu.java</exclude>
