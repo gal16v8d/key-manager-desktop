@@ -1,11 +1,5 @@
 package com.gsdd.keymanager.controller;
 
-import java.awt.event.ActionEvent;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.util.List;
-import javax.swing.table.DefaultTableModel;
-import org.slf4j.Logger;
 import com.gsdd.constants.GralConstants;
 import com.gsdd.gui.util.JPaginateTable;
 import com.gsdd.keymanager.constants.KeyManagerConstants;
@@ -19,15 +13,20 @@ import com.gsdd.keymanager.util.CypherKeyManager;
 import com.gsdd.keymanager.util.SessionData;
 import com.gsdd.keymanager.view.CuentaXUsuarioView;
 import com.gsdd.keymanager.view.MainView;
+import java.awt.event.ActionEvent;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 
 /**
- * 
  * @author Great System Development Dynamic <GSDD> <br>
- *         Alexander Galvis Grisales <br>
- *         alex.galvis.sistemas@gmail.com <br>
+ *     Alexander Galvis Grisales <br>
+ *     alex.galvis.sistemas@gmail.com <br>
  * @version 1.0
  */
 @Slf4j
@@ -85,9 +84,16 @@ public class CuentaXUsuarioController implements CrudController<CuentaXUsuario> 
   @Override
   @SuppressWarnings("rawtypes")
   public void setTableModel(JPaginateTable tabla) {
-    Class[] types = new Class[] {java.lang.Object.class, java.lang.Object.class,
-        java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
-        java.lang.Object.class, java.lang.Object.class};
+    Class[] types =
+        new Class[] {
+          java.lang.Object.class,
+          java.lang.Object.class,
+          java.lang.Object.class,
+          java.lang.Object.class,
+          java.lang.Object.class,
+          java.lang.Object.class,
+          java.lang.Object.class
+        };
     tabla.setTableModel(KeyManagerConstants.getAccountXUserTableModel(), types);
     tabla.setItemsPerPage(KeyManagerConstants.TBL_PAGE_SIZE);
   }
@@ -123,7 +129,8 @@ public class CuentaXUsuarioController implements CrudController<CuentaXUsuario> 
       SessionData sessionData = SessionData.getInstance();
       data.setCodigousuario(
           String.valueOf(sessionData.getSessionDto().getRol()).equals(RolEnum.ADMIN.getCode())
-              ? getUserModel().search((String) getView().getComboUsuario().getSelectedItem())
+              ? getUserModel()
+                  .search((String) getView().getComboUsuario().getSelectedItem())
                   .getCodigousuario()
               : sessionData.getSessionDto().getCodigousuario());
       data.setUsername(getView().getTextUserName().getText().trim());
@@ -143,8 +150,11 @@ public class CuentaXUsuarioController implements CrudController<CuentaXUsuario> 
 
   @Override
   public boolean validateData(CuentaXUsuario data) {
-    return (data != null && data.getNombreCuenta() != null && data.getCodigousuario() != null
-        && data.getUsername() != null && data.getPassword() != null);
+    return (data != null
+        && data.getNombreCuenta() != null
+        && data.getCodigousuario() != null
+        && data.getUsername() != null
+        && data.getPassword() != null);
   }
 
   @Override
@@ -202,17 +212,20 @@ public class CuentaXUsuarioController implements CrudController<CuentaXUsuario> 
     if (KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_SHOW)
         .equals(getView().getShowOrHideButton().getToolTipText())) {
       getView().getTextPass().setEchoChar((char) 0);
-      getView().getShowOrHideButton()
+      getView()
+          .getShowOrHideButton()
           .setToolTipText(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_HIDE));
-      getView().getShowOrHideButton()
+      getView()
+          .getShowOrHideButton()
           .setText(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_HIDE));
     } else {
       getView().getTextPass().setEchoChar(KeyManagerConstants.HIDE_TEXT);
-      getView().getShowOrHideButton()
+      getView()
+          .getShowOrHideButton()
           .setToolTipText(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_SHOW));
-      getView().getShowOrHideButton()
+      getView()
+          .getShowOrHideButton()
           .setText(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_SHOW));
     }
   }
-
 }

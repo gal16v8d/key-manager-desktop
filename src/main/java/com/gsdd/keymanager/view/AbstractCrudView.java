@@ -1,8 +1,8 @@
 package com.gsdd.keymanager.view;
 
-import javax.swing.JButton;
 import com.gsdd.gui.util.JPaginateTable;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
+import javax.swing.JButton;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,19 +30,30 @@ public abstract class AbstractCrudView extends AbstractCommonView {
   }
 
   public void initCommonButtons() {
-    setSaveButton(addButton(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_SAVE),
-        INI_X_LABEL_C1, POS_Y_BUTTON));
+    setSaveButton(
+        addButton(
+            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_SAVE),
+            INI_X_LABEL_C1,
+            POS_Y_BUTTON));
     setUpdateButton(
-        addButton(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_UPDATE),
-            POS_INI_X_TEXT_C1, POS_Y_BUTTON));
+        addButton(
+            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_UPDATE),
+            POS_INI_X_TEXT_C1,
+            POS_Y_BUTTON));
     setDeleteButton(
-        addButton(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_DELETE),
-            INI_X_LABEL_C2, POS_Y_BUTTON));
+        addButton(
+            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_DELETE),
+            INI_X_LABEL_C2,
+            POS_Y_BUTTON));
     setSearchButton(
-        addButton(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_SEARCH),
-            POS_INI_X_TEXT_C2, POS_Y_BUTTON));
-    setBackButton(addButton(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_BACK),
-        POS_INI_X_TEXT_C3, POS_Y_BUTTON));
+        addButton(
+            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_SEARCH),
+            POS_INI_X_TEXT_C2,
+            POS_Y_BUTTON));
+    setBackButton(
+        addButton(
+            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_BACK),
+            POS_INI_X_TEXT_C3,
+            POS_Y_BUTTON));
   }
-
 }

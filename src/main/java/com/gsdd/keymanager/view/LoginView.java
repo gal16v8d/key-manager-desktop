@@ -1,19 +1,18 @@
 package com.gsdd.keymanager.view;
 
+import com.gsdd.keymanager.constants.KeyManagerConstants;
+import com.gsdd.keymanager.lang.KeyManagerLanguage;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import com.gsdd.keymanager.constants.KeyManagerConstants;
-import com.gsdd.keymanager.lang.KeyManagerLanguage;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
  * @author Great System Development Dynamic <GSDD> <br>
- *         Alexander Galvis Grisales <br>
- *         alex.galvis.sistemas@gmail.com <br>
+ *     Alexander Galvis Grisales <br>
+ *     alex.galvis.sistemas@gmail.com <br>
  * @version 1.0
  */
 @Getter
@@ -45,10 +44,16 @@ public class LoginView extends AbstractCommonView {
   }
 
   private void initLabels() {
-    labelUsuario = addLabel(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_USER),
-        POS_INI_X_LABEL, POS_INI_Y_LABEL);
-    labelPass = addLabel(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_PASS),
-        POS_INI_X_LABEL, POS_INI_Y_LABEL + SPACE_Y);
+    labelUsuario =
+        addLabel(
+            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_USER),
+            POS_INI_X_LABEL,
+            POS_INI_Y_LABEL);
+    labelPass =
+        addLabel(
+            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_PASS),
+            POS_INI_X_LABEL,
+            POS_INI_Y_LABEL + SPACE_Y);
   }
 
   private void initFields() {
@@ -64,8 +69,10 @@ public class LoginView extends AbstractCommonView {
   }
 
   private void initButtons() {
-    loginButton = addButton(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_LOGIN),
-        POS_INI_X_TEXTO, POS_INI_Y_LABEL + (SPACE_Y * 2));
+    loginButton =
+        addButton(
+            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_LOGIN),
+            POS_INI_X_TEXTO,
+            POS_INI_Y_LABEL + (SPACE_Y * 2));
   }
-
 }

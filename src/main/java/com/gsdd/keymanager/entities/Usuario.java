@@ -5,10 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
  * @author Great System Development Dynamic <GSDD> <br>
- *         Alexander Galvis Grisales <br>
- *         alex.galvis.sistemas@gmail.com <br>
+ *     Alexander Galvis Grisales <br>
+ *     alex.galvis.sistemas@gmail.com <br>
  * @version 1.0
  */
 @Getter
@@ -26,5 +25,4 @@ public class Usuario implements Serializable {
   public Usuario() {
     codigousuario = System.nanoTime();
   }
-
 }

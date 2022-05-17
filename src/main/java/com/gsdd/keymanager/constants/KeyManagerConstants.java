@@ -1,23 +1,22 @@
 package com.gsdd.keymanager.constants;
 
+import com.gsdd.constants.GralConstants;
+import com.gsdd.keymanager.lang.KeyManagerLanguage;
 import java.io.File;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-import com.gsdd.constants.GralConstants;
-import com.gsdd.keymanager.lang.KeyManagerLanguage;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
  * Constantes asociadas al modelo del programa.
- * 
+ *
  * @author Great System Development Dynamic <GSDD> <br>
- *         Alexander Galvis Grisales <br>
- *         alex.galvis.sistemas@gmail.com <br>
+ *     Alexander Galvis Grisales <br>
+ *     alex.galvis.sistemas@gmail.com <br>
  * @version 1.0
- * 
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class KeyManagerConstants {
@@ -52,20 +51,22 @@ public final class KeyManagerConstants {
   public static final String MASK_TEXTO = "******";
   public static final char HIDE_TEXT = '*';
 
-  protected static final String[] ACCOUNTXUSER_TBL_MODEL =
-      {KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_USER),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_USER),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_PASS),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_URL),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_DATE),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_SUGGESTION)};
+  protected static final String[] ACCOUNTXUSER_TBL_MODEL = {
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_USER),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_USER),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_PASS),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_URL),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_DATE),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_SUGGESTION)
+  };
 
-  protected static final String[] USER_TBL_MODEL =
-      {KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_FN),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_LN),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_USER),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ROLE)};
+  protected static final String[] USER_TBL_MODEL = {
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_FN),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_LN),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_USER),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ROLE)
+  };
 
   public static String[] getAccountXUserTableModel() {
     return ACCOUNTXUSER_TBL_MODEL;
@@ -77,7 +78,7 @@ public final class KeyManagerConstants {
 
   /**
    * Date control formatter.
-   * 
+   *
    * @return formatter for derby dates.
    */
   public static SimpleDateFormat getFormater() {
@@ -86,7 +87,7 @@ public final class KeyManagerConstants {
 
   /**
    * Generates a suggestion depending on difference in time, since password changes.
-   * 
+   *
    * @param currentDate
    * @param dbDate date in database.
    * @return suggestion depending on time.

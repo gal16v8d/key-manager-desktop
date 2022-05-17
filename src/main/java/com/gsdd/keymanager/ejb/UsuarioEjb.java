@@ -1,25 +1,23 @@
 package com.gsdd.keymanager.ejb;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import org.slf4j.Logger;
 import com.gsdd.dbutil.DBConnection;
 import com.gsdd.keymanager.constants.QueryConstants;
 import com.gsdd.keymanager.entities.Usuario;
 import com.gsdd.keymanager.enums.RolEnum;
 import com.gsdd.keymanager.util.CypherKeyManager;
 import com.gsdd.keymanager.util.SessionData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 
 /**
- * 
  * @author Great System Development Dynamic <GSDD> <br>
- *         Alexander Galvis Grisales <br>
- *         alex.galvis.sistemas@gmail.com <br>
+ *     Alexander Galvis Grisales <br>
+ *     alex.galvis.sistemas@gmail.com <br>
  * @version 1.0
- * 
  */
 @Slf4j
 public class UsuarioEjb implements Ejb<Usuario> {
@@ -93,13 +91,17 @@ public class UsuarioEjb implements Ejb<Usuario> {
     try {
       if (Long.valueOf(RolEnum.ADMIN.getCode())
           .equals(SessionData.getInstance().getSessionDto().getRol())) {
-        DBConnection.getInstance().setPst(
-            DBConnection.getInstance().getCon().prepareStatement(QueryConstants.USER_LIST_ADMIN));
+        DBConnection.getInstance()
+            .setPst(
+                DBConnection.getInstance()
+                    .getCon()
+                    .prepareStatement(QueryConstants.USER_LIST_ADMIN));
       } else {
         DBConnection.getInstance()
             .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.USER_LIST));
-        DBConnection.getInstance().getPst().setLong(1,
-            SessionData.getInstance().getSessionDto().getCodigousuario());
+        DBConnection.getInstance()
+            .getPst()
+            .setLong(1, SessionData.getInstance().getSessionDto().getCodigousuario());
       }
       DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
       while (DBConnection.getInstance().getRs().next()) {
@@ -124,13 +126,17 @@ public class UsuarioEjb implements Ejb<Usuario> {
     try {
       if (Long.valueOf(RolEnum.ADMIN.getCode())
           .equals(SessionData.getInstance().getSessionDto().getRol())) {
-        DBConnection.getInstance().setPst(
-            DBConnection.getInstance().getCon().prepareStatement(QueryConstants.USER_LIST_ADMIN));
+        DBConnection.getInstance()
+            .setPst(
+                DBConnection.getInstance()
+                    .getCon()
+                    .prepareStatement(QueryConstants.USER_LIST_ADMIN));
       } else {
         DBConnection.getInstance()
             .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.USER_LIST));
-        DBConnection.getInstance().getPst().setLong(1,
-            SessionData.getInstance().getSessionDto().getCodigousuario());
+        DBConnection.getInstance()
+            .getPst()
+            .setLong(1, SessionData.getInstance().getSessionDto().getCodigousuario());
       }
       DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
       while (DBConnection.getInstance().getRs().next()) {
@@ -168,5 +174,4 @@ public class UsuarioEjb implements Ejb<Usuario> {
     }
     return u;
   }
-
 }

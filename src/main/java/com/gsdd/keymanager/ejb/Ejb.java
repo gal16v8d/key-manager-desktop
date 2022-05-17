@@ -1,11 +1,11 @@
 package com.gsdd.keymanager.ejb;
 
+import com.gsdd.dbutil.DBConnection;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.gsdd.dbutil.DBConnection;
 
 public interface Ejb<T extends Serializable> {
 

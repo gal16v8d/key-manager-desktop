@@ -1,8 +1,5 @@
 package com.gsdd.keymanager.controller;
 
-import java.util.List;
-import javax.swing.table.DefaultTableModel;
-import org.slf4j.Logger;
 import com.gsdd.constants.GralConstants;
 import com.gsdd.gui.util.JPaginateTable;
 import com.gsdd.keymanager.constants.KeyManagerConstants;
@@ -13,15 +10,17 @@ import com.gsdd.keymanager.lang.KeyManagerLanguage;
 import com.gsdd.keymanager.util.CypherKeyManager;
 import com.gsdd.keymanager.view.MainView;
 import com.gsdd.keymanager.view.UsuarioView;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 
 /**
- * 
  * @author Great System Development Dynamic <GSDD> <br>
- *         Alexander Galvis Grisales <br>
- *         alex.galvis.sistemas@gmail.com <br>
+ *     Alexander Galvis Grisales <br>
+ *     alex.galvis.sistemas@gmail.com <br>
  * @version 1.0
  */
 @Slf4j
@@ -63,8 +62,13 @@ public class UsuarioController implements CrudController<Usuario> {
   @Override
   @SuppressWarnings("rawtypes")
   public void setTableModel(JPaginateTable tabla) {
-    Class[] types = new Class[] {java.lang.Object.class, java.lang.Object.class,
-        java.lang.Object.class, java.lang.Object.class};
+    Class[] types =
+        new Class[] {
+          java.lang.Object.class,
+          java.lang.Object.class,
+          java.lang.Object.class,
+          java.lang.Object.class
+        };
     tabla.setTableModel(KeyManagerConstants.getUserTableModel(), types);
     tabla.setItemsPerPage(KeyManagerConstants.TBL_PAGE_SIZE);
   }
@@ -80,9 +84,11 @@ public class UsuarioController implements CrudController<Usuario> {
       dtm.setValueAt(u.getPrimerApellido(), i, 1);
       dtm.setValueAt(u.getUsername(), i, 2);
       dtm.setValueAt(
-          String.valueOf(u.getRol()).equals(RolEnum.ADMIN.getCode()) ? RolEnum.ADMIN.name()
+          String.valueOf(u.getRol()).equals(RolEnum.ADMIN.getCode())
+              ? RolEnum.ADMIN.name()
               : RolEnum.USER.name(),
-          i, 3);
+          i,
+          3);
       i++;
     }
   }
@@ -93,18 +99,20 @@ public class UsuarioController implements CrudController<Usuario> {
     try {
       datos = new Usuario();
       String textoLabel = getView().getLabelPk().getText();
-      Long id = (textoLabel != null && !textoLabel.equals(GralConstants.EMPTY)
-          ? Long.parseLong(textoLabel.trim())
-          : (long) (System.nanoTime() * (Math.random())));
+      Long id =
+          (textoLabel != null && !textoLabel.equals(GralConstants.EMPTY)
+              ? Long.parseLong(textoLabel.trim())
+              : (long) (System.nanoTime() * (Math.random())));
       datos.setCodigousuario(id);
       datos.setPrimerNombre(getView().getTextPNombre().getText().trim());
       datos.setPrimerApellido(getView().getTextPApellido().getText().trim());
       datos.setUsername(getView().getTextUserName().getText().trim());
       datos.setPassword(
           CypherKeyManager.encodeKM(String.valueOf(getView().getTextPass().getPassword()).trim()));
-      datos.setRol(RolEnum.ADMIN.name().equals(getView().getLabelVRol().getText())
-          ? Long.valueOf(RolEnum.ADMIN.getCode())
-          : Long.valueOf(RolEnum.USER.getCode()));
+      datos.setRol(
+          RolEnum.ADMIN.name().equals(getView().getLabelVRol().getText())
+              ? Long.valueOf(RolEnum.ADMIN.getCode())
+              : Long.valueOf(RolEnum.USER.getCode()));
       return datos;
     } catch (Exception e) {
       log.error(e.getMessage(), e);
@@ -114,8 +122,11 @@ public class UsuarioController implements CrudController<Usuario> {
 
   @Override
   public boolean validateData(Usuario data) {
-    return (data != null && data.getPrimerNombre() != null && data.getPrimerApellido() != null
-        && data.getUsername() != null && data.getPassword() != null);
+    return (data != null
+        && data.getPrimerNombre() != null
+        && data.getPrimerApellido() != null
+        && data.getUsername() != null
+        && data.getPassword() != null);
   }
 
   @Override
@@ -161,9 +172,11 @@ public class UsuarioController implements CrudController<Usuario> {
     getView().getTextPApellido().setText(dto.getPrimerApellido());
     getView().getTextUserName().setText(dto.getUsername());
     getView().getTextPass().setText(CypherKeyManager.decodeKM(dto.getPassword()));
-    getView().getLabelVRol().setText(
-        (RolEnum.ADMIN.getCode().equals(String.valueOf(dto.getRol()))) ? RolEnum.ADMIN.name()
-            : RolEnum.USER.name());
+    getView()
+        .getLabelVRol()
+        .setText(
+            (RolEnum.ADMIN.getCode().equals(String.valueOf(dto.getRol())))
+                ? RolEnum.ADMIN.name()
+                : RolEnum.USER.name());
   }
-
 }

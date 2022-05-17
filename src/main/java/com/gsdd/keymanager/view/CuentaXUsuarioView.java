@@ -1,19 +1,18 @@
 package com.gsdd.keymanager.view;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JPasswordField;
 import com.gsdd.gui.util.JValidateTextField;
 import com.gsdd.keymanager.constants.KeyManagerConstants;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JPasswordField;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
  * @author Great System Development Dynamic <GSDD> <br>
- *         Alexander Galvis Grisales <br>
- *         alex.galvis.sistemas@gmail.com <br>
+ *     Alexander Galvis Grisales <br>
+ *     alex.galvis.sistemas@gmail.com <br>
  * @version 1.0
  */
 @Getter
@@ -42,16 +41,26 @@ public class CuentaXUsuarioView extends AbstractCrudView {
   }
 
   private void initLabels() {
-    addLabel(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_CXU_ACCOUNT),
-        INI_X_LABEL_C1, POS_Y_ROW_1);
-    addLabel(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_U_USER), INI_X_LABEL_C2,
+    addLabel(
+        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_CXU_ACCOUNT),
+        INI_X_LABEL_C1,
         POS_Y_ROW_1);
-    addLabel(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_CXU_USER),
-        INI_X_LABEL_C1, POS_Y_ROW_2);
-    addLabel(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_CXU_PASS),
-        INI_X_LABEL_C2, POS_Y_ROW_2);
-    addLabel(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_CXU_URL),
-        INI_X_LABEL_C3, POS_Y_ROW_1);
+    addLabel(
+        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_U_USER),
+        INI_X_LABEL_C2,
+        POS_Y_ROW_1);
+    addLabel(
+        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_CXU_USER),
+        INI_X_LABEL_C1,
+        POS_Y_ROW_2);
+    addLabel(
+        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_CXU_PASS),
+        INI_X_LABEL_C2,
+        POS_Y_ROW_2);
+    addLabel(
+        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_CXU_URL),
+        INI_X_LABEL_C3,
+        POS_Y_ROW_1);
   }
 
   private void initFields() {
@@ -72,9 +81,10 @@ public class CuentaXUsuarioView extends AbstractCrudView {
 
   private void initButtons() {
     showOrHideButton =
-        addButton(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_SHOW),
-            POS_INI_X_TEXT_C3, POS_Y_ROW_2);
+        addButton(
+            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_SHOW),
+            POS_INI_X_TEXT_C3,
+            POS_Y_ROW_2);
     initCommonButtons();
   }
-
 }

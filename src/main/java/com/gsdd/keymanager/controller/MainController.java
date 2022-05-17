@@ -1,5 +1,14 @@
 package com.gsdd.keymanager.controller;
 
+import com.gsdd.constants.GUIConstants;
+import com.gsdd.dbutil.DBConnection;
+import com.gsdd.gui.util.JOptionUtil;
+import com.gsdd.keymanager.constants.KeyManagerConstants;
+import com.gsdd.keymanager.enums.MenuOption;
+import com.gsdd.keymanager.enums.RolEnum;
+import com.gsdd.keymanager.lang.KeyManagerLanguage;
+import com.gsdd.keymanager.util.SessionData;
+import com.gsdd.keymanager.view.MainView;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -13,15 +22,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import com.gsdd.constants.GUIConstants;
-import com.gsdd.dbutil.DBConnection;
-import com.gsdd.gui.util.JOptionUtil;
-import com.gsdd.keymanager.constants.KeyManagerConstants;
-import com.gsdd.keymanager.enums.MenuOption;
-import com.gsdd.keymanager.enums.RolEnum;
-import com.gsdd.keymanager.lang.KeyManagerLanguage;
-import com.gsdd.keymanager.util.SessionData;
-import com.gsdd.keymanager.view.MainView;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -43,12 +43,14 @@ public class MainController {
   }
 
   private void buildView() {
-    getView().addWindowListener(new WindowAdapter() {
-      @Override
-      public void windowClosing(WindowEvent e) {
-        exitApp();
-      }
-    });
+    getView()
+        .addWindowListener(
+            new WindowAdapter() {
+              @Override
+              public void windowClosing(WindowEvent e) {
+                exitApp();
+              }
+            });
     getView()
         .changeTitle(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_CUENTAXUSER));
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -69,17 +71,23 @@ public class MainController {
   }
 
   private void addMenuActions() {
-    getView().getCuentaXUsuarioMenuItem()
+    getView()
+        .getCuentaXUsuarioMenuItem()
         .addActionListener((ActionEvent evt) -> selectOption(MenuOption.CUENTAXUSUARIO));
-    getView().getUsuarioMenuItem()
+    getView()
+        .getUsuarioMenuItem()
         .addActionListener((ActionEvent evt) -> selectOption(MenuOption.USUARIO));
-    getView().getExportMenuItem()
+    getView()
+        .getExportMenuItem()
         .addActionListener((ActionEvent evt) -> selectOption(MenuOption.EXPORT));
-    getView().getSessionMenuItem()
+    getView()
+        .getSessionMenuItem()
         .addActionListener((ActionEvent evt) -> selectOption(MenuOption.SESSION));
-    getView().getExitMenuItem()
+    getView()
+        .getExitMenuItem()
         .addActionListener((ActionEvent evt) -> selectOption(MenuOption.EXIT));
-    getView().getInfoMenuItem()
+    getView()
+        .getInfoMenuItem()
         .addActionListener((ActionEvent evt) -> selectOption(MenuOption.CREDITS));
   }
 
@@ -89,7 +97,8 @@ public class MainController {
   }
 
   private void showMessageBasedOnLogin() {
-    JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+    JOptionUtil.showErrorMessage(
+        GUIConstants.ERROR,
         KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_LOGIN));
   }
 
@@ -123,7 +132,9 @@ public class MainController {
       if (getUsuarioController() == null) {
         setUsuarioController(new UsuarioController(getView()));
       }
-      addPanel(getUsuarioController().getView(), MenuOption.USUARIO.name(),
+      addPanel(
+          getUsuarioController().getView(),
+          MenuOption.USUARIO.name(),
           KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_USUARIO));
     } else {
       showMessageBasedOnLogin();
@@ -133,7 +144,9 @@ public class MainController {
   private void navigateToCuentaXUsuario() {
     if (SessionData.getInstance().getSessionDto() != null) {
       setCuentaXUsuarioController(new CuentaXUsuarioController(getView()));
-      addPanel(getCuentaXUsuarioController().getView(), MenuOption.CUENTAXUSUARIO.name(),
+      addPanel(
+          getCuentaXUsuarioController().getView(),
+          MenuOption.CUENTAXUSUARIO.name(),
           KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_CUENTAXUSER));
     } else {
       showMessageBasedOnLogin();
@@ -141,8 +154,10 @@ public class MainController {
   }
 
   private void closeSession() {
-    getView().sendRedirect(MenuOption.LOGIN.name(),
-        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_LOGIN));
+    getView()
+        .sendRedirect(
+            MenuOption.LOGIN.name(),
+            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_LOGIN));
     SessionData.getInstance().setSessionDto(null);
     getLoginController().getInit();
   }
@@ -152,9 +167,13 @@ public class MainController {
       JTextArea areaMC = new JTextArea();
       areaMC.setVisible(true);
       areaMC.setEditable(false);
-      areaMC.setText(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_AUTHOR)
-          + "\n" + KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_CP));
-      JOptionPane.showMessageDialog(null, areaMC,
+      areaMC.setText(
+          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_AUTHOR)
+              + "\n"
+              + KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_CP));
+      JOptionPane.showMessageDialog(
+          null,
+          areaMC,
           KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_VERSION),
           JOptionPane.INFORMATION_MESSAGE);
     } catch (Exception e) {
@@ -164,13 +183,17 @@ public class MainController {
 
   private void exportData() {
     try {
-      if (SessionData.getInstance().getSessionDto().getRol()
+      if (SessionData.getInstance()
+          .getSessionDto()
+          .getRol()
           .equals(Long.valueOf(RolEnum.ADMIN.getCode()))) {
-        JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+        JOptionUtil.showErrorMessage(
+            GUIConstants.ERROR,
             KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_EXPORT));
       } else {
-        String out = getDirectory(
-            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_FILECHOOSER));
+        String out =
+            getDirectory(
+                KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_FILECHOOSER));
         if (out == null) {
           JOptionUtil.showAppMessage(
               KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_EXPORT),
@@ -191,7 +214,8 @@ public class MainController {
     }
     boolean e = getExportController().exportData(out, SessionData.getInstance().getSessionDto());
     if (!e) {
-      JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+      JOptionUtil.showErrorMessage(
+          GUIConstants.ERROR,
           KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_XLS));
     } else {
       JOptionUtil.showAppMessage(
@@ -202,10 +226,12 @@ public class MainController {
   }
 
   private void exitApp() {
-    int z = JOptionPane.showConfirmDialog(null,
-        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_EXIT),
-        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_VERSION),
-        JOptionPane.YES_NO_OPTION);
+    int z =
+        JOptionPane.showConfirmDialog(
+            null,
+            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_EXIT),
+            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_VERSION),
+            JOptionPane.YES_NO_OPTION);
     if (z == JOptionPane.YES_OPTION) {
       getView().setVisible(false);
       log.info("Cerrando...");
@@ -217,8 +243,8 @@ public class MainController {
   private void shutdownDB() {
     try {
       DBConnection.getInstance().disconnectDB();
-      DriverManager
-          .getConnection(KeyManagerConstants.DERBY_LOCATION + KeyManagerConstants.DERBY_SHUTDOWN);
+      DriverManager.getConnection(
+          KeyManagerConstants.DERBY_LOCATION + KeyManagerConstants.DERBY_SHUTDOWN);
     } catch (SQLException e) {
       if (!e.getMessage()
           .contains("Database '" + KeyManagerConstants.DERBY_DB_NAME + "' shutdown")) {
@@ -240,5 +266,4 @@ public class MainController {
       return null;
     }
   }
-
 }

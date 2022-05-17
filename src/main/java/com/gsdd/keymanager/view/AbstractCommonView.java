@@ -1,12 +1,12 @@
 package com.gsdd.keymanager.view;
 
+import com.gsdd.gui.util.JPaginateTable;
+import com.gsdd.gui.util.JValidateTextField;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import com.gsdd.gui.util.JPaginateTable;
-import com.gsdd.gui.util.JValidateTextField;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -69,5 +69,4 @@ public abstract class AbstractCommonView extends JPanel {
     add(paginatedTable.getTableScroll());
     return paginatedTable;
   }
-
 }

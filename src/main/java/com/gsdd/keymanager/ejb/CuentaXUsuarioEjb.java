@@ -1,18 +1,18 @@
 package com.gsdd.keymanager.ejb;
 
-import java.sql.Date;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import org.slf4j.Logger;
 import com.gsdd.dbutil.DBConnection;
 import com.gsdd.keymanager.constants.QueryConstants;
 import com.gsdd.keymanager.entities.CuentaXUsuario;
 import com.gsdd.keymanager.entities.dto.CuentaXUsuarioDto;
 import com.gsdd.keymanager.enums.RolEnum;
 import com.gsdd.keymanager.util.SessionData;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 
 @Slf4j
 public class CuentaXUsuarioEjb implements Ejb<CuentaXUsuario> {
@@ -24,8 +24,11 @@ public class CuentaXUsuarioEjb implements Ejb<CuentaXUsuario> {
 
   @Override
   public void defineInsertData(CuentaXUsuario c) throws SQLException {
-    DBConnection.getInstance().setPst(
-        DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNTXUSER_INSERT));
+    DBConnection.getInstance()
+        .setPst(
+            DBConnection.getInstance()
+                .getCon()
+                .prepareStatement(QueryConstants.ACCOUNTXUSER_INSERT));
     DBConnection.getInstance().getPst().setLong(1, c.getCodigocuenta());
     DBConnection.getInstance().getPst().setLong(2, c.getCodigousuario());
     DBConnection.getInstance().getPst().setString(3, c.getNombreCuenta());
@@ -37,11 +40,15 @@ public class CuentaXUsuarioEjb implements Ejb<CuentaXUsuario> {
 
   @Override
   public void defineUpdateData(CuentaXUsuario cxu, CuentaXUsuario old) throws SQLException {
-    DBConnection.getInstance().setPst(
-        DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNTXUSER_UPDATE));
+    DBConnection.getInstance()
+        .setPst(
+            DBConnection.getInstance()
+                .getCon()
+                .prepareStatement(QueryConstants.ACCOUNTXUSER_UPDATE));
     DBConnection.getInstance().getPst().setString(1, cxu.getNombreCuenta());
-    DBConnection.getInstance().getPst().setLong(2,
-        SessionData.getInstance().getSessionDto().getCodigousuario());
+    DBConnection.getInstance()
+        .getPst()
+        .setLong(2, SessionData.getInstance().getSessionDto().getCodigousuario());
     DBConnection.getInstance().getPst().setString(3, cxu.getUsername());
     DBConnection.getInstance().getPst().setString(4, cxu.getPassword());
     DBConnection.getInstance().getPst().setString(5, cxu.getUrl());
@@ -53,25 +60,38 @@ public class CuentaXUsuarioEjb implements Ejb<CuentaXUsuario> {
 
   @Override
   public void defineDeleteData(CuentaXUsuario cxu) throws SQLException {
-    DBConnection.getInstance().setPst(
-        DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNTXUSER_DELETE));
+    DBConnection.getInstance()
+        .setPst(
+            DBConnection.getInstance()
+                .getCon()
+                .prepareStatement(QueryConstants.ACCOUNTXUSER_DELETE));
     DBConnection.getInstance().getPst().setString(1, cxu.getNombreCuenta());
-    DBConnection.getInstance().getPst().setLong(2,
-        SessionData.getInstance().getSessionDto().getCodigousuario());
+    DBConnection.getInstance()
+        .getPst()
+        .setLong(2, SessionData.getInstance().getSessionDto().getCodigousuario());
   }
 
   public List<CuentaXUsuarioDto> list() {
     List<CuentaXUsuarioDto> lc = new ArrayList<>();
     try {
-      if (SessionData.getInstance().getSessionDto().getRol()
+      if (SessionData.getInstance()
+          .getSessionDto()
+          .getRol()
           .equals(Long.valueOf(RolEnum.ADMIN.getCode()))) {
-        DBConnection.getInstance().setPst(DBConnection.getInstance().getCon()
-            .prepareStatement(QueryConstants.ACCOUNTXUSER_LIST_ADMIN));
+        DBConnection.getInstance()
+            .setPst(
+                DBConnection.getInstance()
+                    .getCon()
+                    .prepareStatement(QueryConstants.ACCOUNTXUSER_LIST_ADMIN));
       } else {
-        DBConnection.getInstance().setPst(
-            DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNTXUSER_LIST));
-        DBConnection.getInstance().getPst().setLong(1,
-            SessionData.getInstance().getSessionDto().getCodigousuario());
+        DBConnection.getInstance()
+            .setPst(
+                DBConnection.getInstance()
+                    .getCon()
+                    .prepareStatement(QueryConstants.ACCOUNTXUSER_LIST));
+        DBConnection.getInstance()
+            .getPst()
+            .setLong(1, SessionData.getInstance().getSessionDto().getCodigousuario());
       }
       DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
       while (DBConnection.getInstance().getRs().next()) {
@@ -97,10 +117,12 @@ public class CuentaXUsuarioEjb implements Ejb<CuentaXUsuario> {
   public List<String> suggest() {
     List<String> lc = new ArrayList<>();
     try {
-      DBConnection.getInstance().setPst(
-          DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_LIST));
-      DBConnection.getInstance().getPst().setLong(1,
-          SessionData.getInstance().getSessionDto().getCodigousuario());
+      DBConnection.getInstance()
+          .setPst(
+              DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_LIST));
+      DBConnection.getInstance()
+          .getPst()
+          .setLong(1, SessionData.getInstance().getSessionDto().getCodigousuario());
       DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
       while (DBConnection.getInstance().getRs().next()) {
         lc.add(DBConnection.getInstance().getRs().getString(1));
@@ -117,11 +139,15 @@ public class CuentaXUsuarioEjb implements Ejb<CuentaXUsuario> {
   public CuentaXUsuario search(String nombreCuenta) {
     CuentaXUsuario c = null;
     try {
-      DBConnection.getInstance().setPst(
-          DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNTXUSER_SEARCH));
+      DBConnection.getInstance()
+          .setPst(
+              DBConnection.getInstance()
+                  .getCon()
+                  .prepareStatement(QueryConstants.ACCOUNTXUSER_SEARCH));
       DBConnection.getInstance().getPst().setString(1, nombreCuenta);
-      DBConnection.getInstance().getPst().setLong(2,
-          SessionData.getInstance().getSessionDto().getCodigousuario());
+      DBConnection.getInstance()
+          .getPst()
+          .setLong(2, SessionData.getInstance().getSessionDto().getCodigousuario());
       DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
       while (DBConnection.getInstance().getRs().next()) {
         c = new CuentaXUsuario();
@@ -138,5 +164,4 @@ public class CuentaXUsuarioEjb implements Ejb<CuentaXUsuario> {
     }
     return c;
   }
-
 }
