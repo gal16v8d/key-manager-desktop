@@ -104,26 +104,13 @@ public class MainController {
 
   private void selectOption(MenuOption op) {
     switch (op) {
-      case CUENTAXUSUARIO:
-        navigateToCuentaXUsuario();
-        break;
-      case CREDITS:
-        showCredits();
-        break;
-      case EXPORT:
-        exportData();
-        break;
-      case EXIT:
-        exitApp();
-        break;
-      case SESSION:
-        closeSession();
-        break;
-      case USUARIO:
-        navigateToUsuario();
-        break;
-      default:
-        break;
+      case CUENTAXUSUARIO -> navigateToCuentaXUsuario();
+      case CREDITS -> showCredits();
+      case EXPORT -> exportData();
+      case EXIT -> exitApp();
+      case SESSION -> closeSession();
+      case USUARIO -> navigateToUsuario();
+      default -> log.warn("Operacion no reconocida: {}", op);
     }
   }
 

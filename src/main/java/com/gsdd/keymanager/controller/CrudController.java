@@ -15,7 +15,6 @@ import java.io.Serializable;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import org.slf4j.Logger;
 
@@ -83,7 +82,7 @@ public interface CrudController<T extends Serializable> {
     if (listDB != null) {
       updateTableModel(dtm, listDB);
     }
-    table.setPaginateSorter(new TableRowSorter<TableModel>(dtm));
+    table.setPaginateSorter(new TableRowSorter<>(dtm));
     table.setRowSorter(table.getPaginateSorter());
     table.initFilterAndButton(table.getPaginateSorter(), table.getItemsPerPage());
   }

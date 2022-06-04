@@ -15,8 +15,8 @@ import lombok.Getter;
 @Getter
 public final class ExecutorKeyManager {
 
-  private final ExecutorService executor;
   private static final ExecutorKeyManager INSTANCE = new ExecutorKeyManager();
+  private final ExecutorService executor;
 
   private ExecutorKeyManager() {
     executor = Executors.newFixedThreadPool(3);

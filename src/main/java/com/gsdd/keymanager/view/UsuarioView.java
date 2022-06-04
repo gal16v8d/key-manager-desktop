@@ -21,6 +21,7 @@ import lombok.Setter;
 public class UsuarioView extends AbstractCrudView {
 
   private static final long serialVersionUID = 1L;
+  private static final int POS_Y_ROW_3 = 120;
 
   private JLabel labelPk;
 
@@ -29,8 +30,6 @@ public class UsuarioView extends AbstractCrudView {
   private JValidateTextField textUserName;
   private JPasswordField textPass;
   private JLabel labelVRol;
-
-  private static final int POS_Y_ROW_3 = 120;
 
   public UsuarioView() {
     setLayout(null);

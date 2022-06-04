@@ -20,6 +20,7 @@ import lombok.Setter;
 public class CuentaXUsuarioView extends AbstractCrudView {
 
   private static final long serialVersionUID = 1L;
+  private static final int INI_X_LABEL_C3 = 480;
 
   private JComboBox<String> comboUsuario;
   private JValidateTextField textCuenta;
@@ -28,8 +29,6 @@ public class CuentaXUsuarioView extends AbstractCrudView {
   private JValidateTextField textUrl;
 
   private JButton showOrHideButton;
-
-  private static final int INI_X_LABEL_C3 = 480;
 
   public CuentaXUsuarioView() {
     setLayout(null);

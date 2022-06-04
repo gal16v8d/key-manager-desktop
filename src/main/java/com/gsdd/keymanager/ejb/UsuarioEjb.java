@@ -31,7 +31,7 @@ public class UsuarioEjb implements Ejb<Usuario> {
     Usuario u = null;
     try {
       DBConnection.getInstance()
-          .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.USER_SEARCH));
+          .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_SEARCH));
       DBConnection.getInstance().getPst().setString(1, user);
       DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
       while (DBConnection.getInstance().getRs().next()) {
@@ -58,7 +58,7 @@ public class UsuarioEjb implements Ejb<Usuario> {
   @Override
   public void defineInsertData(Usuario u) throws SQLException {
     DBConnection.getInstance()
-        .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.USER_INSERT));
+        .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_INSERT));
     DBConnection.getInstance().getPst().setLong(1, u.getCodigousuario());
     DBConnection.getInstance().getPst().setString(2, u.getPrimerNombre());
     DBConnection.getInstance().getPst().setString(3, u.getPrimerApellido());
@@ -70,7 +70,7 @@ public class UsuarioEjb implements Ejb<Usuario> {
   @Override
   public void defineUpdateData(Usuario u, Usuario oldData) throws SQLException {
     DBConnection.getInstance()
-        .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.USER_UPDATE));
+        .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_UPDATE));
     DBConnection.getInstance().getPst().setString(1, u.getPrimerNombre());
     DBConnection.getInstance().getPst().setString(2, u.getPrimerApellido());
     DBConnection.getInstance().getPst().setString(3, u.getUsername());
@@ -81,7 +81,7 @@ public class UsuarioEjb implements Ejb<Usuario> {
   @Override
   public void defineDeleteData(Usuario u) throws SQLException {
     DBConnection.getInstance()
-        .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.USER_DELETE));
+        .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_DELETE));
     DBConnection.getInstance().getPst().setLong(1, u.getCodigousuario());
   }
 
@@ -95,10 +95,10 @@ public class UsuarioEjb implements Ejb<Usuario> {
             .setPst(
                 DBConnection.getInstance()
                     .getCon()
-                    .prepareStatement(QueryConstants.USER_LIST_ADMIN));
+                    .prepareStatement(QueryConstants.ACCOUNT_LIST_ADMIN));
       } else {
         DBConnection.getInstance()
-            .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.USER_LIST));
+            .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_LIST));
         DBConnection.getInstance()
             .getPst()
             .setLong(1, SessionData.getInstance().getSessionDto().getCodigousuario());
@@ -130,10 +130,10 @@ public class UsuarioEjb implements Ejb<Usuario> {
             .setPst(
                 DBConnection.getInstance()
                     .getCon()
-                    .prepareStatement(QueryConstants.USER_LIST_ADMIN));
+                    .prepareStatement(QueryConstants.ACCOUNT_LIST_ADMIN));
       } else {
         DBConnection.getInstance()
-            .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.USER_LIST));
+            .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_LIST));
         DBConnection.getInstance()
             .getPst()
             .setLong(1, SessionData.getInstance().getSessionDto().getCodigousuario());
@@ -155,7 +155,7 @@ public class UsuarioEjb implements Ejb<Usuario> {
     Usuario u = null;
     try {
       DBConnection.getInstance()
-          .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.USER_SEARCH));
+          .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_SEARCH));
       DBConnection.getInstance().getPst().setString(1, username);
       DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
       while (DBConnection.getInstance().getRs().next()) {

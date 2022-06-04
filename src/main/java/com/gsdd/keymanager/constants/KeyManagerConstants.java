@@ -27,7 +27,7 @@ public final class KeyManagerConstants {
   public static final String DERBY_LOCATION = "jdbc:derby:" + DERBY_DB_NAME + ";";
   public static final String DERBY_CREATE = "create=true";
   public static final String DERBY_SHUTDOWN = "shutdown=true";
-  public static final String DERBY_MAIN_TABLE = "USUARIO";
+  public static final String DERBY_MAIN_TABLE = "ACCOUNT";
   public static final String DERBY_MAIN_SCHEMA = "APP";
   public static final String DERBY_DATE_FORMAT = "yyyy-MM-dd";
 

@@ -48,8 +48,8 @@ public class XLSWriter {
     createHeaderRow(sheet, headers);
     for (Object o : objects) {
       Row row = sheet.createRow(++rowCount);
-      if (o instanceof CuentaXUsuarioDto) {
-        writeData((CuentaXUsuarioDto) o, row);
+      if (o instanceof CuentaXUsuarioDto data) {
+        writeData(data, row);
       }
     }
     try (FileOutputStream outputStream = new FileOutputStream(excelFilePath)) {

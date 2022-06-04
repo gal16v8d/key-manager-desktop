@@ -20,6 +20,12 @@ import lombok.Setter;
 public class LoginView extends AbstractCommonView {
 
   private static final long serialVersionUID = 1L;
+  private static final int POS_INI_X_LABEL = 100;
+  private static final int POS_INI_Y_LABEL = 100;
+  private static final int POS_INI_X_TEXTO = 210;
+  private static final int SPACE_Y = 30;
+  private static final int COL_LENGTH = 16;
+  
   private JLabel labelUsuario;
   private JLabel labelPass;
 
@@ -27,13 +33,6 @@ public class LoginView extends AbstractCommonView {
   private JPasswordField textPass;
 
   private JButton loginButton;
-
-  private static final int POS_INI_X_LABEL = 100;
-  private static final int POS_INI_Y_LABEL = 100;
-  private static final int POS_INI_X_TEXTO = 210;
-  private static final int SPACE_Y = 30;
-
-  private static final int COL_LENGTH = 16;
 
   public LoginView() {
     setLayout(null);

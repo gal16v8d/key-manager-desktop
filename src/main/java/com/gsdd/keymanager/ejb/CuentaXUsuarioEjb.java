@@ -28,7 +28,7 @@ public class CuentaXUsuarioEjb implements Ejb<CuentaXUsuario> {
         .setPst(
             DBConnection.getInstance()
                 .getCon()
-                .prepareStatement(QueryConstants.ACCOUNTXUSER_INSERT));
+                .prepareStatement(QueryConstants.ACCOUNT_LOGIN_INSERT));
     DBConnection.getInstance().getPst().setLong(1, c.getCodigocuenta());
     DBConnection.getInstance().getPst().setLong(2, c.getCodigousuario());
     DBConnection.getInstance().getPst().setString(3, c.getNombreCuenta());
@@ -44,7 +44,7 @@ public class CuentaXUsuarioEjb implements Ejb<CuentaXUsuario> {
         .setPst(
             DBConnection.getInstance()
                 .getCon()
-                .prepareStatement(QueryConstants.ACCOUNTXUSER_UPDATE));
+                .prepareStatement(QueryConstants.ACCOUNT_LOGIN_UPDATE));
     DBConnection.getInstance().getPst().setString(1, cxu.getNombreCuenta());
     DBConnection.getInstance()
         .getPst()
@@ -64,7 +64,7 @@ public class CuentaXUsuarioEjb implements Ejb<CuentaXUsuario> {
         .setPst(
             DBConnection.getInstance()
                 .getCon()
-                .prepareStatement(QueryConstants.ACCOUNTXUSER_DELETE));
+                .prepareStatement(QueryConstants.ACCOUNT_LOGIN_DELETE));
     DBConnection.getInstance().getPst().setString(1, cxu.getNombreCuenta());
     DBConnection.getInstance()
         .getPst()
@@ -82,13 +82,13 @@ public class CuentaXUsuarioEjb implements Ejb<CuentaXUsuario> {
             .setPst(
                 DBConnection.getInstance()
                     .getCon()
-                    .prepareStatement(QueryConstants.ACCOUNTXUSER_LIST_ADMIN));
+                    .prepareStatement(QueryConstants.ACCOUNT_LOGIN_LIST_ADMIN));
       } else {
         DBConnection.getInstance()
             .setPst(
                 DBConnection.getInstance()
                     .getCon()
-                    .prepareStatement(QueryConstants.ACCOUNTXUSER_LIST));
+                    .prepareStatement(QueryConstants.ACCOUNT_LOGIN_LIST));
         DBConnection.getInstance()
             .getPst()
             .setLong(1, SessionData.getInstance().getSessionDto().getCodigousuario());
@@ -143,7 +143,7 @@ public class CuentaXUsuarioEjb implements Ejb<CuentaXUsuario> {
           .setPst(
               DBConnection.getInstance()
                   .getCon()
-                  .prepareStatement(QueryConstants.ACCOUNTXUSER_SEARCH));
+                  .prepareStatement(QueryConstants.ACCOUNT_LOGIN_SEARCH));
       DBConnection.getInstance().getPst().setString(1, nombreCuenta);
       DBConnection.getInstance()
           .getPst()

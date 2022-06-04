@@ -41,13 +41,13 @@ public interface Ejb<T extends Serializable> {
     return dbUpdate.executeDBUpdate(data);
   }
 
-  List<?> list();
+  <D extends Serializable> List<D> list();
 
   List<String> suggest();
 
   T search(String key);
 
-  public static interface PerformDBUpdate<T extends Serializable> {
+  interface PerformDBUpdate<T extends Serializable> {
 
     void defineQueryBody(T data) throws SQLException;
 
