@@ -33,8 +33,8 @@ public class MainController {
 
   private final MainView view;
   private LoginController loginController;
-  private CuentaXUsuarioController cuentaXUsuarioController;
-  private UsuarioController usuarioController;
+  private AccountLoginController cuentaXUsuarioController;
+  private AccountController usuarioController;
   private ExportController exportController;
 
   public MainController(MainView view) {
@@ -117,7 +117,7 @@ public class MainController {
   private void navigateToUsuario() {
     if (SessionData.getInstance().getSessionDto() != null) {
       if (getUsuarioController() == null) {
-        setUsuarioController(new UsuarioController(getView()));
+        setUsuarioController(new AccountController(getView()));
       }
       addPanel(
           getUsuarioController().getView(),
@@ -130,7 +130,7 @@ public class MainController {
 
   private void navigateToCuentaXUsuario() {
     if (SessionData.getInstance().getSessionDto() != null) {
-      setCuentaXUsuarioController(new CuentaXUsuarioController(getView()));
+      setCuentaXUsuarioController(new AccountLoginController(getView()));
       addPanel(
           getCuentaXUsuarioController().getView(),
           MenuOption.CUENTAXUSUARIO.name(),
@@ -172,7 +172,7 @@ public class MainController {
     try {
       if (SessionData.getInstance()
           .getSessionDto()
-          .getRol()
+          .getRole()
           .equals(Long.valueOf(RolEnum.ADMIN.getCode()))) {
         JOptionUtil.showErrorMessage(
             GUIConstants.ERROR,

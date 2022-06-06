@@ -12,14 +12,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class QueryConstants {
 
+  // Account queries
   public static final String ACCOUNT_INSERT = """
       INSERT INTO account (account_id, first_name, last_name,
       login, password, role)
       VALUES (?, ?, ?, ?, ?, ?)
       """;
   public static final String ACCOUNT_DELETE = """
-      DELETE FROM account 
-      WHERE account_id = ? 
+      DELETE FROM account
+      WHERE account_id = ?
       """;
   public static final String ACCOUNT_UPDATE = """
       UPDATE account SET first_name = ?, last_name = ?,
@@ -29,22 +30,22 @@ public final class QueryConstants {
   private static final String ACCOUNT_SELECT =
       "SELECT account_id, first_name, last_name, login, password, role ";
   public static final String ACCOUNT_LIST = """
-      %s 
+      %s
       FROM account
       WHERE account_id = ?
       ORDER BY first_name, last_name, login
       """.formatted(ACCOUNT_SELECT);
   public static final String ACCOUNT_LIST_ADMIN = """
-      %s 
-      FROM account 
+      %s
+      FROM account
       ORDER BY first_name, last_name, login
       """.formatted(ACCOUNT_SELECT);
   public static final String ACCOUNT_SEARCH = """
-      %s 
-      FROM account 
+      %s
+      FROM account
       WHERE login = ?
       """.formatted(ACCOUNT_SELECT);
-  public static final String VALIDATE_DATA = "SELECT COUNT(account_id) FROM account";
+  // Account login queries
   public static final String ACCOUNT_LOGIN_INSERT = """
       INSERT INTO account_login (id, account_id, account_name,
       login, password, url, modification_date)
@@ -60,22 +61,27 @@ public final class QueryConstants {
       WHERE account_name = ? AND account_id = ?
       """;
   private static final String ACCOUNT_LOGIN_SELECT = """
-      SELECT al.account_id, al.account_name, al.login,
+      SELECT al.account_id, al.account_name, a.login,
       al.url, al.login, al.password, al.modification_date
       FROM account_login al
       JOIN account a ON (a.account_id = al.account_id)
       """;
   public static final String ACCOUNT_LOGIN_LIST = """
-      %s 
-      WHERE a.account_id = ? 
+      %s
+      WHERE a.account_id = ?
       ORDER BY a.login, al.account_name
       """.formatted(ACCOUNT_LOGIN_SELECT);
   public static final String ACCOUNT_LOGIN_LIST_ADMIN = """
-      %s 
+      %s
       ORDER BY a.login, al.account_name
       """.formatted(ACCOUNT_LOGIN_SELECT);
   public static final String ACCOUNT_LOGIN_SEARCH = """
-      %s 
+      %s
       WHERE al.account_name = ? AND al.account_id = ?
       """.formatted(ACCOUNT_LOGIN_SELECT);
+  // Account type queries
+  // TODO
+  // Validation query
+  public static final String VALIDATE_DATA = "SELECT COUNT(account_id) FROM account";
+  
 }

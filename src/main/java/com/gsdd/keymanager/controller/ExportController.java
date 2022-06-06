@@ -4,8 +4,8 @@ import com.gsdd.constants.GUIConstants;
 import com.gsdd.constants.GralConstants;
 import com.gsdd.gui.util.JOptionUtil;
 import com.gsdd.keymanager.constants.KeyManagerConstants;
-import com.gsdd.keymanager.ejb.CuentaXUsuarioEjb;
-import com.gsdd.keymanager.entities.Usuario;
+import com.gsdd.keymanager.ejb.AccountLoginService;
+import com.gsdd.keymanager.entities.Account;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
 import com.gsdd.keymanager.util.CypherKeyManager;
 import com.gsdd.keymanager.util.XLSWriter;
@@ -19,11 +19,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ExportController {
 
-  public CuentaXUsuarioEjb getEjbModel() {
-    return new CuentaXUsuarioEjb();
+  public AccountLoginService getEjbModel() {
+    return new AccountLoginService();
   }
 
-  public boolean exportData(String out, Usuario dto) {
+  public boolean exportData(String out, Account dto) {
     String passw = null;
     JPanel panel = new JPanel();
     JLabel label =
@@ -49,7 +49,7 @@ public class ExportController {
     // 0 : Boton Aceptar
     if (option == 0) {
       passw = String.valueOf(pass.getPassword());
-      log.info(dto.getUsername());
+      log.info(dto.getLogin());
       String currentPass = CypherKeyManager.decodeKM(dto.getPassword());
       boolean passMatch = Objects.equals(passw.trim(), currentPass);
       log.info("{}", passMatch);

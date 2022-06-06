@@ -1,6 +1,8 @@
 package com.gsdd.keymanager.entities;
 
 import java.io.Serializable;
+import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,19 +12,18 @@ import lombok.Setter;
  *     alex.galvis.sistemas@gmail.com <br>
  * @version 1.0
  */
+@Builder
 @Getter
 @Setter
-public class Usuario implements Serializable {
+public class Account implements Serializable {
 
   private static final long serialVersionUID = 5662910925451501908L;
-  private Long codigousuario;
-  private String primerNombre;
-  private String primerApellido;
-  private String username;
+  @Default
+  private Long accountId = System.nanoTime();
+  private String firstName;
+  private String lastName;
+  private String login;
   private String password;
-  private Long rol;
+  private Long role;
 
-  public Usuario() {
-    codigousuario = System.nanoTime();
-  }
 }

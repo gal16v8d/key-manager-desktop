@@ -4,7 +4,7 @@ import com.gsdd.constants.GUIConstants;
 import com.gsdd.gui.util.JOptionListBox;
 import com.gsdd.gui.util.JOptionUtil;
 import com.gsdd.gui.util.JPaginateTable;
-import com.gsdd.keymanager.ejb.Ejb;
+import com.gsdd.keymanager.ejb.DbService;
 import com.gsdd.keymanager.enums.ButtonOptions;
 import com.gsdd.keymanager.enums.MenuOption;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
@@ -28,7 +28,7 @@ public interface CrudController<T extends Serializable> {
 
   Logger getLogger();
 
-  <U extends Ejb<T>> U getEjbModel();
+  <U extends DbService<T>> U getEjbModel();
 
   MainView getParentFrame();
 

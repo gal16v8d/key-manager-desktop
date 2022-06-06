@@ -18,20 +18,20 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class UsuarioView extends AbstractCrudView {
+public class AccountView extends AbstractCrudView {
 
   private static final long serialVersionUID = 1L;
   private static final int POS_Y_ROW_3 = 120;
 
   private JLabel labelPk;
 
-  private JValidateTextField textPNombre;
-  private JValidateTextField textPApellido;
-  private JValidateTextField textUserName;
+  private JValidateTextField textFirstName;
+  private JValidateTextField textLastName;
+  private JValidateTextField textLogin;
   private JPasswordField textPass;
-  private JLabel labelVRol;
+  private JLabel labelVRole;
 
-  public UsuarioView() {
+  public AccountView() {
     setLayout(null);
     initLabels();
     initFields();
@@ -69,20 +69,20 @@ public class UsuarioView extends AbstractCrudView {
   }
 
   private void initFields() {
-    textPNombre = addValidateTextField(POS_INI_X_TEXT_C1, POS_Y_ROW_1);
-    textPNombre.setTextProperties(
+    textFirstName = addValidateTextField(POS_INI_X_TEXT_C1, POS_Y_ROW_1);
+    textFirstName.setTextProperties(
         RegexConstants.TEXT,
         DEF_TEXT_SIZE,
         KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_TEXT));
 
-    textPApellido = addValidateTextField(POS_INI_X_TEXT_C2, POS_Y_ROW_1);
-    textPApellido.setTextProperties(
+    textLastName = addValidateTextField(POS_INI_X_TEXT_C2, POS_Y_ROW_1);
+    textLastName.setTextProperties(
         RegexConstants.TEXT,
         DEF_TEXT_SIZE,
         KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_TEXT));
 
-    textUserName = addValidateTextField(POS_INI_X_TEXT_C1, POS_Y_ROW_2);
-    textUserName.setTextProperties(
+    textLogin = addValidateTextField(POS_INI_X_TEXT_C1, POS_Y_ROW_2);
+    textLogin.setTextProperties(
         RegexConstants.ALFA,
         DEF_TEXT_SIZE,
         KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TOOL_ALFA));
@@ -91,7 +91,7 @@ public class UsuarioView extends AbstractCrudView {
     textPass.setBounds(POS_INI_X_TEXT_C2, POS_Y_ROW_2, DEF_WIDTH, DEF_HEIGHT);
     add(textPass);
 
-    labelVRol = addLabel("", POS_INI_X_TEXT_C1, POS_Y_ROW_3);
+    labelVRole = addLabel("", POS_INI_X_TEXT_C1, POS_Y_ROW_3);
   }
 
   private void initButtons() {

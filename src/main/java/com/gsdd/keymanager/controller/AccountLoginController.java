@@ -3,15 +3,15 @@ package com.gsdd.keymanager.controller;
 import com.gsdd.constants.GralConstants;
 import com.gsdd.gui.util.JPaginateTable;
 import com.gsdd.keymanager.constants.KeyManagerConstants;
-import com.gsdd.keymanager.ejb.CuentaXUsuarioEjb;
-import com.gsdd.keymanager.ejb.UsuarioEjb;
-import com.gsdd.keymanager.entities.CuentaXUsuario;
-import com.gsdd.keymanager.entities.dto.CuentaXUsuarioDto;
+import com.gsdd.keymanager.ejb.AccountLoginService;
+import com.gsdd.keymanager.ejb.AccountService;
+import com.gsdd.keymanager.entities.AccountLogin;
+import com.gsdd.keymanager.entities.dto.AccountLoginDto;
 import com.gsdd.keymanager.enums.RolEnum;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
 import com.gsdd.keymanager.util.CypherKeyManager;
 import com.gsdd.keymanager.util.SessionData;
-import com.gsdd.keymanager.view.CuentaXUsuarioView;
+import com.gsdd.keymanager.view.AccountLoginView;
 import com.gsdd.keymanager.view.MainView;
 import java.awt.event.ActionEvent;
 import java.sql.Date;
@@ -32,18 +32,18 @@ import org.slf4j.Logger;
 @Slf4j
 @Getter
 @Setter
-public class CuentaXUsuarioController implements CrudController<CuentaXUsuario> {
+public class AccountLoginController implements CrudController<AccountLogin> {
 
-  private final CuentaXUsuarioEjb model;
-  private final UsuarioEjb userModel;
-  private final CuentaXUsuarioView view;
+  private final AccountLoginService model;
+  private final AccountService userModel;
+  private final AccountLoginView view;
   private final MainView parentFrame;
-  private CuentaXUsuario old;
+  private AccountLogin old;
 
-  public CuentaXUsuarioController(MainView parentFrame) {
-    this.model = new CuentaXUsuarioEjb();
-    this.userModel = new UsuarioEjb();
-    this.view = new CuentaXUsuarioView();
+  public AccountLoginController(MainView parentFrame) {
+    this.model = new AccountLoginService();
+    this.userModel = new AccountService();
+    this.view = new AccountLoginView();
     this.parentFrame = parentFrame;
     loadView();
   }
@@ -77,7 +77,7 @@ public class CuentaXUsuarioController implements CrudController<CuentaXUsuario> 
 
   @Override
   @SuppressWarnings("unchecked")
-  public CuentaXUsuarioEjb getEjbModel() {
+  public AccountLoginService getEjbModel() {
     return getModel();
   }
 
@@ -101,17 +101,17 @@ public class CuentaXUsuarioController implements CrudController<CuentaXUsuario> 
   @Override
   @SuppressWarnings("unchecked")
   public void updateTableModel(DefaultTableModel dtm, List<?> data) {
-    List<CuentaXUsuarioDto> listDB = (List<CuentaXUsuarioDto>) data;
+    List<AccountLoginDto> listDB = (List<AccountLoginDto>) data;
     int i = 0;
-    for (CuentaXUsuarioDto dto : listDB) {
+    for (AccountLoginDto dto : listDB) {
       dtm.addRow(new Object[1]);
-      dtm.setValueAt(dto.getNombreusuario(), i, 0);
-      dtm.setValueAt(dto.getNombrecuenta(), i, 1);
-      dtm.setValueAt(dto.getUsuario(), i, 2);
+      dtm.setValueAt(dto.getSessionLogin(), i, 0);
+      dtm.setValueAt(dto.getAccountName(), i, 1);
+      dtm.setValueAt(dto.getLogin(), i, 2);
       String dp = showOrHidePass(dto.getPass(), false);
       dtm.setValueAt(dp, i, 3);
       dtm.setValueAt(dto.getUrl(), i, 4);
-      Date fd = dto.getFecha();
+      Date fd = dto.getModificationDate();
       Date fa = Date.valueOf(LocalDate.now());
       String fecha = KeyManagerConstants.getFormater().format(fd);
       dtm.setValueAt(fecha, i, 5);
@@ -121,22 +121,20 @@ public class CuentaXUsuarioController implements CrudController<CuentaXUsuario> 
   }
 
   @Override
-  public CuentaXUsuario getDataFromForm() {
-    CuentaXUsuario data = null;
+  public AccountLogin getDataFromForm() {
+    AccountLogin data = null;
     try {
-      data = new CuentaXUsuario();
-      data.setNombreCuenta(getView().getTextCuenta().getText().trim());
       SessionData sessionData = SessionData.getInstance();
-      data.setCodigousuario(
-          String.valueOf(sessionData.getSessionDto().getRol()).equals(RolEnum.ADMIN.getCode())
-              ? getUserModel()
-                  .search((String) getView().getComboUsuario().getSelectedItem())
-                  .getCodigousuario()
-              : sessionData.getSessionDto().getCodigousuario());
-      data.setUsername(getView().getTextUserName().getText().trim());
-      data.setPassword(
-          CypherKeyManager.encodeKM(String.valueOf(getView().getTextPass().getPassword()).trim()));
-      data.setUrl(getView().getTextUrl().getText());
+      data = AccountLogin.builder().accountName(getView().getTextCuenta().getText().trim())
+          .accountId(
+              String.valueOf(sessionData.getSessionDto().getRole()).equals(RolEnum.ADMIN.getCode())
+                  ? getUserModel().search((String) getView().getComboUsuario().getSelectedItem())
+                      .getAccountId()
+                  : sessionData.getSessionDto().getAccountId())
+          .login(getView().getTextUserName().getText().trim())
+          .password(CypherKeyManager
+              .encodeKM(String.valueOf(getView().getTextPass().getPassword()).trim()))
+          .url(getView().getTextUrl().getText()).build();
       return data;
     } catch (Exception e) {
       log.error(e.getMessage(), e);
@@ -149,17 +147,17 @@ public class CuentaXUsuarioController implements CrudController<CuentaXUsuario> 
   }
 
   @Override
-  public boolean validateData(CuentaXUsuario data) {
+  public boolean validateData(AccountLogin data) {
     return (data != null
-        && data.getNombreCuenta() != null
-        && data.getCodigousuario() != null
-        && data.getUsername() != null
+        && data.getAccountName() != null
+        && data.getAccountId() != null
+        && data.getLogin() != null
         && data.getPassword() != null);
   }
 
   @Override
-  public String getSuccessMsg(String loadMsg, CuentaXUsuario data) {
-    return KeyManagerLanguage.getMessageByLocale(loadMsg) + data.getNombreCuenta();
+  public String getSuccessMsg(String loadMsg, AccountLogin data) {
+    return KeyManagerLanguage.getMessageByLocale(loadMsg) + data.getAccountName();
   }
 
   @Override
@@ -194,16 +192,16 @@ public class CuentaXUsuarioController implements CrudController<CuentaXUsuario> 
   }
 
   @Override
-  public void performUIActionsAfterSearch(CuentaXUsuario searchData) {
+  public void performUIActionsAfterSearch(AccountLogin searchData) {
     setFields(searchData);
     setOld(searchData);
     startButtons(true);
   }
 
-  public void setFields(CuentaXUsuario dto) {
-    getView().getComboUsuario().setSelectedItem(dto.getUsername());
-    getView().getTextCuenta().setText(dto.getNombreCuenta());
-    getView().getTextUserName().setText(dto.getUsername());
+  public void setFields(AccountLogin dto) {
+    getView().getComboUsuario().setSelectedItem(dto.getLogin());
+    getView().getTextCuenta().setText(dto.getAccountName());
+    getView().getTextUserName().setText(dto.getLogin());
     getView().getTextPass().setText(CypherKeyManager.decodeKM(dto.getPassword()));
     getView().getTextUrl().setText(dto.getUrl());
   }

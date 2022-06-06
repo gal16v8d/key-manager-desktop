@@ -3,13 +3,13 @@ package com.gsdd.keymanager.controller;
 import com.gsdd.constants.GralConstants;
 import com.gsdd.gui.util.JPaginateTable;
 import com.gsdd.keymanager.constants.KeyManagerConstants;
-import com.gsdd.keymanager.ejb.UsuarioEjb;
-import com.gsdd.keymanager.entities.Usuario;
+import com.gsdd.keymanager.ejb.AccountService;
+import com.gsdd.keymanager.entities.Account;
 import com.gsdd.keymanager.enums.RolEnum;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
 import com.gsdd.keymanager.util.CypherKeyManager;
 import com.gsdd.keymanager.view.MainView;
-import com.gsdd.keymanager.view.UsuarioView;
+import com.gsdd.keymanager.view.AccountView;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import lombok.Getter;
@@ -26,16 +26,16 @@ import org.slf4j.Logger;
 @Slf4j
 @Getter
 @Setter
-public class UsuarioController implements CrudController<Usuario> {
+public class AccountController implements CrudController<Account> {
 
-  private final UsuarioEjb model;
-  private final UsuarioView view;
+  private final AccountService model;
+  private final AccountView view;
   private final MainView parentFrame;
-  private Usuario old;
+  private Account old;
 
-  public UsuarioController(MainView parentFrame) {
-    this.model = new UsuarioEjb();
-    this.view = new UsuarioView();
+  public AccountController(MainView parentFrame) {
+    this.model = new AccountService();
+    this.view = new AccountView();
     this.parentFrame = parentFrame;
     loadView();
   }
@@ -55,7 +55,7 @@ public class UsuarioController implements CrudController<Usuario> {
 
   @Override
   @SuppressWarnings("unchecked")
-  public UsuarioEjb getEjbModel() {
+  public AccountService getEjbModel() {
     return getModel();
   }
 
@@ -76,15 +76,15 @@ public class UsuarioController implements CrudController<Usuario> {
   @Override
   @SuppressWarnings("unchecked")
   public void updateTableModel(DefaultTableModel dtm, List<?> data) {
-    List<Usuario> listDB = (List<Usuario>) data;
+    List<Account> listDB = (List<Account>) data;
     int i = 0;
-    for (Usuario u : listDB) {
+    for (Account u : listDB) {
       dtm.addRow(new Object[1]);
-      dtm.setValueAt(u.getPrimerNombre(), i, 0);
-      dtm.setValueAt(u.getPrimerApellido(), i, 1);
-      dtm.setValueAt(u.getUsername(), i, 2);
+      dtm.setValueAt(u.getFirstName(), i, 0);
+      dtm.setValueAt(u.getLastName(), i, 1);
+      dtm.setValueAt(u.getLogin(), i, 2);
       dtm.setValueAt(
-          String.valueOf(u.getRol()).equals(RolEnum.ADMIN.getCode())
+          String.valueOf(u.getRole()).equals(RolEnum.ADMIN.getCode())
               ? RolEnum.ADMIN.name()
               : RolEnum.USER.name(),
           i,
@@ -94,25 +94,24 @@ public class UsuarioController implements CrudController<Usuario> {
   }
 
   @Override
-  public Usuario getDataFromForm() {
-    Usuario datos = null;
+  public Account getDataFromForm() {
+    Account datos = null;
     try {
-      datos = new Usuario();
       String textoLabel = getView().getLabelPk().getText();
       Long id =
           (textoLabel != null && !textoLabel.equals(GralConstants.EMPTY)
               ? Long.parseLong(textoLabel.trim())
               : (long) (System.nanoTime() * (Math.random())));
-      datos.setCodigousuario(id);
-      datos.setPrimerNombre(getView().getTextPNombre().getText().trim());
-      datos.setPrimerApellido(getView().getTextPApellido().getText().trim());
-      datos.setUsername(getView().getTextUserName().getText().trim());
-      datos.setPassword(
-          CypherKeyManager.encodeKM(String.valueOf(getView().getTextPass().getPassword()).trim()));
-      datos.setRol(
-          RolEnum.ADMIN.name().equals(getView().getLabelVRol().getText())
-              ? Long.valueOf(RolEnum.ADMIN.getCode())
-              : Long.valueOf(RolEnum.USER.getCode()));
+      datos =
+          Account.builder().accountId(id).firstName(getView().getTextFirstName().getText().trim())
+              .lastName(getView().getTextLastName().getText().trim())
+              .login(getView().getTextLogin().getText().trim())
+              .password(CypherKeyManager
+                  .encodeKM(String.valueOf(getView().getTextPass().getPassword()).trim()))
+              .role(RolEnum.ADMIN.name().equals(getView().getLabelVRole().getText())
+                  ? Long.valueOf(RolEnum.ADMIN.getCode())
+                  : Long.valueOf(RolEnum.USER.getCode()))
+              .build();
       return datos;
     } catch (Exception e) {
       log.error(e.getMessage(), e);
@@ -121,25 +120,25 @@ public class UsuarioController implements CrudController<Usuario> {
   }
 
   @Override
-  public boolean validateData(Usuario data) {
+  public boolean validateData(Account data) {
     return (data != null
-        && data.getPrimerNombre() != null
-        && data.getPrimerApellido() != null
-        && data.getUsername() != null
+        && data.getFirstName() != null
+        && data.getLastName() != null
+        && data.getLogin() != null
         && data.getPassword() != null);
   }
 
   @Override
-  public String getSuccessMsg(String loadMsg, Usuario data) {
-    return KeyManagerLanguage.getMessageByLocale(loadMsg) + data.getUsername();
+  public String getSuccessMsg(String loadMsg, Account data) {
+    return KeyManagerLanguage.getMessageByLocale(loadMsg) + data.getLogin();
   }
 
   @Override
   public void clearFields() {
     getView().getLabelPk().setText(GralConstants.EMPTY);
-    getView().getTextPNombre().setText(GralConstants.EMPTY);
-    getView().getTextPApellido().setText(GralConstants.EMPTY);
-    getView().getTextUserName().setText(GralConstants.EMPTY);
+    getView().getTextFirstName().setText(GralConstants.EMPTY);
+    getView().getTextLastName().setText(GralConstants.EMPTY);
+    getView().getTextLogin().setText(GralConstants.EMPTY);
     getView().getTextPass().setText(GralConstants.EMPTY);
   }
 
@@ -161,21 +160,21 @@ public class UsuarioController implements CrudController<Usuario> {
   }
 
   @Override
-  public void performUIActionsAfterSearch(Usuario searchData) {
+  public void performUIActionsAfterSearch(Account searchData) {
     setFields(searchData);
     startButtons(true);
   }
 
-  public void setFields(Usuario dto) {
-    getView().getLabelPk().setText(String.valueOf(dto.getCodigousuario()));
-    getView().getTextPNombre().setText(dto.getPrimerNombre());
-    getView().getTextPApellido().setText(dto.getPrimerApellido());
-    getView().getTextUserName().setText(dto.getUsername());
+  public void setFields(Account dto) {
+    getView().getLabelPk().setText(String.valueOf(dto.getAccountId()));
+    getView().getTextFirstName().setText(dto.getFirstName());
+    getView().getTextLastName().setText(dto.getLastName());
+    getView().getTextLogin().setText(dto.getLogin());
     getView().getTextPass().setText(CypherKeyManager.decodeKM(dto.getPassword()));
     getView()
-        .getLabelVRol()
+        .getLabelVRole()
         .setText(
-            (RolEnum.ADMIN.getCode().equals(String.valueOf(dto.getRol())))
+            (RolEnum.ADMIN.getCode().equals(String.valueOf(dto.getRole())))
                 ? RolEnum.ADMIN.name()
                 : RolEnum.USER.name());
   }

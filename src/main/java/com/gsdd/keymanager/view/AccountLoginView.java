@@ -17,7 +17,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class CuentaXUsuarioView extends AbstractCrudView {
+public class AccountLoginView extends AbstractCrudView {
 
   private static final long serialVersionUID = 1L;
   private static final int INI_X_LABEL_C3 = 480;
@@ -30,7 +30,7 @@ public class CuentaXUsuarioView extends AbstractCrudView {
 
   private JButton showOrHideButton;
 
-  public CuentaXUsuarioView() {
+  public AccountLoginView() {
     setLayout(null);
     initLabels();
     initFields();

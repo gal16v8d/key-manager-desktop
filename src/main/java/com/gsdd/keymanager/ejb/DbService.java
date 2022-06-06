@@ -7,7 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public interface Ejb<T extends Serializable> {
+public interface DbService<T extends Serializable> {
 
   Logger getLogger();
 
@@ -18,8 +18,8 @@ public interface Ejb<T extends Serializable> {
   void defineDeleteData(T data) throws SQLException;
 
   default boolean save(T value) {
-    PerformDBUpdate<T> dbUpdate = this::defineInsertData;
-    return dbUpdate.executeDBUpdate(value);
+    DbOperation<T> dbUpdate = this::defineInsertData;
+    return dbUpdate.executeDbUpdate(value);
   }
 
   default boolean update(T value, T oldValue) {
@@ -37,28 +37,28 @@ public interface Ejb<T extends Serializable> {
   }
 
   default boolean delete(T data) {
-    PerformDBUpdate<T> dbUpdate = this::defineDeleteData;
-    return dbUpdate.executeDBUpdate(data);
+    DbOperation<T> dbUpdate = this::defineDeleteData;
+    return dbUpdate.executeDbUpdate(data);
   }
 
-  <D extends Serializable> List<D> list();
+  List<?> list();
 
   List<String> suggest();
 
   T search(String key);
 
-  interface PerformDBUpdate<T extends Serializable> {
+  interface DbOperation<T extends Serializable> {
 
     void defineQueryBody(T data) throws SQLException;
 
-    default boolean executeDBUpdate(T data) {
+    default boolean executeDbUpdate(T data) {
       boolean retorno = false;
       try {
         defineQueryBody(data);
         DBConnection.getInstance().getPst().executeUpdate();
         retorno = true;
       } catch (SQLException e) {
-        LoggerFactory.getLogger(PerformDBUpdate.class).error(e.getMessage(), e);
+        LoggerFactory.getLogger(DbOperation.class).error(e.getMessage(), e);
       } finally {
         DBConnection.getInstance().closeQuery();
       }

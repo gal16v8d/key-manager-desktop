@@ -3,7 +3,7 @@ package com.gsdd.keymanager.controller;
 import com.gsdd.constants.GUIConstants;
 import com.gsdd.constants.GralConstants;
 import com.gsdd.gui.util.JOptionUtil;
-import com.gsdd.keymanager.ejb.UsuarioEjb;
+import com.gsdd.keymanager.ejb.AccountService;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
 import com.gsdd.keymanager.util.SessionData;
 import com.gsdd.keymanager.view.LoginView;
@@ -24,12 +24,12 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 public class LoginController {
 
-  private final UsuarioEjb model;
+  private final AccountService model;
   private final MainView parentFrame;
   private final LoginView view;
 
   public LoginController(MainView parentFrame) {
-    this.model = new UsuarioEjb();
+    this.model = new AccountService();
     this.view = new LoginView();
     this.parentFrame = parentFrame;
     addButtonActions();
@@ -47,14 +47,14 @@ public class LoginController {
       sessionData.setSessionDto(getModel().login(username, pass));
       if (sessionData.getSessionDto() != null) {
         getLoged();
-        sessionData.getSessionDto().setUsername(username);
+        sessionData.getSessionDto().setLogin(username);
         getParentFrame()
             .changeTitle(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_LOGIN));
         String session =
             KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_LOGGED)
-                + sessionData.getSessionDto().getPrimerNombre()
+                + sessionData.getSessionDto().getFirstName()
                 + " "
-                + sessionData.getSessionDto().getPrimerApellido();
+                + sessionData.getSessionDto().getLastName();
         getParentFrame().getSessionMenu().setText(session);
       } else {
         String msg = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_USER_NE);

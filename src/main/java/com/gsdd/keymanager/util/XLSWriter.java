@@ -1,7 +1,7 @@
 package com.gsdd.keymanager.util;
 
 import com.gsdd.keymanager.constants.KeyManagerConstants;
-import com.gsdd.keymanager.entities.dto.CuentaXUsuarioDto;
+import com.gsdd.keymanager.entities.dto.AccountLoginDto;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
 import com.gsdd.xls.util.XLSUtil;
 import java.io.FileNotFoundException;
@@ -48,7 +48,7 @@ public class XLSWriter {
     createHeaderRow(sheet, headers);
     for (Object o : objects) {
       Row row = sheet.createRow(++rowCount);
-      if (o instanceof CuentaXUsuarioDto data) {
+      if (o instanceof AccountLoginDto data) {
         writeData(data, row);
       }
     }
@@ -69,7 +69,7 @@ public class XLSWriter {
    * @param excelFilePath ruta de salida de excel.
    * @return true si se genera correctamente.
    */
-  public boolean writeExcel(List<CuentaXUsuarioDto> listR, String excelFilePath) {
+  public boolean writeExcel(List<AccountLoginDto> listR, String excelFilePath) {
     try {
       log.info(excelFilePath);
       workbook =
@@ -123,19 +123,19 @@ public class XLSWriter {
    * @param dto objeto de tipo CuentaXUsuarioDto.
    * @param row fila en la que se copian los valores.
    */
-  private void writeData(CuentaXUsuarioDto dto, Row row) {
+  private void writeData(AccountLoginDto dto, Row row) {
     Cell cnu = row.createCell(0);
-    cnu.setCellValue(dto.getNombreusuario());
+    cnu.setCellValue(dto.getSessionLogin());
     Cell cnc = row.createCell(1);
-    cnc.setCellValue(dto.getNombrecuenta());
+    cnc.setCellValue(dto.getAccountName());
     Cell cnuc = row.createCell(2);
-    cnuc.setCellValue(dto.getUsuario());
+    cnuc.setCellValue(dto.getLogin());
     String dp = CypherKeyManager.decodeKM(dto.getPass());
     Cell cncp = row.createCell(3);
     cncp.setCellValue(dp);
     Cell curl = row.createCell(4);
     curl.setCellValue(dto.getUrl());
-    Date fd = dto.getFecha();
+    Date fd = dto.getModificationDate();
     Date fa = Date.valueOf(LocalDate.now());
     String fecha = KeyManagerConstants.getFormater().format(fd);
     Cell cnf = row.createCell(5);
