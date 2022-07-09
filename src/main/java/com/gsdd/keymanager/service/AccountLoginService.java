@@ -1,4 +1,4 @@
-package com.gsdd.keymanager.ejb;
+package com.gsdd.keymanager.service;
 
 import com.gsdd.dbutil.DBConnection;
 import com.gsdd.keymanager.constants.QueryConstants;

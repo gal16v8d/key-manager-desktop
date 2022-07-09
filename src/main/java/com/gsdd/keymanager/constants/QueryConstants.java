@@ -45,6 +45,10 @@ public final class QueryConstants {
       FROM account
       WHERE login = ?
       """.formatted(ACCOUNT_SELECT);
+  public static final String ACCOUNT_MAX = """
+      SELECT MAX(account_id)
+      FROM account
+      """;
   // Account login queries
   public static final String ACCOUNT_LOGIN_INSERT = """
       INSERT INTO account_login (id, account_id, account_name,
@@ -79,8 +83,37 @@ public final class QueryConstants {
       %s
       WHERE al.account_name = ? AND al.account_id = ?
       """.formatted(ACCOUNT_LOGIN_SELECT);
+  public static final String ACCOUNT_LOGIN_MAX = """
+      SELECT MAX(id) 
+      FROM account_login
+      WHERE account_id = ?
+      """;
   // Account type queries
-  // TODO
+  public static final String ACCOUNT_TYPE_INSERT = """
+      INSERT INTO account_type (type_id, name, account_id)
+      VALUES (?, ?, ?)
+      """;
+  public static final String ACCOUNT_TYPE_DELETE = """
+      DELETE FROM account_type
+      WHERE type_id = ?
+      """;
+  public static final String ACCOUNT_TYPE_UPDATE = """
+      UPDATE account_type SET name = ?, account_id = ? 
+      WHERE type_id = ?
+      """;
+  private static final String ACCOUNT_TYPE_SELECT =
+      "SELECT type_id, name, account_id ";
+  public static final String ACCOUNT_TYPE_LIST = """
+      %s
+      FROM account_type
+      WHERE type_id = ?
+      ORDER BY name
+      """.formatted(ACCOUNT_TYPE_SELECT);
+  public static final String ACCOUNT_TYPE_MAX = """
+      SELECT MAX(type_id) 
+      FROM account_type
+      WHERE account_id = ?
+      """;
   // Validation query
   public static final String VALIDATE_DATA = "SELECT COUNT(account_id) FROM account";
   
