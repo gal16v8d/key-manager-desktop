@@ -43,9 +43,9 @@
 
 		<lombok.version>1.18.24</lombok.version>
 		<slf4j.api.version>1.7.36</slf4j.api.version>
-		<junit.version>5.8.2</junit.version>
-		<mockito.version>4.4.0</mockito.version>
-		<log4j.version>2.17.2</log4j.version>
+		<junit.version>5.9.0</junit.version>
+		<mockito.version>4.7.0</mockito.version>
+		<log4j.version>2.18.0</log4j.version>
 		<derby.version>10.12.1.1</derby.version>
 		<db-util.version>2.0.1</db-util.version>
 		<cypher-util.version>2.0.1</cypher-util.version>
