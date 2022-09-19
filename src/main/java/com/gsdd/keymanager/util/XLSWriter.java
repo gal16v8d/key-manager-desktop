@@ -130,7 +130,7 @@ public class XLSWriter {
     cnc.setCellValue(dto.getAccountName());
     Cell cnuc = row.createCell(2);
     cnuc.setCellValue(dto.getLogin());
-    String dp = CypherKeyManager.decodeKM(dto.getPass());
+    String dp = CypherKeyManager.DECYPHER.apply(dto.getPass());
     Cell cncp = row.createCell(3);
     cncp.setCellValue(dp);
     Cell curl = row.createCell(4);
@@ -141,6 +141,6 @@ public class XLSWriter {
     Cell cnf = row.createCell(5);
     cnf.setCellValue(fecha);
     Cell cnr = row.createCell(6);
-    cnr.setCellValue(KeyManagerConstants.getSuggestion(fa, fd));
+    cnr.setCellValue(KeyManagerConstants.SHOW_SUGGESTION.apply(fa, fd));
   }
 }

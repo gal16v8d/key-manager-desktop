@@ -107,7 +107,7 @@ public class AccountController implements CrudController<Account> {
               .lastName(getView().getTextLastName().getText().trim())
               .login(getView().getTextLogin().getText().trim())
               .password(CypherKeyManager
-                  .encodeKM(String.valueOf(getView().getTextPass().getPassword()).trim()))
+                  .CYPHER.apply(String.valueOf(getView().getTextPass().getPassword()).trim()))
               .role(RolEnum.ADMIN.name().equals(getView().getLabelVRole().getText())
                   ? Long.valueOf(RolEnum.ADMIN.getCode())
                   : Long.valueOf(RolEnum.USER.getCode()))
@@ -170,7 +170,7 @@ public class AccountController implements CrudController<Account> {
     getView().getTextFirstName().setText(dto.getFirstName());
     getView().getTextLastName().setText(dto.getLastName());
     getView().getTextLogin().setText(dto.getLogin());
-    getView().getTextPass().setText(CypherKeyManager.decodeKM(dto.getPassword()));
+    getView().getTextPass().setText(CypherKeyManager.DECYPHER.apply(dto.getPassword()));
     getView()
         .getLabelVRole()
         .setText(

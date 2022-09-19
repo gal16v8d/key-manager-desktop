@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiFunction;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -67,6 +68,19 @@ public final class KeyManagerConstants {
     KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_USER),
     KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ROLE)
   };
+  
+  /**
+   * Generates a suggestion depending on difference in time, since password changes.
+   *
+   * @param currentDate
+   * @param dbDate date in database.
+   * @return suggestion depending on time.
+   */
+  public static final BiFunction<Date, Date, String> SHOW_SUGGESTION = (currentDate,
+      dbDate) -> (TimeUnit.MILLISECONDS
+          .toDays(currentDate.getTime() - dbDate.getTime()) >= TIME_TO_CHANGE)
+              ? KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_SUGGESTION)
+              : GralConstants.EMPTY;
 
   public static String[] getAccountXUserTableModel() {
     return ACCOUNTXUSER_TBL_MODEL;
@@ -85,20 +99,4 @@ public final class KeyManagerConstants {
     return new SimpleDateFormat(DERBY_DATE_FORMAT, new Locale(LOCALE_ES));
   }
 
-  /**
-   * Generates a suggestion depending on difference in time, since password changes.
-   *
-   * @param currentDate
-   * @param dbDate date in database.
-   * @return suggestion depending on time.
-   */
-  public static String getSuggestion(Date currentDate, Date dbDate) {
-    long duration = currentDate.getTime() - dbDate.getTime();
-    long days = TimeUnit.MILLISECONDS.toDays(duration);
-    if (days >= TIME_TO_CHANGE) {
-      return KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_SUGGESTION);
-    } else {
-      return GralConstants.EMPTY;
-    }
-  }
 }

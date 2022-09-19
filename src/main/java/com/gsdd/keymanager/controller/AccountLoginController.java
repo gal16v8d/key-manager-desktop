@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.function.BiFunction;
 import javax.swing.table.DefaultTableModel;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,6 +40,10 @@ public class AccountLoginController implements CrudController<AccountLogin> {
   private final AccountLoginView view;
   private final MainView parentFrame;
   private AccountLogin old;
+  
+  private BiFunction<String, Boolean, String> showOrHidePass =
+      (ePass, show) -> show.booleanValue() ? CypherKeyManager.DECYPHER.apply(ePass)
+          : KeyManagerConstants.MASK_TEXTO;
 
   public AccountLoginController(MainView parentFrame) {
     this.model = new AccountLoginService();
@@ -108,14 +113,14 @@ public class AccountLoginController implements CrudController<AccountLogin> {
       dtm.setValueAt(dto.getSessionLogin(), i, 0);
       dtm.setValueAt(dto.getAccountName(), i, 1);
       dtm.setValueAt(dto.getLogin(), i, 2);
-      String dp = showOrHidePass(dto.getPass(), false);
+      String dp = showOrHidePass.apply(dto.getPass(), false);
       dtm.setValueAt(dp, i, 3);
       dtm.setValueAt(dto.getUrl(), i, 4);
       Date fd = dto.getModificationDate();
       Date fa = Date.valueOf(LocalDate.now());
       String fecha = KeyManagerConstants.getFormater().format(fd);
       dtm.setValueAt(fecha, i, 5);
-      dtm.setValueAt(KeyManagerConstants.getSuggestion(fa, fd), i, 6);
+      dtm.setValueAt(KeyManagerConstants.SHOW_SUGGESTION.apply(fa, fd), i, 6);
       i++;
     }
   }
@@ -133,17 +138,13 @@ public class AccountLoginController implements CrudController<AccountLogin> {
                   : sessionData.getSessionDto().getAccountId())
           .login(getView().getTextUserName().getText().trim())
           .password(CypherKeyManager
-              .encodeKM(String.valueOf(getView().getTextPass().getPassword()).trim()))
+              .CYPHER.apply(String.valueOf(getView().getTextPass().getPassword()).trim()))
           .url(getView().getTextUrl().getText()).build();
       return data;
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       return null;
     }
-  }
-
-  private String showOrHidePass(String ePass, boolean show) {
-    return show ? CypherKeyManager.decodeKM(ePass) : KeyManagerConstants.MASK_TEXTO;
   }
 
   @Override
@@ -202,7 +203,7 @@ public class AccountLoginController implements CrudController<AccountLogin> {
     getView().getComboUsuario().setSelectedItem(dto.getLogin());
     getView().getTextCuenta().setText(dto.getAccountName());
     getView().getTextUserName().setText(dto.getLogin());
-    getView().getTextPass().setText(CypherKeyManager.decodeKM(dto.getPassword()));
+    getView().getTextPass().setText(CypherKeyManager.DECYPHER.apply(dto.getPassword()));
     getView().getTextUrl().setText(dto.getUrl());
   }
 

@@ -36,7 +36,7 @@ public class AccountService implements DbService<Account> {
       DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
       while (DBConnection.getInstance().getRs().next()) {
         boolean valid = Objects.equals(pass,
-            CypherKeyManager.decodeKM(DBConnection.getInstance().getRs().getString(5)));
+            CypherKeyManager.DECYPHER.apply(DBConnection.getInstance().getRs().getString(5)));
         if (valid) {
           account = Account.builder().accountId(DBConnection.getInstance().getRs().getLong(1))
               .firstName(DBConnection.getInstance().getRs().getString(2))

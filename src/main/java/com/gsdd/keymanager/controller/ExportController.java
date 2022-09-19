@@ -50,7 +50,7 @@ public class ExportController {
     if (option == 0) {
       passw = String.valueOf(pass.getPassword());
       log.info(dto.getLogin());
-      String currentPass = CypherKeyManager.decodeKM(dto.getPassword());
+      String currentPass = CypherKeyManager.DECYPHER.apply(dto.getPassword());
       boolean passMatch = Objects.equals(passw.trim(), currentPass);
       log.info("{}", passMatch);
       if (passMatch) {
