@@ -21,10 +21,10 @@ public final class KeyManagerLanguage {
   public static final String JOP_TITLE_ERROR = "jop.title.error";
   public static final String JOP_TITLE_SEARCH = "jop.title.search";
   public static final String JOP_TITLE_QUERY = "jop.title.query";
-  public static final String JOP_PASS = "job.pass";
-  public static final String JOP_PASS_OK = "job.pass.ok";
-  public static final String JOP_PASS_CANCEL = "job.pass.cancel";
-  public static final String JOP_PASS_MSG = "job.pass.msg";
+  public static final String JOP_PASS = "jop.pass";
+  public static final String JOP_PASS_OK = "jop.pass.ok";
+  public static final String JOP_PASS_CANCEL = "jop.pass.cancel";
+  public static final String JOP_PASS_MSG = "jop.pass.msg";
   public static final String JOP_EXPORT_SUCCESS = "jop.export.success";
   public static final String LABEL_USER = "label.user";
   public static final String LABEL_PASS = "label.pass";

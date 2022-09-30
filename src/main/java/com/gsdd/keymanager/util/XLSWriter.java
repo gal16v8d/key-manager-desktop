@@ -1,40 +1,37 @@
 package com.gsdd.keymanager.util;
 
+import com.gsdd.keymanager.constants.KeyManagerConstants;
+import com.gsdd.keymanager.entities.dto.AccountLoginDto;
+import com.gsdd.keymanager.lang.KeyManagerLanguage;
+import com.gsdd.xls.util.XLSUtil;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import com.gsdd.keymanager.constants.KeyManagerConstants;
-import com.gsdd.keymanager.entities.dto.CuentaXUsuarioDto;
-import com.gsdd.keymanager.lang.KeyManagerLanguage;
-import com.gsdd.xls.util.XLSUtil;
-import lombok.extern.slf4j.Slf4j;
 
 /**
- * 
  * @author Great System Development Dynamic <GSDD> <br>
- *         Alexander Galvis Grisales <br>
- *         alex.galvis.sistemas@gmail.com <br>
+ *     Alexander Galvis Grisales <br>
+ *     alex.galvis.sistemas@gmail.com <br>
  * @version 1.0
  * @since 2015-12-07
  */
 @Slf4j
 public class XLSWriter {
-  /**
-   * El workbook a escribir.
-   */
+  /** El workbook a escribir. */
   private Workbook workbook;
 
   /**
    * @author Great System Development Dynamic <GSDD> <br>
-   *         Alexander Galvis Grisales <br>
-   *         alex.galvis.sistemas@gmail.com <br>
+   *     Alexander Galvis Grisales <br>
+   *     alex.galvis.sistemas@gmail.com <br>
    * @version 1.0
    * @since 2015-12-07
    * @param objects lista de objetos.
@@ -51,8 +48,8 @@ public class XLSWriter {
     createHeaderRow(sheet, headers);
     for (Object o : objects) {
       Row row = sheet.createRow(++rowCount);
-      if (o instanceof CuentaXUsuarioDto) {
-        writeData((CuentaXUsuarioDto) o, row);
+      if (o instanceof AccountLoginDto data) {
+        writeData(data, row);
       }
     }
     try (FileOutputStream outputStream = new FileOutputStream(excelFilePath)) {
@@ -62,24 +59,30 @@ public class XLSWriter {
 
   /**
    * Método que escribe en excel los resultados obtenidos.
-   * 
+   *
    * @author Great System Development Dynamic <GSDD> <br>
-   *         Alexander Galvis Grisales <br>
-   *         alex.galvis.sistemas@gmail.com <br>
+   *     Alexander Galvis Grisales <br>
+   *     alex.galvis.sistemas@gmail.com <br>
    * @version 1.0
    * @since 2015-12-07
    * @param listR lista de objetos a mapear.
    * @param excelFilePath ruta de salida de excel.
    * @return true si se genera correctamente.
    */
-  public boolean writeExcel(List<CuentaXUsuarioDto> listR, String excelFilePath) {
+  public boolean writeExcel(List<AccountLoginDto> listR, String excelFilePath) {
     try {
       log.info(excelFilePath);
-      workbook = XLSUtil.getWorkbook(null, excelFilePath,
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_XLS));
+      workbook =
+          XLSUtil.getWorkbook(
+              null,
+              excelFilePath,
+              KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_XLS));
       if (!listR.isEmpty()) {
-        buildSheet(listR, KeyManagerConstants.EXPORT_NAME,
-            KeyManagerConstants.getAccountXUserTableModel(), excelFilePath);
+        buildSheet(
+            listR,
+            KeyManagerConstants.EXPORT_NAME,
+            KeyManagerConstants.getAccountXUserTableModel(),
+            excelFilePath);
       }
       return true;
     } catch (Exception e) {
@@ -113,31 +116,31 @@ public class XLSWriter {
 
   /**
    * @author Great System Development Dynamic <GSDD> <br>
-   *         Alexander Galvis Grisales <br>
-   *         alex.galvis.sistemas@gmail.com <br>
+   *     Alexander Galvis Grisales <br>
+   *     alex.galvis.sistemas@gmail.com <br>
    * @version 1.0
    * @since 2015-12-07
    * @param dto objeto de tipo CuentaXUsuarioDto.
    * @param row fila en la que se copian los valores.
    */
-  private void writeData(CuentaXUsuarioDto dto, Row row) {
+  private void writeData(AccountLoginDto dto, Row row) {
     Cell cnu = row.createCell(0);
-    cnu.setCellValue(dto.getNombreusuario());
+    cnu.setCellValue(dto.getSessionLogin());
     Cell cnc = row.createCell(1);
-    cnc.setCellValue(dto.getNombrecuenta());
+    cnc.setCellValue(dto.getAccountName());
     Cell cnuc = row.createCell(2);
-    cnuc.setCellValue(dto.getUsuario());
-    String dp = CypherKeyManager.decodeKM(dto.getPass());
+    cnuc.setCellValue(dto.getLogin());
+    String dp = CypherKeyManager.DECYPHER.apply(dto.getPass());
     Cell cncp = row.createCell(3);
     cncp.setCellValue(dp);
     Cell curl = row.createCell(4);
     curl.setCellValue(dto.getUrl());
-    Date fd = dto.getFecha();
+    Date fd = dto.getModificationDate();
     Date fa = Date.valueOf(LocalDate.now());
     String fecha = KeyManagerConstants.getFormater().format(fd);
     Cell cnf = row.createCell(5);
     cnf.setCellValue(fecha);
     Cell cnr = row.createCell(6);
-    cnr.setCellValue(KeyManagerConstants.getSuggestion(fa, fd));
+    cnr.setCellValue(KeyManagerConstants.SHOW_SUGGESTION.apply(fa, fd));
   }
 }

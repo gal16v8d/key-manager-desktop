@@ -1,37 +1,34 @@
 package com.gsdd.keymanager.controller;
 
+import com.gsdd.constants.GUIConstants;
+import com.gsdd.gui.util.JOptionListBox;
+import com.gsdd.gui.util.JOptionUtil;
+import com.gsdd.gui.util.JPaginateTable;
+import com.gsdd.keymanager.enums.ButtonOptions;
+import com.gsdd.keymanager.enums.MenuOption;
+import com.gsdd.keymanager.lang.KeyManagerLanguage;
+import com.gsdd.keymanager.service.DbService;
+import com.gsdd.keymanager.view.AbstractCrudView;
+import com.gsdd.keymanager.view.MainView;
 import java.awt.event.ActionEvent;
 import java.io.Serializable;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import org.slf4j.Logger;
-import com.gsdd.constants.GUIConstants;
-import com.gsdd.gui.util.JOptionListBox;
-import com.gsdd.gui.util.JOptionUtil;
-import com.gsdd.gui.util.JPaginateTable;
-import com.gsdd.keymanager.ejb.Ejb;
-import com.gsdd.keymanager.enums.ButtonOptions;
-import com.gsdd.keymanager.enums.MenuOption;
-import com.gsdd.keymanager.lang.KeyManagerLanguage;
-import com.gsdd.keymanager.view.AbstractCrudView;
-import com.gsdd.keymanager.view.MainView;
 
 /**
- * 
  * @author Great System Development Dynamic <GSDD> <br>
- *         Alexander Galvis Grisales <br>
- *         alex.galvis.sistemas@gmail.com <br>
+ *     Alexander Galvis Grisales <br>
+ *     alex.galvis.sistemas@gmail.com <br>
  * @version 1.0
- * 
  */
 public interface CrudController<T extends Serializable> {
 
   Logger getLogger();
 
-  <U extends Ejb<T>> U getEjbModel();
+  <U extends DbService<T>> U getEjbModel();
 
   MainView getParentFrame();
 
@@ -53,15 +50,20 @@ public interface CrudController<T extends Serializable> {
   default void buildView() {
     startButtons(false);
     startTable(getView().getDataTable());
-    getView().getSaveButton()
+    getView()
+        .getSaveButton()
         .addActionListener((ActionEvent evt) -> selectOption(ButtonOptions.SAVE));
-    getView().getUpdateButton()
+    getView()
+        .getUpdateButton()
         .addActionListener((ActionEvent evt) -> selectOption(ButtonOptions.UPDATE));
-    getView().getDeleteButton()
+    getView()
+        .getDeleteButton()
         .addActionListener((ActionEvent evt) -> selectOption(ButtonOptions.DELETE));
-    getView().getSearchButton()
+    getView()
+        .getSearchButton()
         .addActionListener((ActionEvent evt) -> selectOption(ButtonOptions.SEARCH));
-    getView().getBackButton()
+    getView()
+        .getBackButton()
         .addActionListener((ActionEvent evt) -> selectOption(ButtonOptions.BACK));
   }
 
@@ -80,7 +82,7 @@ public interface CrudController<T extends Serializable> {
     if (listDB != null) {
       updateTableModel(dtm, listDB);
     }
-    table.setPaginateSorter(new TableRowSorter<TableModel>(dtm));
+    table.setPaginateSorter(new TableRowSorter<>(dtm));
     table.setRowSorter(table.getPaginateSorter());
     table.initFilterAndButton(table.getPaginateSorter(), table.getItemsPerPage());
   }
@@ -106,8 +108,10 @@ public interface CrudController<T extends Serializable> {
         searchData();
         break;
       case BACK:
-        getParentFrame().sendRedirect(MenuOption.LOGIN.name(),
-            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_LOGIN));
+        getParentFrame()
+            .sendRedirect(
+                MenuOption.LOGIN.name(),
+                KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_LOGIN));
         break;
       default:
         break;
@@ -127,15 +131,18 @@ public interface CrudController<T extends Serializable> {
           getLogger().info(msg);
           fillTable(getView().getDataTable());
           JOptionUtil.showAppMessage(
-              KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SUCCESS), msg,
+              KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SUCCESS),
+              msg,
               JOptionPane.INFORMATION_MESSAGE);
           performUIActionsAfterSave();
         } else {
-          JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+          JOptionUtil.showErrorMessage(
+              GUIConstants.ERROR,
               KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
         }
       } else {
-        JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+        JOptionUtil.showErrorMessage(
+            GUIConstants.ERROR,
             KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_DATA));
       }
     } catch (Exception e) {
@@ -155,15 +162,18 @@ public interface CrudController<T extends Serializable> {
           getLogger().info(msg);
           fillTable(getView().getDataTable());
           JOptionUtil.showAppMessage(
-              KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SUCCESS), msg,
+              KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SUCCESS),
+              msg,
               JOptionPane.INFORMATION_MESSAGE);
           performUIActionsAfterUpdate();
         } else {
-          JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+          JOptionUtil.showErrorMessage(
+              GUIConstants.ERROR,
               KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
         }
       } else {
-        JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+        JOptionUtil.showErrorMessage(
+            GUIConstants.ERROR,
             KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_DATA));
       }
     } catch (Exception e) {
@@ -182,11 +192,13 @@ public interface CrudController<T extends Serializable> {
         getLogger().info(msg);
         fillTable(getView().getDataTable());
         JOptionUtil.showAppMessage(
-            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SUCCESS), msg,
+            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SUCCESS),
+            msg,
             JOptionPane.INFORMATION_MESSAGE);
         performUIActionsAfterDelete();
       } else {
-        JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+        JOptionUtil.showErrorMessage(
+            GUIConstants.ERROR,
             KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
       }
     } catch (Exception e) {
@@ -200,16 +212,19 @@ public interface CrudController<T extends Serializable> {
   default void searchData() {
     try {
       List<String> param = getEjbModel().suggest();
-      JOptionListBox jolb = new JOptionListBox(param,
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SEARCH),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_U_USER));
+      JOptionListBox jolb =
+          new JOptionListBox(
+              param,
+              KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_SEARCH),
+              KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_U_USER));
       String value = jolb.getSelectedValue();
       if (value != null) {
         T searchData = getEjbModel().search(value);
         if (searchData != null) {
           performUIActionsAfterSearch(searchData);
         } else {
-          JOptionUtil.showErrorMessage(GUIConstants.ERROR,
+          JOptionUtil.showErrorMessage(
+              GUIConstants.ERROR,
               KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
         }
       }
@@ -218,5 +233,4 @@ public interface CrudController<T extends Serializable> {
       JOptionUtil.showErrorMessage(GUIConstants.ERROR, e.getMessage());
     }
   }
-
 }

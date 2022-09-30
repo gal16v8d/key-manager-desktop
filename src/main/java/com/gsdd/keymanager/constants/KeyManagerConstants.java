@@ -1,23 +1,23 @@
 package com.gsdd.keymanager.constants;
 
+import com.gsdd.constants.GralConstants;
+import com.gsdd.keymanager.lang.KeyManagerLanguage;
 import java.io.File;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-import com.gsdd.constants.GralConstants;
-import com.gsdd.keymanager.lang.KeyManagerLanguage;
+import java.util.function.BiFunction;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
  * Constantes asociadas al modelo del programa.
- * 
+ *
  * @author Great System Development Dynamic <GSDD> <br>
- *         Alexander Galvis Grisales <br>
- *         alex.galvis.sistemas@gmail.com <br>
+ *     Alexander Galvis Grisales <br>
+ *     alex.galvis.sistemas@gmail.com <br>
  * @version 1.0
- * 
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class KeyManagerConstants {
@@ -28,7 +28,7 @@ public final class KeyManagerConstants {
   public static final String DERBY_LOCATION = "jdbc:derby:" + DERBY_DB_NAME + ";";
   public static final String DERBY_CREATE = "create=true";
   public static final String DERBY_SHUTDOWN = "shutdown=true";
-  public static final String DERBY_MAIN_TABLE = "USUARIO";
+  public static final String DERBY_MAIN_TABLE = "ACCOUNT";
   public static final String DERBY_MAIN_SCHEMA = "APP";
   public static final String DERBY_DATE_FORMAT = "yyyy-MM-dd";
 
@@ -52,20 +52,35 @@ public final class KeyManagerConstants {
   public static final String MASK_TEXTO = "******";
   public static final char HIDE_TEXT = '*';
 
-  protected static final String[] ACCOUNTXUSER_TBL_MODEL =
-      {KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_USER),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_USER),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_PASS),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_URL),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_DATE),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_SUGGESTION)};
+  protected static final String[] ACCOUNTXUSER_TBL_MODEL = {
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_USER),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_USER),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_PASS),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_URL),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_DATE),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_SUGGESTION)
+  };
 
-  protected static final String[] USER_TBL_MODEL =
-      {KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_FN),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_LN),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_USER),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ROLE)};
+  protected static final String[] USER_TBL_MODEL = {
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_FN),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_LN),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_USER),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ROLE)
+  };
+  
+  /**
+   * Generates a suggestion depending on difference in time, since password changes.
+   *
+   * @param currentDate
+   * @param dbDate date in database.
+   * @return suggestion depending on time.
+   */
+  public static final BiFunction<Date, Date, String> SHOW_SUGGESTION = (currentDate,
+      dbDate) -> (TimeUnit.MILLISECONDS
+          .toDays(currentDate.getTime() - dbDate.getTime()) >= TIME_TO_CHANGE)
+              ? KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_SUGGESTION)
+              : GralConstants.EMPTY;
 
   public static String[] getAccountXUserTableModel() {
     return ACCOUNTXUSER_TBL_MODEL;
@@ -77,27 +92,11 @@ public final class KeyManagerConstants {
 
   /**
    * Date control formatter.
-   * 
+   *
    * @return formatter for derby dates.
    */
   public static SimpleDateFormat getFormater() {
     return new SimpleDateFormat(DERBY_DATE_FORMAT, new Locale(LOCALE_ES));
   }
 
-  /**
-   * Generates a suggestion depending on difference in time, since password changes.
-   * 
-   * @param currentDate
-   * @param dbDate date in database.
-   * @return suggestion depending on time.
-   */
-  public static String getSuggestion(Date currentDate, Date dbDate) {
-    long duration = currentDate.getTime() - dbDate.getTime();
-    long days = TimeUnit.MILLISECONDS.toDays(duration);
-    if (days >= TIME_TO_CHANGE) {
-      return KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_SUGGESTION);
-    } else {
-      return GralConstants.EMPTY;
-    }
-  }
 }

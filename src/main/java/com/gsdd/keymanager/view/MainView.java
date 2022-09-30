@@ -1,5 +1,8 @@
 package com.gsdd.keymanager.view;
 
+import com.gsdd.keymanager.constants.KeyManagerConstants;
+import com.gsdd.keymanager.lang.KeyManagerLanguage;
+import com.gsdd.keymanager.util.ExecutorKeyManager;
 import java.awt.CardLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -8,18 +11,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import com.gsdd.keymanager.constants.KeyManagerConstants;
-import com.gsdd.keymanager.lang.KeyManagerLanguage;
-import com.gsdd.keymanager.util.ExecutorKeyManager;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 
  * @author Great System Development Dynamic <GSDD> <br>
- *         Alexander Galvis Grisales <br>
- *         alex.galvis.sistemas@gmail.com <br>
+ *     Alexander Galvis Grisales <br>
+ *     alex.galvis.sistemas@gmail.com <br>
  * @version 1.0
  */
 @Slf4j
@@ -116,5 +115,4 @@ public class MainView extends JFrame {
     changeTitle(title);
     getCl().show(getCards(), panel);
   }
-
 }
