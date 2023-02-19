@@ -65,9 +65,7 @@ public class AccountLoginController implements CrudController<AccountLogin> {
 
   public void fillCombo() {
     List<String> user = getUserModel().suggest();
-    for (String u : user) {
-      getView().getComboUsuario().addItem(u);
-    }
+    user.stream().forEach(getView().getComboUsuario()::addItem);
     getView().getComboUsuario().repaint();
   }
 

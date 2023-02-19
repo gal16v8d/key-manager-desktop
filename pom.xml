@@ -27,7 +27,7 @@
 
 		<derby.version>10.12.1.1</derby.version>
 		<db-util.version>2.0.2</db-util.version>
-		<cypher-util.version>2.0.2</cypher-util.version>
+		<cypher-util.version>2.0.3</cypher-util.version>
 		<gui-util.version>2.0.2</gui-util.version>
 		<xls-util.version>2.0.2</xls-util.version>
 	</properties>
