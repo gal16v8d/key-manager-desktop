@@ -4,7 +4,7 @@ import com.gsdd.dbutil.DBConnection;
 import com.gsdd.keymanager.constants.QueryConstants;
 import com.gsdd.keymanager.entities.Account;
 import com.gsdd.keymanager.enums.RolEnum;
-import com.gsdd.keymanager.util.CypherKeyManager;
+import com.gsdd.keymanager.util.CipherKeyManager;
 import com.gsdd.keymanager.util.SessionData;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class AccountService implements DbService<Account> {
       DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
       while (DBConnection.getInstance().getRs().next()) {
         boolean valid = Objects.equals(pass,
-            CypherKeyManager.DECYPHER.apply(DBConnection.getInstance().getRs().getString(5)));
+            CipherKeyManager.DECYPHER.apply(DBConnection.getInstance().getRs().getString(5)));
         if (valid) {
           account = Account.builder().accountId(DBConnection.getInstance().getRs().getLong(1))
               .firstName(DBConnection.getInstance().getRs().getString(2))

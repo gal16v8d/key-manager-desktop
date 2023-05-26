@@ -2,8 +2,9 @@ package com.gsdd.keymanager.enums;
 
 public enum MenuOption {
   // Panels
-  CUENTAXUSUARIO,
-  USUARIO,
+  ACCOUNT_LOGIN,
+  ACCOUNT_TYPE,
+  USER,
   LOGIN,
   // Actions
   CREDITS,

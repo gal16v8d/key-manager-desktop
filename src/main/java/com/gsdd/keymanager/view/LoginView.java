@@ -26,10 +26,10 @@ public class LoginView extends AbstractCommonView {
   private static final int SPACE_Y = 30;
   private static final int COL_LENGTH = 16;
   
-  private JLabel labelUsuario;
+  private JLabel labelUser;
   private JLabel labelPass;
 
-  private JTextField textUsuario;
+  private JTextField textUser;
   private JPasswordField textPass;
 
   private JButton loginButton;
@@ -43,7 +43,7 @@ public class LoginView extends AbstractCommonView {
   }
 
   private void initLabels() {
-    labelUsuario =
+    labelUser =
         addLabel(
             KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_USER),
             POS_INI_X_LABEL,
@@ -56,10 +56,10 @@ public class LoginView extends AbstractCommonView {
   }
 
   private void initFields() {
-    textUsuario = new JTextField();
-    textUsuario.setBounds(POS_INI_X_TEXTO, POS_INI_Y_LABEL, DEF_WIDTH, DEF_HEIGHT);
-    textUsuario.setColumns(COL_LENGTH);
-    add(textUsuario);
+    textUser = new JTextField();
+    textUser.setBounds(POS_INI_X_TEXTO, POS_INI_Y_LABEL, DEF_WIDTH, DEF_HEIGHT);
+    textUser.setColumns(COL_LENGTH);
+    add(textUser);
 
     textPass = new JPasswordField();
     textPass.setBounds(POS_INI_X_TEXTO, POS_INI_Y_LABEL + SPACE_Y, DEF_WIDTH, DEF_HEIGHT);

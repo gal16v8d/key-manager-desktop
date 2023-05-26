@@ -41,7 +41,7 @@ public class LoginController {
 
   private void authenticate() {
     try {
-      String username = getView().getTextUsuario().getText().trim();
+      String username = getView().getTextUser().getText().trim();
       String pass = String.valueOf(getView().getTextPass().getPassword()).trim();
       SessionData sessionData = SessionData.getInstance();
       sessionData.setSessionDto(getModel().login(username, pass));
@@ -69,14 +69,14 @@ public class LoginController {
   }
 
   private void clearText() {
-    getView().getTextUsuario().setText(GralConstants.EMPTY);
+    getView().getTextUser().setText(GralConstants.EMPTY);
     getView().getTextPass().setText(GralConstants.EMPTY);
   }
 
   private void enableComponents(boolean flag) {
-    getView().getLabelUsuario().setVisible(flag);
+    getView().getLabelUser().setVisible(flag);
     getView().getLabelPass().setVisible(flag);
-    getView().getTextUsuario().setVisible(flag);
+    getView().getTextUser().setVisible(flag);
     getView().getTextPass().setVisible(flag);
     getView().getLoginButton().setVisible(flag);
   }

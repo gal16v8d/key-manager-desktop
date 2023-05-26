@@ -28,7 +28,7 @@ public interface CrudController<T extends Serializable> {
 
   Logger getLogger();
 
-  <U extends DbService<T>> U getEjbModel();
+  <U extends DbService<T>> U getModel();
 
   MainView getParentFrame();
 
@@ -72,7 +72,7 @@ public interface CrudController<T extends Serializable> {
   void setTableModel(JPaginateTable table);
 
   default void fillTable(JPaginateTable table) {
-    List<?> listDB = getEjbModel().list();
+    List<?> listDB = getModel().list();
     DefaultTableModel dtm = (DefaultTableModel) table.getModel();
     int tam;
     tam = dtm.getRowCount();
@@ -126,7 +126,7 @@ public interface CrudController<T extends Serializable> {
     try {
       T data = getDataFromForm();
       if (validateData(data)) {
-        if (getEjbModel().save(data)) {
+        if (getModel().save(data)) {
           String msg = getSuccessMsg(KeyManagerLanguage.MSG_INFO_SAVE, data);
           getLogger().info(msg);
           fillTable(getView().getDataTable());
@@ -157,7 +157,7 @@ public interface CrudController<T extends Serializable> {
     try {
       T data = getDataFromForm();
       if (validateData(data)) {
-        if (getEjbModel().update(data, oldData != null ? oldData : data)) {
+        if (getModel().update(data, oldData != null ? oldData : data)) {
           String msg = getSuccessMsg(KeyManagerLanguage.MSG_INFO_UPDATE, data);
           getLogger().info(msg);
           fillTable(getView().getDataTable());
@@ -187,7 +187,7 @@ public interface CrudController<T extends Serializable> {
   default void deleteData() {
     try {
       T data = getDataFromForm();
-      if (getEjbModel().delete(data)) {
+      if (getModel().delete(data)) {
         String msg = getSuccessMsg(KeyManagerLanguage.MSG_INFO_DELETE, data);
         getLogger().info(msg);
         fillTable(getView().getDataTable());
@@ -211,7 +211,7 @@ public interface CrudController<T extends Serializable> {
 
   default void searchData() {
     try {
-      List<String> param = getEjbModel().suggest();
+      List<String> param = getModel().suggest();
       JOptionListBox jolb =
           new JOptionListBox(
               param,
@@ -219,7 +219,7 @@ public interface CrudController<T extends Serializable> {
               KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_U_USER));
       String value = jolb.getSelectedValue();
       if (value != null) {
-        T searchData = getEjbModel().search(value);
+        T searchData = getModel().search(value);
         if (searchData != null) {
           performUIActionsAfterSearch(searchData);
         } else {

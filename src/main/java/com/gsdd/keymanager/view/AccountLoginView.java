@@ -21,9 +21,11 @@ public class AccountLoginView extends AbstractCrudView {
 
   private static final long serialVersionUID = 1L;
   private static final int INI_X_LABEL_C3 = 480;
+  private static final int POS_Y_ROW_3 = 120;
 
-  private JComboBox<String> comboUsuario;
-  private JValidateTextField textCuenta;
+  private JComboBox<String> comboUser;
+  private JComboBox<String> comboType;
+  private JValidateTextField textAccount;
   private JValidateTextField textUserName;
   private JPasswordField textPass;
   private JValidateTextField textUrl;
@@ -41,7 +43,7 @@ public class AccountLoginView extends AbstractCrudView {
 
   private void initLabels() {
     addLabel(
-        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_CXU_ACCOUNT),
+        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_AL_ACCOUNT),
         INI_X_LABEL_C1,
         POS_Y_ROW_1);
     addLabel(
@@ -49,25 +51,33 @@ public class AccountLoginView extends AbstractCrudView {
         INI_X_LABEL_C2,
         POS_Y_ROW_1);
     addLabel(
-        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_CXU_USER),
+        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_AL_USER),
         INI_X_LABEL_C1,
         POS_Y_ROW_2);
     addLabel(
-        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_CXU_PASS),
+        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_AL_PASS),
         INI_X_LABEL_C2,
         POS_Y_ROW_2);
     addLabel(
-        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_CXU_URL),
+        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_AL_TYPE),
         INI_X_LABEL_C3,
         POS_Y_ROW_1);
+    addLabel(
+        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.LABEL_AL_URL),
+        INI_X_LABEL_C1,
+        POS_Y_ROW_3);
   }
 
   private void initFields() {
-    textCuenta = addValidateTextField(POS_INI_X_TEXT_C1, POS_Y_ROW_1);
+    textAccount = addValidateTextField(POS_INI_X_TEXT_C1, POS_Y_ROW_1);
 
-    comboUsuario = new JComboBox<>();
-    comboUsuario.setBounds(POS_INI_X_TEXT_C2, POS_Y_ROW_1, DEF_WIDTH, DEF_HEIGHT);
-    add(comboUsuario);
+    comboUser = new JComboBox<>();
+    comboUser.setBounds(POS_INI_X_TEXT_C2, POS_Y_ROW_1, DEF_WIDTH, DEF_HEIGHT);
+    add(comboUser);
+    
+    comboType = new JComboBox<>();
+    comboType.setBounds(POS_INI_X_TEXT_C3, POS_Y_ROW_1, DEF_WIDTH, DEF_HEIGHT);
+    add(comboType);
 
     textUserName = addValidateTextField(POS_INI_X_TEXT_C1, POS_Y_ROW_2);
 
@@ -75,7 +85,7 @@ public class AccountLoginView extends AbstractCrudView {
     textPass.setBounds(POS_INI_X_TEXT_C2, POS_Y_ROW_2, DEF_WIDTH, DEF_HEIGHT);
     add(textPass);
 
-    textUrl = addValidateTextField(POS_INI_X_TEXT_C3, POS_Y_ROW_1);
+    textUrl = addValidateTextField(POS_INI_X_TEXT_C1, POS_Y_ROW_3);
   }
 
   private void initButtons() {

@@ -33,8 +33,9 @@ public class MainController {
 
   private final MainView view;
   private LoginController loginController;
-  private AccountLoginController cuentaXUsuarioController;
-  private AccountController usuarioController;
+  private AccountLoginController accountLoginController;
+  private AccountTypeController accountTypeController;
+  private AccountController userController;
   private ExportController exportController;
 
   public MainController(MainView view) {
@@ -43,16 +44,14 @@ public class MainController {
   }
 
   private void buildView() {
+    getView().addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent e) {
+        exitApp();
+      }
+    });
     getView()
-        .addWindowListener(
-            new WindowAdapter() {
-              @Override
-              public void windowClosing(WindowEvent e) {
-                exitApp();
-              }
-            });
-    getView()
-        .changeTitle(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_CUENTAXUSER));
+        .changeTitle(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_ACCOUNT_LOGIN));
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     getView().setBounds(0, 0, (int) dim.getWidth(), (int) dim.getHeight());
     initPanel();
@@ -71,23 +70,19 @@ public class MainController {
   }
 
   private void addMenuActions() {
-    getView()
-        .getCuentaXUsuarioMenuItem()
-        .addActionListener((ActionEvent evt) -> selectOption(MenuOption.CUENTAXUSUARIO));
-    getView()
-        .getUsuarioMenuItem()
-        .addActionListener((ActionEvent evt) -> selectOption(MenuOption.USUARIO));
-    getView()
-        .getExportMenuItem()
+    getView().getAccountUserMenuItem()
+        .addActionListener((ActionEvent evt) -> selectOption(MenuOption.ACCOUNT_LOGIN));
+    getView().getAccountTypeMenuItem()
+        .addActionListener((ActionEvent evt) -> selectOption(MenuOption.ACCOUNT_TYPE));
+    getView().getUserMenuItem()
+        .addActionListener((ActionEvent evt) -> selectOption(MenuOption.USER));
+    getView().getExportMenuItem()
         .addActionListener((ActionEvent evt) -> selectOption(MenuOption.EXPORT));
-    getView()
-        .getSessionMenuItem()
+    getView().getSessionMenuItem()
         .addActionListener((ActionEvent evt) -> selectOption(MenuOption.SESSION));
-    getView()
-        .getExitMenuItem()
+    getView().getExitMenuItem()
         .addActionListener((ActionEvent evt) -> selectOption(MenuOption.EXIT));
-    getView()
-        .getInfoMenuItem()
+    getView().getInfoMenuItem()
         .addActionListener((ActionEvent evt) -> selectOption(MenuOption.CREDITS));
   }
 
@@ -104,47 +99,59 @@ public class MainController {
 
   private void selectOption(MenuOption op) {
     switch (op) {
-      case CUENTAXUSUARIO -> navigateToCuentaXUsuario();
+      case ACCOUNT_LOGIN -> navigateToAccountLogin();
+      case ACCOUNT_TYPE -> navigateToAccountType();
       case CREDITS -> showCredits();
       case EXPORT -> exportData();
       case EXIT -> exitApp();
       case SESSION -> closeSession();
-      case USUARIO -> navigateToUsuario();
-      default -> log.warn("Operacion no reconocida: {}", op);
+      case USER -> navigateToUser();
+      default -> log.warn("Operation not found: {}", op);
     }
   }
 
-  private void navigateToUsuario() {
+  private void navigateToUser() {
     if (SessionData.getInstance().getSessionDto() != null) {
-      if (getUsuarioController() == null) {
-        setUsuarioController(new AccountController(getView()));
+      if (getUserController() == null) {
+        setUserController(new AccountController(getView()));
       }
       addPanel(
-          getUsuarioController().getView(),
-          MenuOption.USUARIO.name(),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_USUARIO));
+          getUserController().getView(),
+          MenuOption.USER.name(),
+          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_USER));
     } else {
       showMessageBasedOnLogin();
     }
   }
 
-  private void navigateToCuentaXUsuario() {
+  private void navigateToAccountLogin() {
     if (SessionData.getInstance().getSessionDto() != null) {
-      setCuentaXUsuarioController(new AccountLoginController(getView()));
+      setAccountLoginController(new AccountLoginController(getView()));
       addPanel(
-          getCuentaXUsuarioController().getView(),
-          MenuOption.CUENTAXUSUARIO.name(),
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_CUENTAXUSER));
+          getAccountLoginController().getView(),
+          MenuOption.ACCOUNT_LOGIN.name(),
+          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_ACCOUNT_LOGIN));
+    } else {
+      showMessageBasedOnLogin();
+    }
+  }
+
+  private void navigateToAccountType() {
+    if (SessionData.getInstance().getSessionDto() != null) {
+      setAccountTypeController(new AccountTypeController(getView()));
+      addPanel(
+          getAccountTypeController().getView(),
+          MenuOption.ACCOUNT_TYPE.name(),
+          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_ACCOUNT_TYPE));
     } else {
       showMessageBasedOnLogin();
     }
   }
 
   private void closeSession() {
-    getView()
-        .sendRedirect(
-            MenuOption.LOGIN.name(),
-            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_LOGIN));
+    getView().sendRedirect(
+        MenuOption.LOGIN.name(),
+        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_LOGIN));
     SessionData.getInstance().setSessionDto(null);
     getLoginController().getInit();
   }
@@ -155,8 +162,7 @@ public class MainController {
       areaMC.setVisible(true);
       areaMC.setEditable(false);
       areaMC.setText(
-          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_AUTHOR)
-              + "\n"
+          KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_AUTHOR) + "\n"
               + KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_CP));
       JOptionPane.showMessageDialog(
           null,
@@ -178,9 +184,8 @@ public class MainController {
             GUIConstants.ERROR,
             KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_EXPORT));
       } else {
-        String out =
-            getDirectory(
-                KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_FILECHOOSER));
+        String out = getDirectory(
+            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_FILECHOOSER));
         if (out == null) {
           JOptionUtil.showAppMessage(
               KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.JOP_TITLE_EXPORT),
@@ -213,15 +218,14 @@ public class MainController {
   }
 
   private void exitApp() {
-    int z =
-        JOptionPane.showConfirmDialog(
-            null,
-            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_EXIT),
-            KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_VERSION),
-            JOptionPane.YES_NO_OPTION);
+    int z = JOptionPane.showConfirmDialog(
+        null,
+        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_EXIT),
+        KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TEXT_INFO_VERSION),
+        JOptionPane.YES_NO_OPTION);
     if (z == JOptionPane.YES_OPTION) {
       getView().setVisible(false);
-      log.info("Cerrando...");
+      log.info("CLosing...");
       shutdownDB();
       System.exit(0);
     }
@@ -230,8 +234,8 @@ public class MainController {
   private void shutdownDB() {
     try {
       DBConnection.getInstance().disconnectDB();
-      DriverManager.getConnection(
-          KeyManagerConstants.DERBY_LOCATION + KeyManagerConstants.DERBY_SHUTDOWN);
+      DriverManager
+          .getConnection(KeyManagerConstants.DERBY_LOCATION + KeyManagerConstants.DERBY_SHUTDOWN);
     } catch (SQLException e) {
       if (!e.getMessage()
           .contains("Database '" + KeyManagerConstants.DERBY_DB_NAME + "' shutdown")) {

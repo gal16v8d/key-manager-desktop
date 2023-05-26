@@ -31,8 +31,9 @@ public class MainView extends JFrame {
   private CardLayout cl;
   private JMenu admonMenu;
   private JMenu sessionMenu;
-  private JMenuItem cuentaXUsuarioMenuItem;
-  private JMenuItem usuarioMenuItem;
+  private JMenuItem accountTypeMenuItem;
+  private JMenuItem accountUserMenuItem;
+  private JMenuItem userMenuItem;
   private JMenuItem exportMenuItem;
   private JMenuItem sessionMenuItem;
   private JMenuItem exitMenuItem;
@@ -70,37 +71,19 @@ public class MainView extends JFrame {
   }
 
   private void addAdmonMenuItems() {
-    setCuentaXUsuarioMenuItem(addCuentaXUsuarioMenuItem());
+    setAccountTypeMenuItem(addMenuItem(KeyManagerLanguage.MENU_ITEM_ACCOUNT_TYPE, admonMenu));
     admonMenu.add(new JSeparator());
-    setUsuarioMenuItem(addUsuarioMenuItem());
+    setAccountUserMenuItem(addMenuItem(KeyManagerLanguage.MENU_ITEM_ACCOUNT_USER, admonMenu));
     admonMenu.add(new JSeparator());
-    setExportMenuItem(addExportMenuItem());
-  }
-
-  private JMenuItem addCuentaXUsuarioMenuItem() {
-    return addMenuItem(KeyManagerLanguage.MENU_ITEM_CUENTAXUSUARIO, admonMenu);
-  }
-
-  private JMenuItem addUsuarioMenuItem() {
-    return addMenuItem(KeyManagerLanguage.MENU_ITEM_USUARIO, admonMenu);
-  }
-
-  private JMenuItem addExportMenuItem() {
-    return addMenuItem(KeyManagerLanguage.MENU_ITEM_EXPORT, admonMenu);
+    setUserMenuItem(addMenuItem(KeyManagerLanguage.MENU_ITEM_USER, admonMenu));
+    admonMenu.add(new JSeparator());
+    setExportMenuItem(addMenuItem(KeyManagerLanguage.MENU_ITEM_EXPORT, admonMenu));
   }
 
   private void addSessionMenuItems() {
-    setSessionMenuItem(addSessionMenuItem());
+    setSessionMenuItem(addMenuItem(KeyManagerLanguage.MENU_ITEM_SESSION, sessionMenu));
     sessionMenu.add(new JSeparator());
-    setExitMenuItem(addExitMenuItem());
-  }
-
-  private JMenuItem addSessionMenuItem() {
-    return addMenuItem(KeyManagerLanguage.MENU_ITEM_SESSION, sessionMenu);
-  }
-
-  private JMenuItem addExitMenuItem() {
-    return addMenuItem(KeyManagerLanguage.MENU_ITEM_EXIT, sessionMenu);
+    setExitMenuItem(addMenuItem(KeyManagerLanguage.MENU_ITEM_EXIT, sessionMenu));
   }
 
   private void addInfoMenuItems(JMenu menuInfo) {

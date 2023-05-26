@@ -65,10 +65,11 @@ public final class QueryConstants {
       WHERE account_name = ? AND account_id = ?
       """;
   private static final String ACCOUNT_LOGIN_SELECT = """
-      SELECT al.account_id, al.account_name, a.login,
+      SELECT al.account_id, al.account_name, t.type_id, a.login,
       al.url, al.login, al.password, al.modification_date
       FROM account_login al
-      JOIN account a ON (a.account_id = al.account_id)
+      LEFT JOIN account a ON (a.account_id = al.account_id)
+      LEFT JOIN account_type t ON (al.type_id = t.type_id)
       """;
   public static final String ACCOUNT_LOGIN_LIST = """
       %s
@@ -90,29 +91,32 @@ public final class QueryConstants {
       """;
   // Account type queries
   public static final String ACCOUNT_TYPE_INSERT = """
-      INSERT INTO account_type (type_id, name, account_id)
-      VALUES (?, ?, ?)
+      INSERT INTO account_type (type_id, name)
+      VALUES (?, ?)
       """;
   public static final String ACCOUNT_TYPE_DELETE = """
       DELETE FROM account_type
       WHERE type_id = ?
       """;
   public static final String ACCOUNT_TYPE_UPDATE = """
-      UPDATE account_type SET name = ?, account_id = ? 
+      UPDATE account_type SET name = ?
       WHERE type_id = ?
       """;
   private static final String ACCOUNT_TYPE_SELECT =
-      "SELECT type_id, name, account_id ";
+      "SELECT type_id, name ";
   public static final String ACCOUNT_TYPE_LIST = """
       %s
       FROM account_type
-      WHERE type_id = ?
       ORDER BY name
+      """.formatted(ACCOUNT_TYPE_SELECT);
+  public static final String ACCOUNT_TYPE_SEARCH = """
+      %s
+      FROM account_type
+      WHERE name = ?
       """.formatted(ACCOUNT_TYPE_SELECT);
   public static final String ACCOUNT_TYPE_MAX = """
       SELECT MAX(type_id) 
       FROM account_type
-      WHERE account_id = ?
       """;
   // Validation query
   public static final String VALIDATE_DATA = "SELECT COUNT(account_id) FROM account";

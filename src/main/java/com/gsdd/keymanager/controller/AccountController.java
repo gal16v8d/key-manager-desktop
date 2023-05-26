@@ -7,7 +7,7 @@ import com.gsdd.keymanager.entities.Account;
 import com.gsdd.keymanager.enums.RolEnum;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
 import com.gsdd.keymanager.service.AccountService;
-import com.gsdd.keymanager.util.CypherKeyManager;
+import com.gsdd.keymanager.util.CipherKeyManager;
 import com.gsdd.keymanager.view.MainView;
 import com.gsdd.keymanager.view.AccountView;
 import java.util.List;
@@ -54,14 +54,8 @@ public class AccountController implements CrudController<Account> {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
-  public AccountService getEjbModel() {
-    return getModel();
-  }
-
-  @Override
   @SuppressWarnings("rawtypes")
-  public void setTableModel(JPaginateTable tabla) {
+  public void setTableModel(JPaginateTable table) {
     Class[] types =
         new Class[] {
           java.lang.Object.class,
@@ -69,16 +63,16 @@ public class AccountController implements CrudController<Account> {
           java.lang.Object.class,
           java.lang.Object.class
         };
-    tabla.setTableModel(KeyManagerConstants.getUserTableModel(), types);
-    tabla.setItemsPerPage(KeyManagerConstants.TBL_PAGE_SIZE);
+    table.setTableModel(KeyManagerConstants.getAccountTableModel(), types);
+    table.setItemsPerPage(KeyManagerConstants.TBL_PAGE_SIZE);
   }
 
   @Override
   @SuppressWarnings("unchecked")
   public void updateTableModel(DefaultTableModel dtm, List<?> data) {
-    List<Account> listDB = (List<Account>) data;
+    List<Account> listDb = (List<Account>) data;
     int i = 0;
-    for (Account u : listDB) {
+    for (Account u : listDb) {
       dtm.addRow(new Object[1]);
       dtm.setValueAt(u.getFirstName(), i, 0);
       dtm.setValueAt(u.getLastName(), i, 1);
@@ -95,28 +89,28 @@ public class AccountController implements CrudController<Account> {
 
   @Override
   public Account getDataFromForm() {
-    Account datos = null;
+    Account account;
     try {
-      String textoLabel = getView().getLabelPk().getText();
+      String labelText = getView().getLabelPk().getText();
       Long id =
-          (textoLabel != null && !textoLabel.equals(GralConstants.EMPTY)
-              ? Long.parseLong(textoLabel.trim())
+          (labelText != null && !labelText.equals(GralConstants.EMPTY)
+              ? Long.parseLong(labelText.trim())
               : (long) (System.nanoTime() * (Math.random())));
-      datos =
+      account =
           Account.builder().accountId(id).firstName(getView().getTextFirstName().getText().trim())
               .lastName(getView().getTextLastName().getText().trim())
               .login(getView().getTextLogin().getText().trim())
-              .password(CypherKeyManager
+              .password(CipherKeyManager
                   .CYPHER.apply(String.valueOf(getView().getTextPass().getPassword()).trim()))
               .role(RolEnum.ADMIN.name().equals(getView().getLabelVRole().getText())
                   ? Long.valueOf(RolEnum.ADMIN.getCode())
                   : Long.valueOf(RolEnum.USER.getCode()))
               .build();
-      return datos;
     } catch (Exception e) {
       log.error(e.getMessage(), e);
-      return null;
+      account = null;
     }
+    return account;
   }
 
   @Override
@@ -170,7 +164,7 @@ public class AccountController implements CrudController<Account> {
     getView().getTextFirstName().setText(dto.getFirstName());
     getView().getTextLastName().setText(dto.getLastName());
     getView().getTextLogin().setText(dto.getLogin());
-    getView().getTextPass().setText(CypherKeyManager.DECYPHER.apply(dto.getPassword()));
+    getView().getTextPass().setText(CipherKeyManager.DECYPHER.apply(dto.getPassword()));
     getView()
         .getLabelVRole()
         .setText(

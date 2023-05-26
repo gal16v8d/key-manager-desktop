@@ -98,11 +98,12 @@ public class AccountLoginService implements DbService<AccountLogin> {
         AccountLoginDto c =
             AccountLoginDto.builder().accountId(DBConnection.getInstance().getRs().getLong(1))
                 .accountName(DBConnection.getInstance().getRs().getString(2))
-                .sessionLogin(DBConnection.getInstance().getRs().getString(3))
-                .url(DBConnection.getInstance().getRs().getString(4))
-                .login(DBConnection.getInstance().getRs().getString(5))
-                .pass(DBConnection.getInstance().getRs().getString(6))
-                .modificationDate(DBConnection.getInstance().getRs().getDate(7)).build();
+                .accountType(DBConnection.getInstance().getRs().getString(3))
+                .sessionLogin(DBConnection.getInstance().getRs().getString(4))
+                .url(DBConnection.getInstance().getRs().getString(5))
+                .login(DBConnection.getInstance().getRs().getString(6))
+                .pass(DBConnection.getInstance().getRs().getString(7))
+                .modificationDate(DBConnection.getInstance().getRs().getDate(8)).build();
         lc.add(c);
       }
     } catch (SQLException e) {
@@ -136,7 +137,7 @@ public class AccountLoginService implements DbService<AccountLogin> {
   }
 
   @Override
-  public AccountLogin search(String nombreCuenta) {
+  public AccountLogin search(String accountName) {
     AccountLogin accountLogin = null;
     try {
       DBConnection.getInstance()
@@ -144,7 +145,7 @@ public class AccountLoginService implements DbService<AccountLogin> {
               DBConnection.getInstance()
                   .getCon()
                   .prepareStatement(QueryConstants.ACCOUNT_LOGIN_SEARCH));
-      DBConnection.getInstance().getPst().setString(1, nombreCuenta);
+      DBConnection.getInstance().getPst().setString(1, accountName);
       DBConnection.getInstance()
           .getPst()
           .setLong(2, SessionData.getInstance().getSessionDto().getAccountId());
@@ -152,10 +153,12 @@ public class AccountLoginService implements DbService<AccountLogin> {
       while (DBConnection.getInstance().getRs().next()) {
         accountLogin = AccountLogin.builder()
             .accountId(DBConnection.getInstance().getRs().getLong(1))
-            .login(DBConnection.getInstance().getRs().getString(5))
-            .password(DBConnection.getInstance().getRs().getString(6))
+            .login(DBConnection.getInstance().getRs().getString(6))
+            .password(DBConnection.getInstance().getRs().getString(7))
             .accountName(DBConnection.getInstance().getRs().getString(2))
-            .url(DBConnection.getInstance().getRs().getString(4))
+            .url(DBConnection.getInstance().getRs().getString(5))
+            .modificationDate(DBConnection.getInstance().getRs().getDate(8))
+            .typeId(DBConnection.getInstance().getRs().getLong(3))
             .build();
       }
     } catch (SQLException e) {

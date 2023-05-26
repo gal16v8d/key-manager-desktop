@@ -81,7 +81,7 @@ public class XLSWriter {
         buildSheet(
             listR,
             KeyManagerConstants.EXPORT_NAME,
-            KeyManagerConstants.getAccountXUserTableModel(),
+            KeyManagerConstants.getAccountLoginTableModel(),
             excelFilePath);
       }
       return true;
@@ -124,23 +124,25 @@ public class XLSWriter {
    * @param row fila en la que se copian los valores.
    */
   private void writeData(AccountLoginDto dto, Row row) {
-    Cell cnu = row.createCell(0);
-    cnu.setCellValue(dto.getSessionLogin());
-    Cell cnc = row.createCell(1);
-    cnc.setCellValue(dto.getAccountName());
-    Cell cnuc = row.createCell(2);
-    cnuc.setCellValue(dto.getLogin());
-    String dp = CypherKeyManager.DECYPHER.apply(dto.getPass());
-    Cell cncp = row.createCell(3);
-    cncp.setCellValue(dp);
-    Cell curl = row.createCell(4);
-    curl.setCellValue(dto.getUrl());
+    Cell cellUser = row.createCell(0);
+    cellUser.setCellValue(dto.getSessionLogin());
+    Cell cellAccountName = row.createCell(1);
+    cellAccountName.setCellValue(dto.getAccountName());
+    Cell cellType = row.createCell(2);
+    cellType.setCellValue(dto.getAccountType());
+    Cell cellLogin = row.createCell(3);
+    cellLogin.setCellValue(dto.getLogin());
+    String decrypedPass = CipherKeyManager.DECYPHER.apply(dto.getPass());
+    Cell cellPass = row.createCell(4);
+    cellPass.setCellValue(decrypedPass);
+    Cell cellUrl = row.createCell(5);
+    cellUrl.setCellValue(dto.getUrl());
     Date fd = dto.getModificationDate();
     Date fa = Date.valueOf(LocalDate.now());
-    String fecha = KeyManagerConstants.getFormater().format(fd);
-    Cell cnf = row.createCell(5);
-    cnf.setCellValue(fecha);
-    Cell cnr = row.createCell(6);
-    cnr.setCellValue(KeyManagerConstants.SHOW_SUGGESTION.apply(fa, fd));
+    String date = KeyManagerConstants.getFormater().format(fd);
+    Cell cellDate = row.createCell(6);
+    cellDate.setCellValue(date);
+    Cell cellSuggest = row.createCell(7);
+    cellSuggest.setCellValue(KeyManagerConstants.SHOW_SUGGESTION.apply(fa, fd));
   }
 }

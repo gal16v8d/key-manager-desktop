@@ -7,7 +7,7 @@ import com.gsdd.keymanager.constants.KeyManagerConstants;
 import com.gsdd.keymanager.entities.Account;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
 import com.gsdd.keymanager.service.AccountLoginService;
-import com.gsdd.keymanager.util.CypherKeyManager;
+import com.gsdd.keymanager.util.CipherKeyManager;
 import com.gsdd.keymanager.util.XLSWriter;
 import java.util.Objects;
 import javax.swing.JLabel;
@@ -50,7 +50,7 @@ public class ExportController {
     if (option == 0) {
       passw = String.valueOf(pass.getPassword());
       log.info(dto.getLogin());
-      String currentPass = CypherKeyManager.DECYPHER.apply(dto.getPassword());
+      String currentPass = CipherKeyManager.DECYPHER.apply(dto.getPassword());
       boolean passMatch = Objects.equals(passw.trim(), currentPass);
       log.info("{}", passMatch);
       if (passMatch) {
@@ -64,7 +64,7 @@ public class ExportController {
                     .append(GralConstants.DOT)
                     .append(KeyManagerConstants.EXC_EXT1)
                     .toString());
-        log.info("Escribio en el excel -> {}", b);
+        log.info("Write on xls file -> {}", b);
         return b;
       }
     } else {

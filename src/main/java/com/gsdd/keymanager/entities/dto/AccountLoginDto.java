@@ -21,6 +21,7 @@ public class AccountLoginDto implements Serializable {
   private Long accountId;
   private String sessionLogin;
   private String accountName;
+  private String accountType;
   private String login;
   private String pass;
   private Date modificationDate;

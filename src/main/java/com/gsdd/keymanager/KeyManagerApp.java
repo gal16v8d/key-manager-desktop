@@ -31,14 +31,14 @@ public final class KeyManagerApp {
   }
 
   private static void initApp() {
-    log.info("Inicializando...");
+    log.info("Init...");
     MainView view = new MainView();
-    if (initDB()) {
-      launchGUI(view);
+    if (initDb()) {
+      launchGui(view);
     }
   }
 
-  private static boolean initDB() {
+  private static boolean initDb() {
     boolean success = true;
     DBConnection.getInstance();
     try {
@@ -53,7 +53,7 @@ public final class KeyManagerApp {
               KeyManagerConstants.DERBY_LOCATION + KeyManagerConstants.DERBY_CREATE,
               GralConstants.EMPTY,
               GralConstants.EMPTY);
-      log.info("BD existe -> {}", b);
+      log.info("DB exists -> {}", b);
       if (!b) {
         DBConnection.getInstance().executeImport(Boolean.TRUE);
         log.info("[OK]");
@@ -68,13 +68,13 @@ public final class KeyManagerApp {
       }
       log.info("{}", DBConnection.getInstance().getCon().toString());
     } catch (TechnicalException e) {
-      log.error("[FALLO]: {}", e, e);
+      log.error("[FAILED]: {}", e, e);
       success = false;
     }
     return success;
   }
 
-  private static void launchGUI(MainView view) {
+  private static void launchGui(MainView view) {
     view.setVisible(true);
     view.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     new MainController(view);
