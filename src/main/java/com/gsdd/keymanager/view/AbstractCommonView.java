@@ -3,6 +3,7 @@ package com.gsdd.keymanager.view;
 import com.gsdd.gui.util.JPaginateTable;
 import com.gsdd.gui.util.JValidateTextField;
 import java.awt.Color;
+import java.io.Serial;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -12,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractCommonView extends JPanel {
 
-  private static final long serialVersionUID = -8418224352606849605L;
+  @Serial private static final long serialVersionUID = -8418224352606849605L;
   public static final int INI_X_LABEL_C1 = 40;
   public static final int INI_X_LABEL_C2 = 260;
 

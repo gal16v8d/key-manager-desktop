@@ -4,6 +4,7 @@ import com.gsdd.keymanager.constants.KeyManagerConstants;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
 import com.gsdd.keymanager.util.ExecutorKeyManager;
 import java.awt.CardLayout;
+import java.io.Serial;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -26,10 +27,10 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 public class MainView extends JFrame {
 
-  private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
   private JPanel cards;
   private CardLayout cl;
-  private JMenu admonMenu;
+  private JMenu adminMenu;
   private JMenu sessionMenu;
   private JMenuItem accountTypeMenuItem;
   private JMenuItem accountUserMenuItem;
@@ -52,8 +53,8 @@ public class MainView extends JFrame {
   private void buildMenu() {
     JMenuBar menuBar = new JMenuBar();
     setJMenuBar(menuBar);
-    admonMenu = new JMenu(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_ADMON));
-    menuBar.add(admonMenu);
+    adminMenu = new JMenu(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_ADMON));
+    menuBar.add(adminMenu);
     sessionMenu = new JMenu(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_SESSION));
     menuBar.add(sessionMenu);
     JMenu menuInfo = new JMenu(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MENU_INFO));
@@ -71,13 +72,13 @@ public class MainView extends JFrame {
   }
 
   private void addAdmonMenuItems() {
-    setAccountTypeMenuItem(addMenuItem(KeyManagerLanguage.MENU_ITEM_ACCOUNT_TYPE, admonMenu));
-    admonMenu.add(new JSeparator());
-    setAccountUserMenuItem(addMenuItem(KeyManagerLanguage.MENU_ITEM_ACCOUNT_USER, admonMenu));
-    admonMenu.add(new JSeparator());
-    setUserMenuItem(addMenuItem(KeyManagerLanguage.MENU_ITEM_USER, admonMenu));
-    admonMenu.add(new JSeparator());
-    setExportMenuItem(addMenuItem(KeyManagerLanguage.MENU_ITEM_EXPORT, admonMenu));
+    setAccountTypeMenuItem(addMenuItem(KeyManagerLanguage.MENU_ITEM_ACCOUNT_TYPE, adminMenu));
+    adminMenu.add(new JSeparator());
+    setAccountUserMenuItem(addMenuItem(KeyManagerLanguage.MENU_ITEM_ACCOUNT_USER, adminMenu));
+    adminMenu.add(new JSeparator());
+    setUserMenuItem(addMenuItem(KeyManagerLanguage.MENU_ITEM_USER, adminMenu));
+    adminMenu.add(new JSeparator());
+    setExportMenuItem(addMenuItem(KeyManagerLanguage.MENU_ITEM_EXPORT, adminMenu));
   }
 
   private void addSessionMenuItems() {

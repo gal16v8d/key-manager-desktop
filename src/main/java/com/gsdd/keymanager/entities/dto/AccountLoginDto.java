@@ -1,5 +1,6 @@
 package com.gsdd.keymanager.entities.dto;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.sql.Date;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import lombok.Setter;
 @Setter
 public class AccountLoginDto implements Serializable {
 
-  private static final long serialVersionUID = 3500185729680511899L;
+  @Serial private static final long serialVersionUID = 3500185729680511899L;
   private Long accountId;
   private String sessionLogin;
   private String accountName;

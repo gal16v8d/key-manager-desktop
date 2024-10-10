@@ -1,6 +1,6 @@
 package com.gsdd.keymanager.service;
 
-import com.gsdd.dbutil.DBConnection;
+import com.gsdd.dbutil.DbConnection;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
@@ -26,12 +26,12 @@ public interface DbService<T extends Serializable> {
     boolean retorno = false;
     try {
       defineUpdateData(value, oldValue);
-      DBConnection.getInstance().getPst().executeUpdate();
+      DbConnection.getInstance().getPst().executeUpdate();
       retorno = true;
     } catch (SQLException e) {
       getLogger().error(e.getMessage(), e);
     } finally {
-      DBConnection.getInstance().closeQuery();
+      DbConnection.getInstance().closeQuery();
     }
     return retorno;
   }
@@ -55,12 +55,12 @@ public interface DbService<T extends Serializable> {
       boolean retorno = false;
       try {
         defineQueryBody(data);
-        DBConnection.getInstance().getPst().executeUpdate();
+        DbConnection.getInstance().getPst().executeUpdate();
         retorno = true;
       } catch (SQLException e) {
         LoggerFactory.getLogger(DbOperation.class).error(e.getMessage(), e);
       } finally {
-        DBConnection.getInstance().closeQuery();
+        DbConnection.getInstance().closeQuery();
       }
       return retorno;
     }

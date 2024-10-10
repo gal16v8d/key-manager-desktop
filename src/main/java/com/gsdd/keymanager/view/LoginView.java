@@ -2,6 +2,7 @@ package com.gsdd.keymanager.view;
 
 import com.gsdd.keymanager.constants.KeyManagerConstants;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
+import java.io.Serial;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
@@ -19,13 +20,13 @@ import lombok.Setter;
 @Setter
 public class LoginView extends AbstractCommonView {
 
-  private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
   private static final int POS_INI_X_LABEL = 100;
   private static final int POS_INI_Y_LABEL = 100;
-  private static final int POS_INI_X_TEXTO = 210;
+  private static final int POS_INI_X_TEXT = 210;
   private static final int SPACE_Y = 30;
   private static final int COL_LENGTH = 16;
-  
+
   private JLabel labelUser;
   private JLabel labelPass;
 
@@ -57,12 +58,12 @@ public class LoginView extends AbstractCommonView {
 
   private void initFields() {
     textUser = new JTextField();
-    textUser.setBounds(POS_INI_X_TEXTO, POS_INI_Y_LABEL, DEF_WIDTH, DEF_HEIGHT);
+    textUser.setBounds(POS_INI_X_TEXT, POS_INI_Y_LABEL, DEF_WIDTH, DEF_HEIGHT);
     textUser.setColumns(COL_LENGTH);
     add(textUser);
 
     textPass = new JPasswordField();
-    textPass.setBounds(POS_INI_X_TEXTO, POS_INI_Y_LABEL + SPACE_Y, DEF_WIDTH, DEF_HEIGHT);
+    textPass.setBounds(POS_INI_X_TEXT, POS_INI_Y_LABEL + SPACE_Y, DEF_WIDTH, DEF_HEIGHT);
     textPass.setColumns(COL_LENGTH);
     add(textPass);
   }
@@ -71,7 +72,7 @@ public class LoginView extends AbstractCommonView {
     loginButton =
         addButton(
             KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.BUTTON_LOGIN),
-            POS_INI_X_TEXTO,
+            POS_INI_X_TEXT,
             POS_INI_Y_LABEL + (SPACE_Y * 2));
   }
 }

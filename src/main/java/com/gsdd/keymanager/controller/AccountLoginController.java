@@ -47,10 +47,12 @@ public class AccountLoginController implements CrudController<AccountLogin> {
   private final MainView parentFrame;
   private AccountLogin old;
   private List<AccountType> types;
-  
+
   private BiFunction<String, Boolean, String> showOrHidePass =
-      (ePass, show) -> show.booleanValue() ? CipherKeyManager.DECYPHER.apply(ePass)
-          : KeyManagerConstants.MASK_TEXTO;
+      (ePass, show) ->
+          show.booleanValue()
+              ? CipherKeyManager.DECIPHER.apply(ePass)
+              : KeyManagerConstants.MASK_TEXTO;
 
   public AccountLoginController(MainView parentFrame) {
     this.model = new AccountLoginService();
@@ -73,10 +75,10 @@ public class AccountLoginController implements CrudController<AccountLogin> {
 
   public void fillCombo() {
     List<String> user = getUserModel().suggest();
-    user.stream().forEach(getView().getComboUser()::addItem);
+    user.forEach(getView().getComboUser()::addItem);
     getView().getComboUser().repaint();
     List<String> type = getTypeModel().suggest();
-    type.stream().forEach(getView().getComboType()::addItem);
+    type.forEach(getView().getComboType()::addItem);
     getView().getComboType().repaint();
   }
 
@@ -123,8 +125,8 @@ public class AccountLoginController implements CrudController<AccountLogin> {
       dtm.setValueAt(dto.getUrl(), i, 5);
       Date fd = dto.getModificationDate();
       Date fa = Date.valueOf(LocalDate.now());
-      String fecha = KeyManagerConstants.getFormater().format(fd);
-      dtm.setValueAt(fecha, i, 6);
+      String date = KeyManagerConstants.getFormater().format(fd);
+      dtm.setValueAt(date, i, 6);
       dtm.setValueAt(KeyManagerConstants.SHOW_SUGGESTION.apply(fa, fd), i, 7);
       i++;
     }
@@ -135,16 +137,22 @@ public class AccountLoginController implements CrudController<AccountLogin> {
     AccountLogin accountLogin;
     try {
       SessionData sessionData = SessionData.getInstance();
-      accountLogin = AccountLogin.builder().accountName(getView().getTextAccount().getText().trim())
-          .accountId(
-              String.valueOf(sessionData.getSessionDto().getRole()).equals(RolEnum.ADMIN.getCode())
-                  ? getUserModel().search((String) getView().getComboUser().getSelectedItem())
-                      .getAccountId()
-                  : sessionData.getSessionDto().getAccountId())
-          .login(getView().getTextUserName().getText().trim())
-          .password(CipherKeyManager
-              .CYPHER.apply(String.valueOf(getView().getTextPass().getPassword()).trim()))
-          .url(getView().getTextUrl().getText()).build();
+      accountLogin =
+          AccountLogin.builder()
+              .accountName(getView().getTextAccount().getText().trim())
+              .accountId(
+                  String.valueOf(sessionData.getSessionDto().getRole())
+                          .equals(RolEnum.ADMIN.getCode())
+                      ? getUserModel()
+                          .search((String) getView().getComboUser().getSelectedItem())
+                          .getAccountId()
+                      : sessionData.getSessionDto().getAccountId())
+              .login(getView().getTextUserName().getText().trim())
+              .password(
+                  CipherKeyManager.CYPHER.apply(
+                      String.valueOf(getView().getTextPass().getPassword()).trim()))
+              .url(getView().getTextUrl().getText())
+              .build();
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       accountLogin = null;
@@ -216,7 +224,7 @@ public class AccountLoginController implements CrudController<AccountLogin> {
     getView().getComboUser().setSelectedItem(dto.getLogin());
     getView().getTextAccount().setText(dto.getAccountName());
     getView().getTextUserName().setText(dto.getLogin());
-    getView().getTextPass().setText(CipherKeyManager.DECYPHER.apply(dto.getPassword()));
+    getView().getTextPass().setText(CipherKeyManager.DECIPHER.apply(dto.getPassword()));
     getView().getTextUrl().setText(dto.getUrl());
   }
 

@@ -8,17 +8,17 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
 /**
  * Constantes asociadas al modelo del programa.
  *
- * @author Great System Development Dynamic <GSDD> <br> Alexander Galvis
- *         Grisales <br> alex.galvis.sistemas@gmail.com <br>
+ * @author Great System Development Dynamic <GSDD> <br>
+ *     Alexander Galvis Grisales <br>
+ *     alex.galvis.sistemas@gmail.com <br>
  * @version 1.0
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@UtilityClass
 public final class KeyManagerConstants {
 
   public static final String DERBY_CONNECTION = "org.apache.derby.jdbc.EmbeddedDriver";
@@ -52,38 +52,39 @@ public final class KeyManagerConstants {
   public static final char HIDE_TEXT = '*';
 
   protected static final String[] ACCOUNT_TBL_MODEL = {
-      KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_FN),
-      KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_LN),
-      KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_USER),
-      KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ROLE)};
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_FN),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_LN),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_USER),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ROLE)
+  };
 
   protected static final String[] ACCOUNT_LOGIN_TBL_MODEL = {
-      KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_USER),
-      KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT),
-      KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_TYPE),
-      KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_USER),
-      KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_PASS),
-      KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_URL),
-      KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_DATE),
-      KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_SUGGESTION)};
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_USER),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_TYPE),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_USER),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_PASS),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_URL),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_DATE),
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_ACCOUNT_SUGGESTION)
+  };
 
   protected static final String[] ACCOUNT_TYPE_MODEL = {
-      KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_TYPE_NAME)};
-  
+    KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TBL_TYPE_NAME)
+  };
+
   /**
-   * Generates a suggestion depending on difference in time, since password
-   * changes.
+   * Generates a suggestion depending on difference in time, since password changes.
    *
    * @param currentDate
    * @param dbDate date in database.
    * @return suggestion depending on time.
    */
-  public static final BiFunction<Date, Date,
-      String> SHOW_SUGGESTION = (currentDate,
-          dbDate) -> (TimeUnit.MILLISECONDS
-              .toDays(currentDate.getTime() - dbDate.getTime()) >= TIME_TO_CHANGE)
-                  ? KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_SUGGESTION)
-                  : GralConstants.EMPTY;
+  public static final BiFunction<Date, Date, String> SHOW_SUGGESTION =
+      (currentDate, dbDate) ->
+          (TimeUnit.MILLISECONDS.toDays(currentDate.getTime() - dbDate.getTime()) >= TIME_TO_CHANGE)
+              ? KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_SUGGESTION)
+              : GralConstants.EMPTY;
 
   public static String[] getAccountLoginTableModel() {
     return ACCOUNT_LOGIN_TBL_MODEL;
@@ -92,7 +93,7 @@ public final class KeyManagerConstants {
   public static String[] getAccountTableModel() {
     return ACCOUNT_TBL_MODEL;
   }
-  
+
   public static String[] getAccountTypeTableModel() {
     return ACCOUNT_TYPE_MODEL;
   }
@@ -105,5 +106,4 @@ public final class KeyManagerConstants {
   public static SimpleDateFormat getFormater() {
     return new SimpleDateFormat(DERBY_DATE_FORMAT, new Locale(LOCALE_ES));
   }
-
 }

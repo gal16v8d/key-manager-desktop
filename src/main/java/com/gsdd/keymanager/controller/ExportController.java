@@ -1,7 +1,7 @@
 package com.gsdd.keymanager.controller;
 
-import com.gsdd.constants.GUIConstants;
 import com.gsdd.constants.GralConstants;
+import com.gsdd.constants.GuiConstants;
 import com.gsdd.gui.util.JOptionUtil;
 import com.gsdd.keymanager.constants.KeyManagerConstants;
 import com.gsdd.keymanager.entities.Account;
@@ -50,7 +50,7 @@ public class ExportController {
     if (option == 0) {
       passw = String.valueOf(pass.getPassword());
       log.info(dto.getLogin());
-      String currentPass = CipherKeyManager.DECYPHER.apply(dto.getPassword());
+      String currentPass = CipherKeyManager.DECIPHER.apply(dto.getPassword());
       boolean passMatch = Objects.equals(passw.trim(), currentPass);
       log.info("{}", passMatch);
       if (passMatch) {
@@ -69,7 +69,7 @@ public class ExportController {
       }
     } else {
       JOptionUtil.showErrorMessage(
-          GUIConstants.ERROR,
+          GuiConstants.ERROR,
           KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_PASS));
     }
 

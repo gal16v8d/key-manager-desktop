@@ -1,6 +1,6 @@
 package com.gsdd.keymanager.service;
 
-import com.gsdd.dbutil.DBConnection;
+import com.gsdd.dbutil.DbConnection;
 import com.gsdd.keymanager.constants.QueryConstants;
 import com.gsdd.keymanager.entities.AccountLogin;
 import com.gsdd.keymanager.entities.dto.AccountLoginDto;
@@ -24,49 +24,49 @@ public class AccountLoginService implements DbService<AccountLogin> {
 
   @Override
   public void defineInsertData(AccountLogin c) throws SQLException {
-    DBConnection.getInstance()
+    DbConnection.getInstance()
         .setPst(
-            DBConnection.getInstance()
+            DbConnection.getInstance()
                 .getCon()
                 .prepareStatement(QueryConstants.ACCOUNT_LOGIN_INSERT));
-    DBConnection.getInstance().getPst().setLong(1, c.getId());
-    DBConnection.getInstance().getPst().setLong(2, c.getAccountId());
-    DBConnection.getInstance().getPst().setString(3, c.getAccountName());
-    DBConnection.getInstance().getPst().setString(4, c.getLogin());
-    DBConnection.getInstance().getPst().setString(5, c.getPassword());
-    DBConnection.getInstance().getPst().setString(6, c.getUrl());
-    DBConnection.getInstance().getPst().setDate(7, Date.valueOf(LocalDate.now()));
+    DbConnection.getInstance().getPst().setLong(1, c.getId());
+    DbConnection.getInstance().getPst().setLong(2, c.getAccountId());
+    DbConnection.getInstance().getPst().setString(3, c.getAccountName());
+    DbConnection.getInstance().getPst().setString(4, c.getLogin());
+    DbConnection.getInstance().getPst().setString(5, c.getPassword());
+    DbConnection.getInstance().getPst().setString(6, c.getUrl());
+    DbConnection.getInstance().getPst().setDate(7, Date.valueOf(LocalDate.now()));
   }
 
   @Override
   public void defineUpdateData(AccountLogin cxu, AccountLogin old) throws SQLException {
-    DBConnection.getInstance()
+    DbConnection.getInstance()
         .setPst(
-            DBConnection.getInstance()
+            DbConnection.getInstance()
                 .getCon()
                 .prepareStatement(QueryConstants.ACCOUNT_LOGIN_UPDATE));
-    DBConnection.getInstance().getPst().setString(1, cxu.getAccountName());
-    DBConnection.getInstance()
+    DbConnection.getInstance().getPst().setString(1, cxu.getAccountName());
+    DbConnection.getInstance()
         .getPst()
         .setLong(2, SessionData.getInstance().getSessionDto().getAccountId());
-    DBConnection.getInstance().getPst().setString(3, cxu.getLogin());
-    DBConnection.getInstance().getPst().setString(4, cxu.getPassword());
-    DBConnection.getInstance().getPst().setString(5, cxu.getUrl());
-    DBConnection.getInstance().getPst().setDate(6, Date.valueOf(LocalDate.now()));
+    DbConnection.getInstance().getPst().setString(3, cxu.getLogin());
+    DbConnection.getInstance().getPst().setString(4, cxu.getPassword());
+    DbConnection.getInstance().getPst().setString(5, cxu.getUrl());
+    DbConnection.getInstance().getPst().setDate(6, Date.valueOf(LocalDate.now()));
     // where filter
-    DBConnection.getInstance().getPst().setString(7, old.getAccountName());
-    DBConnection.getInstance().getPst().setLong(8, old.getAccountId());
+    DbConnection.getInstance().getPst().setString(7, old.getAccountName());
+    DbConnection.getInstance().getPst().setLong(8, old.getAccountId());
   }
 
   @Override
   public void defineDeleteData(AccountLogin cxu) throws SQLException {
-    DBConnection.getInstance()
+    DbConnection.getInstance()
         .setPst(
-            DBConnection.getInstance()
+            DbConnection.getInstance()
                 .getCon()
                 .prepareStatement(QueryConstants.ACCOUNT_LOGIN_DELETE));
-    DBConnection.getInstance().getPst().setString(1, cxu.getAccountName());
-    DBConnection.getInstance()
+    DbConnection.getInstance().getPst().setString(1, cxu.getAccountName());
+    DbConnection.getInstance()
         .getPst()
         .setLong(2, SessionData.getInstance().getSessionDto().getAccountId());
   }
@@ -78,38 +78,40 @@ public class AccountLoginService implements DbService<AccountLogin> {
           .getSessionDto()
           .getRole()
           .equals(Long.valueOf(RolEnum.ADMIN.getCode()))) {
-        DBConnection.getInstance()
+        DbConnection.getInstance()
             .setPst(
-                DBConnection.getInstance()
+                DbConnection.getInstance()
                     .getCon()
                     .prepareStatement(QueryConstants.ACCOUNT_LOGIN_LIST_ADMIN));
       } else {
-        DBConnection.getInstance()
+        DbConnection.getInstance()
             .setPst(
-                DBConnection.getInstance()
+                DbConnection.getInstance()
                     .getCon()
                     .prepareStatement(QueryConstants.ACCOUNT_LOGIN_LIST));
-        DBConnection.getInstance()
+        DbConnection.getInstance()
             .getPst()
             .setLong(1, SessionData.getInstance().getSessionDto().getAccountId());
       }
-      DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
-      while (DBConnection.getInstance().getRs().next()) {
+      DbConnection.getInstance().setRs(DbConnection.getInstance().getPst().executeQuery());
+      while (DbConnection.getInstance().getRs().next()) {
         AccountLoginDto c =
-            AccountLoginDto.builder().accountId(DBConnection.getInstance().getRs().getLong(1))
-                .accountName(DBConnection.getInstance().getRs().getString(2))
-                .accountType(DBConnection.getInstance().getRs().getString(3))
-                .sessionLogin(DBConnection.getInstance().getRs().getString(4))
-                .url(DBConnection.getInstance().getRs().getString(5))
-                .login(DBConnection.getInstance().getRs().getString(6))
-                .pass(DBConnection.getInstance().getRs().getString(7))
-                .modificationDate(DBConnection.getInstance().getRs().getDate(8)).build();
+            AccountLoginDto.builder()
+                .accountId(DbConnection.getInstance().getRs().getLong(1))
+                .accountName(DbConnection.getInstance().getRs().getString(2))
+                .accountType(DbConnection.getInstance().getRs().getString(3))
+                .sessionLogin(DbConnection.getInstance().getRs().getString(4))
+                .url(DbConnection.getInstance().getRs().getString(5))
+                .login(DbConnection.getInstance().getRs().getString(6))
+                .pass(DbConnection.getInstance().getRs().getString(7))
+                .modificationDate(DbConnection.getInstance().getRs().getDate(8))
+                .build();
         lc.add(c);
       }
     } catch (SQLException e) {
       log.error(e.getMessage(), e);
     } finally {
-      DBConnection.getInstance().closeQuery();
+      DbConnection.getInstance().closeQuery();
     }
     return lc;
   }
@@ -118,20 +120,22 @@ public class AccountLoginService implements DbService<AccountLogin> {
   public List<String> suggest() {
     List<String> lc = new ArrayList<>();
     try {
-      DBConnection.getInstance()
+      DbConnection.getInstance()
           .setPst(
-              DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_LOGIN_LIST));
-      DBConnection.getInstance()
+              DbConnection.getInstance()
+                  .getCon()
+                  .prepareStatement(QueryConstants.ACCOUNT_LOGIN_LIST));
+      DbConnection.getInstance()
           .getPst()
           .setLong(1, SessionData.getInstance().getSessionDto().getAccountId());
-      DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
-      while (DBConnection.getInstance().getRs().next()) {
-        lc.add(DBConnection.getInstance().getRs().getString(2));
+      DbConnection.getInstance().setRs(DbConnection.getInstance().getPst().executeQuery());
+      while (DbConnection.getInstance().getRs().next()) {
+        lc.add(DbConnection.getInstance().getRs().getString(2));
       }
     } catch (SQLException e) {
       log.error(e.getMessage(), e);
     } finally {
-      DBConnection.getInstance().closeQuery();
+      DbConnection.getInstance().closeQuery();
     }
     return lc;
   }
@@ -140,31 +144,32 @@ public class AccountLoginService implements DbService<AccountLogin> {
   public AccountLogin search(String accountName) {
     AccountLogin accountLogin = null;
     try {
-      DBConnection.getInstance()
+      DbConnection.getInstance()
           .setPst(
-              DBConnection.getInstance()
+              DbConnection.getInstance()
                   .getCon()
                   .prepareStatement(QueryConstants.ACCOUNT_LOGIN_SEARCH));
-      DBConnection.getInstance().getPst().setString(1, accountName);
-      DBConnection.getInstance()
+      DbConnection.getInstance().getPst().setString(1, accountName);
+      DbConnection.getInstance()
           .getPst()
           .setLong(2, SessionData.getInstance().getSessionDto().getAccountId());
-      DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
-      while (DBConnection.getInstance().getRs().next()) {
-        accountLogin = AccountLogin.builder()
-            .accountId(DBConnection.getInstance().getRs().getLong(1))
-            .login(DBConnection.getInstance().getRs().getString(6))
-            .password(DBConnection.getInstance().getRs().getString(7))
-            .accountName(DBConnection.getInstance().getRs().getString(2))
-            .url(DBConnection.getInstance().getRs().getString(5))
-            .modificationDate(DBConnection.getInstance().getRs().getDate(8))
-            .typeId(DBConnection.getInstance().getRs().getLong(3))
-            .build();
+      DbConnection.getInstance().setRs(DbConnection.getInstance().getPst().executeQuery());
+      while (DbConnection.getInstance().getRs().next()) {
+        accountLogin =
+            AccountLogin.builder()
+                .accountId(DbConnection.getInstance().getRs().getLong(1))
+                .login(DbConnection.getInstance().getRs().getString(6))
+                .password(DbConnection.getInstance().getRs().getString(7))
+                .accountName(DbConnection.getInstance().getRs().getString(2))
+                .url(DbConnection.getInstance().getRs().getString(5))
+                .modificationDate(DbConnection.getInstance().getRs().getDate(8))
+                .typeId(DbConnection.getInstance().getRs().getLong(3))
+                .build();
       }
     } catch (SQLException e) {
       log.error(e.getMessage(), e);
     } finally {
-      DBConnection.getInstance().closeQuery();
+      DbConnection.getInstance().closeQuery();
     }
     return accountLogin;
   }

@@ -1,7 +1,7 @@
 package com.gsdd.keymanager.controller;
 
-import com.gsdd.constants.GUIConstants;
 import com.gsdd.constants.GralConstants;
+import com.gsdd.constants.GuiConstants;
 import com.gsdd.gui.util.JOptionUtil;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
 import com.gsdd.keymanager.service.AccountService;
@@ -59,12 +59,12 @@ public class LoginController {
       } else {
         String msg = KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_USER_NE);
         log.info("{}", msg);
-        JOptionUtil.showErrorMessage(GUIConstants.ERROR, msg);
+        JOptionUtil.showErrorMessage(GuiConstants.ERROR, msg);
         getView().getTextPass().setText(GralConstants.EMPTY);
       }
     } catch (Exception e) {
       log.error(e.getMessage(), e);
-      JOptionUtil.showErrorMessage(GUIConstants.ERROR, e.getMessage());
+      JOptionUtil.showErrorMessage(GuiConstants.ERROR, e.getMessage());
     }
   }
 

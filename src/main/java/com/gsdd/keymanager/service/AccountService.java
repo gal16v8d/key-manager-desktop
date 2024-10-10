@@ -1,6 +1,6 @@
 package com.gsdd.keymanager.service;
 
-import com.gsdd.dbutil.DBConnection;
+import com.gsdd.dbutil.DbConnection;
 import com.gsdd.keymanager.constants.QueryConstants;
 import com.gsdd.keymanager.entities.Account;
 import com.gsdd.keymanager.enums.RolEnum;
@@ -30,58 +30,66 @@ public class AccountService implements DbService<Account> {
   public Account login(String user, String pass) {
     Account account = null;
     try {
-      DBConnection.getInstance()
-          .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_SEARCH));
-      DBConnection.getInstance().getPst().setString(1, user);
-      DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
-      while (DBConnection.getInstance().getRs().next()) {
-        boolean valid = Objects.equals(pass,
-            CipherKeyManager.DECYPHER.apply(DBConnection.getInstance().getRs().getString(5)));
+      DbConnection.getInstance()
+          .setPst(
+              DbConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_SEARCH));
+      DbConnection.getInstance().getPst().setString(1, user);
+      DbConnection.getInstance().setRs(DbConnection.getInstance().getPst().executeQuery());
+      while (DbConnection.getInstance().getRs().next()) {
+        boolean valid =
+            Objects.equals(
+                pass,
+                CipherKeyManager.DECIPHER.apply(DbConnection.getInstance().getRs().getString(5)));
         if (valid) {
-          account = Account.builder().accountId(DBConnection.getInstance().getRs().getLong(1))
-              .firstName(DBConnection.getInstance().getRs().getString(2))
-              .lastName(DBConnection.getInstance().getRs().getString(3))
-              .password(DBConnection.getInstance().getRs().getString(5))
-              .role(DBConnection.getInstance().getRs().getLong(6))
-              .build();
+          account =
+              Account.builder()
+                  .accountId(DbConnection.getInstance().getRs().getLong(1))
+                  .firstName(DbConnection.getInstance().getRs().getString(2))
+                  .lastName(DbConnection.getInstance().getRs().getString(3))
+                  .password(DbConnection.getInstance().getRs().getString(5))
+                  .role(DbConnection.getInstance().getRs().getLong(6))
+                  .build();
         }
       }
     } catch (SQLException e) {
       log.error(e.getMessage(), e);
     } finally {
-      DBConnection.getInstance().closeQuery();
+      DbConnection.getInstance().closeQuery();
     }
     return account;
   }
 
   @Override
   public void defineInsertData(Account u) throws SQLException {
-    DBConnection.getInstance()
-        .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_INSERT));
-    DBConnection.getInstance().getPst().setLong(1, u.getAccountId());
-    DBConnection.getInstance().getPst().setString(2, u.getFirstName());
-    DBConnection.getInstance().getPst().setString(3, u.getLastName());
-    DBConnection.getInstance().getPst().setString(4, u.getLogin());
-    DBConnection.getInstance().getPst().setString(5, u.getPassword());
-    DBConnection.getInstance().getPst().setString(6, RolEnum.USER.getCode());
+    DbConnection.getInstance()
+        .setPst(
+            DbConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_INSERT));
+    DbConnection.getInstance().getPst().setLong(1, u.getAccountId());
+    DbConnection.getInstance().getPst().setString(2, u.getFirstName());
+    DbConnection.getInstance().getPst().setString(3, u.getLastName());
+    DbConnection.getInstance().getPst().setString(4, u.getLogin());
+    DbConnection.getInstance().getPst().setString(5, u.getPassword());
+    DbConnection.getInstance().getPst().setString(6, RolEnum.USER.getCode());
   }
 
   @Override
   public void defineUpdateData(Account u, Account oldData) throws SQLException {
-    DBConnection.getInstance()
-        .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_UPDATE));
-    DBConnection.getInstance().getPst().setString(1, u.getFirstName());
-    DBConnection.getInstance().getPst().setString(2, u.getLastName());
-    DBConnection.getInstance().getPst().setString(3, u.getLogin());
-    DBConnection.getInstance().getPst().setString(4, u.getPassword());
-    DBConnection.getInstance().getPst().setLong(5, u.getAccountId());
+    DbConnection.getInstance()
+        .setPst(
+            DbConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_UPDATE));
+    DbConnection.getInstance().getPst().setString(1, u.getFirstName());
+    DbConnection.getInstance().getPst().setString(2, u.getLastName());
+    DbConnection.getInstance().getPst().setString(3, u.getLogin());
+    DbConnection.getInstance().getPst().setString(4, u.getPassword());
+    DbConnection.getInstance().getPst().setLong(5, u.getAccountId());
   }
 
   @Override
   public void defineDeleteData(Account u) throws SQLException {
-    DBConnection.getInstance()
-        .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_DELETE));
-    DBConnection.getInstance().getPst().setLong(1, u.getAccountId());
+    DbConnection.getInstance()
+        .setPst(
+            DbConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_DELETE));
+    DbConnection.getInstance().getPst().setLong(1, u.getAccountId());
   }
 
   @Override
@@ -90,32 +98,34 @@ public class AccountService implements DbService<Account> {
     try {
       if (Long.valueOf(RolEnum.ADMIN.getCode())
           .equals(SessionData.getInstance().getSessionDto().getRole())) {
-        DBConnection.getInstance()
+        DbConnection.getInstance()
             .setPst(
-                DBConnection.getInstance()
+                DbConnection.getInstance()
                     .getCon()
                     .prepareStatement(QueryConstants.ACCOUNT_LIST_ADMIN));
       } else {
-        DBConnection.getInstance()
-            .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_LIST));
-        DBConnection.getInstance()
+        DbConnection.getInstance()
+            .setPst(
+                DbConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_LIST));
+        DbConnection.getInstance()
             .getPst()
             .setLong(1, SessionData.getInstance().getSessionDto().getAccountId());
       }
-      DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
-      while (DBConnection.getInstance().getRs().next()) {
-        Account account = Account.builder()
-            .firstName(DBConnection.getInstance().getRs().getString(2))
-            .lastName(DBConnection.getInstance().getRs().getString(3))
-            .login(DBConnection.getInstance().getRs().getString(4))
-            .role(DBConnection.getInstance().getRs().getLong(6))
-            .build();
+      DbConnection.getInstance().setRs(DbConnection.getInstance().getPst().executeQuery());
+      while (DbConnection.getInstance().getRs().next()) {
+        Account account =
+            Account.builder()
+                .firstName(DbConnection.getInstance().getRs().getString(2))
+                .lastName(DbConnection.getInstance().getRs().getString(3))
+                .login(DbConnection.getInstance().getRs().getString(4))
+                .role(DbConnection.getInstance().getRs().getLong(6))
+                .build();
         lu.add(account);
       }
     } catch (SQLException e) {
       log.error(e.getMessage(), e);
     } finally {
-      DBConnection.getInstance().closeQuery();
+      DbConnection.getInstance().closeQuery();
     }
     return lu;
   }
@@ -126,26 +136,27 @@ public class AccountService implements DbService<Account> {
     try {
       if (Long.valueOf(RolEnum.ADMIN.getCode())
           .equals(SessionData.getInstance().getSessionDto().getRole())) {
-        DBConnection.getInstance()
+        DbConnection.getInstance()
             .setPst(
-                DBConnection.getInstance()
+                DbConnection.getInstance()
                     .getCon()
                     .prepareStatement(QueryConstants.ACCOUNT_LIST_ADMIN));
       } else {
-        DBConnection.getInstance()
-            .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_LIST));
-        DBConnection.getInstance()
+        DbConnection.getInstance()
+            .setPst(
+                DbConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_LIST));
+        DbConnection.getInstance()
             .getPst()
             .setLong(1, SessionData.getInstance().getSessionDto().getAccountId());
       }
-      DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
-      while (DBConnection.getInstance().getRs().next()) {
-        lu.add(DBConnection.getInstance().getRs().getString(4));
+      DbConnection.getInstance().setRs(DbConnection.getInstance().getPst().executeQuery());
+      while (DbConnection.getInstance().getRs().next()) {
+        lu.add(DbConnection.getInstance().getRs().getString(4));
       }
     } catch (SQLException e) {
       log.error(e.getMessage(), e);
     } finally {
-      DBConnection.getInstance().closeQuery();
+      DbConnection.getInstance().closeQuery();
     }
     return lu;
   }
@@ -154,24 +165,26 @@ public class AccountService implements DbService<Account> {
   public Account search(String username) {
     Account account = null;
     try {
-      DBConnection.getInstance()
-          .setPst(DBConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_SEARCH));
-      DBConnection.getInstance().getPst().setString(1, username);
-      DBConnection.getInstance().setRs(DBConnection.getInstance().getPst().executeQuery());
-      while (DBConnection.getInstance().getRs().next()) {
-        account = Account.builder()
-            .accountId(DBConnection.getInstance().getRs().getLong(1))
-            .firstName(DBConnection.getInstance().getRs().getString(2))
-            .lastName(DBConnection.getInstance().getRs().getString(3))
-            .login(DBConnection.getInstance().getRs().getString(4))
-            .password(DBConnection.getInstance().getRs().getString(5))
-            .role(DBConnection.getInstance().getRs().getLong(6))
-            .build();
+      DbConnection.getInstance()
+          .setPst(
+              DbConnection.getInstance().getCon().prepareStatement(QueryConstants.ACCOUNT_SEARCH));
+      DbConnection.getInstance().getPst().setString(1, username);
+      DbConnection.getInstance().setRs(DbConnection.getInstance().getPst().executeQuery());
+      while (DbConnection.getInstance().getRs().next()) {
+        account =
+            Account.builder()
+                .accountId(DbConnection.getInstance().getRs().getLong(1))
+                .firstName(DbConnection.getInstance().getRs().getString(2))
+                .lastName(DbConnection.getInstance().getRs().getString(3))
+                .login(DbConnection.getInstance().getRs().getString(4))
+                .password(DbConnection.getInstance().getRs().getString(5))
+                .role(DbConnection.getInstance().getRs().getLong(6))
+                .build();
       }
     } catch (SQLException e) {
       log.error(e.getMessage(), e);
     } finally {
-      DBConnection.getInstance().closeQuery();
+      DbConnection.getInstance().closeQuery();
     }
     return account;
   }

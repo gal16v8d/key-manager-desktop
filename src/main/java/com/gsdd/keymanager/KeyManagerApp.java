@@ -1,8 +1,8 @@
 package com.gsdd.keymanager;
 
 import com.gsdd.constants.GralConstants;
-import com.gsdd.dbutil.DBConnection;
-import com.gsdd.dbutil.DBQueryUtil;
+import com.gsdd.dbutil.DbConnection;
+import com.gsdd.dbutil.DbQueryUtil;
 import com.gsdd.exception.TechnicalException;
 import com.gsdd.keymanager.constants.KeyManagerConstants;
 import com.gsdd.keymanager.controller.MainController;
@@ -40,14 +40,14 @@ public final class KeyManagerApp {
 
   private static boolean initDb() {
     boolean success = true;
-    DBConnection.getInstance();
+    DbConnection.getInstance();
     try {
       System.setProperty("derby.system.home", "." + File.separator + "kmgr" + File.separator);
       System.setProperty(
           "derby.stream.error.file",
           ".." + File.separator + "KMgr-log" + File.separator + "derby.log");
       boolean b =
-          DBQueryUtil.dbExist(
+          DbQueryUtil.dbExist(
               KeyManagerConstants.DERBY_MAIN_TABLE,
               KeyManagerConstants.DERBY_CONNECTION,
               KeyManagerConstants.DERBY_LOCATION + KeyManagerConstants.DERBY_CREATE,
@@ -55,18 +55,18 @@ public final class KeyManagerApp {
               GralConstants.EMPTY);
       log.info("DB exists -> {}", b);
       if (!b) {
-        DBConnection.getInstance().executeImport(Boolean.TRUE);
+        DbConnection.getInstance().executeImport(Boolean.TRUE);
         log.info("[OK]");
       }
-      if (DBConnection.getInstance().getCon() == null) {
-        DBConnection.getInstance()
+      if (DbConnection.getInstance().getCon() == null) {
+        DbConnection.getInstance()
             .connectDB(
                 KeyManagerConstants.DERBY_CONNECTION,
                 KeyManagerConstants.DERBY_LOCATION,
                 GralConstants.EMPTY,
                 GralConstants.EMPTY);
       }
-      log.info("{}", DBConnection.getInstance().getCon().toString());
+      log.info("{}", DbConnection.getInstance().getCon().toString());
     } catch (TechnicalException e) {
       log.error("[FAILED]: {}", e, e);
       success = false;

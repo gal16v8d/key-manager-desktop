@@ -2,6 +2,7 @@ package com.gsdd.keymanager.view;
 
 import com.gsdd.gui.util.JPaginateTable;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
+import java.io.Serial;
 import javax.swing.JButton;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import lombok.Setter;
 @Setter
 public abstract class AbstractCrudView extends AbstractCommonView {
 
-  private static final long serialVersionUID = 6947887554070713694L;
+  @Serial private static final long serialVersionUID = 6947887554070713694L;
   protected static final int POS_INI_X_TEXT_C1 = 150;
   protected static final int POS_INI_X_TEXT_C2 = 370;
   protected static final int POS_INI_X_TEXT_C3 = 590;

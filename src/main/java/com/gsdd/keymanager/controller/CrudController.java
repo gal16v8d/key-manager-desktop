@@ -1,6 +1,6 @@
 package com.gsdd.keymanager.controller;
 
-import com.gsdd.constants.GUIConstants;
+import com.gsdd.constants.GuiConstants;
 import com.gsdd.gui.util.JOptionListBox;
 import com.gsdd.gui.util.JOptionUtil;
 import com.gsdd.gui.util.JPaginateTable;
@@ -137,17 +137,17 @@ public interface CrudController<T extends Serializable> {
           performUIActionsAfterSave();
         } else {
           JOptionUtil.showErrorMessage(
-              GUIConstants.ERROR,
+              GuiConstants.ERROR,
               KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
         }
       } else {
         JOptionUtil.showErrorMessage(
-            GUIConstants.ERROR,
+            GuiConstants.ERROR,
             KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_DATA));
       }
     } catch (Exception e) {
       getLogger().error(e.getMessage(), e);
-      JOptionUtil.showErrorMessage(GUIConstants.ERROR, e.getMessage());
+      JOptionUtil.showErrorMessage(GuiConstants.ERROR, e.getMessage());
     }
   }
 
@@ -168,17 +168,17 @@ public interface CrudController<T extends Serializable> {
           performUIActionsAfterUpdate();
         } else {
           JOptionUtil.showErrorMessage(
-              GUIConstants.ERROR,
+              GuiConstants.ERROR,
               KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
         }
       } else {
         JOptionUtil.showErrorMessage(
-            GUIConstants.ERROR,
+            GuiConstants.ERROR,
             KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_DATA));
       }
     } catch (Exception e) {
       getLogger().error(e.getMessage(), e);
-      JOptionUtil.showErrorMessage(GUIConstants.ERROR, e.getMessage());
+      JOptionUtil.showErrorMessage(GuiConstants.ERROR, e.getMessage());
     }
   }
 
@@ -198,12 +198,12 @@ public interface CrudController<T extends Serializable> {
         performUIActionsAfterDelete();
       } else {
         JOptionUtil.showErrorMessage(
-            GUIConstants.ERROR,
+            GuiConstants.ERROR,
             KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
       }
     } catch (Exception e) {
       getLogger().error(e.getMessage(), e);
-      JOptionUtil.showErrorMessage(GUIConstants.ERROR, e.getMessage());
+      JOptionUtil.showErrorMessage(GuiConstants.ERROR, e.getMessage());
     }
   }
 
@@ -224,13 +224,13 @@ public interface CrudController<T extends Serializable> {
           performUIActionsAfterSearch(searchData);
         } else {
           JOptionUtil.showErrorMessage(
-              GUIConstants.ERROR,
+              GuiConstants.ERROR,
               KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_ERROR_GRAL));
         }
       }
     } catch (Exception e) {
       getLogger().error(e.getMessage(), e);
-      JOptionUtil.showErrorMessage(GUIConstants.ERROR, e.getMessage());
+      JOptionUtil.showErrorMessage(GuiConstants.ERROR, e.getMessage());
     }
   }
 }

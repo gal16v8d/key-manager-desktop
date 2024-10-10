@@ -5,6 +5,7 @@ import com.gsdd.constants.RegexConstants;
 import com.gsdd.gui.util.JValidateTextField;
 import com.gsdd.keymanager.constants.KeyManagerConstants;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
+import java.io.Serial;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import lombok.Getter;
@@ -20,7 +21,7 @@ import lombok.Setter;
 @Setter
 public class AccountView extends AbstractCrudView {
 
-  private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
   private static final int POS_Y_ROW_3 = 120;
 
   private JLabel labelPk;

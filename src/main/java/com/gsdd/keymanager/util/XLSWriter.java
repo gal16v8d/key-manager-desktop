@@ -3,7 +3,7 @@ package com.gsdd.keymanager.util;
 import com.gsdd.keymanager.constants.KeyManagerConstants;
 import com.gsdd.keymanager.entities.dto.AccountLoginDto;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
-import com.gsdd.xls.util.XLSUtil;
+import com.gsdd.xls.util.XlsUtil;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -73,7 +73,7 @@ public class XLSWriter {
     try {
       log.info(excelFilePath);
       workbook =
-          XLSUtil.getWorkbook(
+          XlsUtil.getWorkbook(
               null,
               excelFilePath,
               KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.MSG_INFO_XLS));
@@ -102,7 +102,7 @@ public class XLSWriter {
   /**
    * @version 1.0
    * @param sheet Hoja en la que se escriben los encabezados.
-   * @param type tipo de datos al que se agrega el encabezado.
+   * @param headers tipo de datos al que se agrega el encabezado.
    */
   private void createHeaderRow(Sheet sheet, String[] headers) {
     Row row = sheet.createRow(0);
@@ -132,9 +132,9 @@ public class XLSWriter {
     cellType.setCellValue(dto.getAccountType());
     Cell cellLogin = row.createCell(3);
     cellLogin.setCellValue(dto.getLogin());
-    String decrypedPass = CipherKeyManager.DECYPHER.apply(dto.getPass());
+    String decryptedPass = CipherKeyManager.DECIPHER.apply(dto.getPass());
     Cell cellPass = row.createCell(4);
-    cellPass.setCellValue(decrypedPass);
+    cellPass.setCellValue(decryptedPass);
     Cell cellUrl = row.createCell(5);
     cellUrl.setCellValue(dto.getUrl());
     Date fd = dto.getModificationDate();

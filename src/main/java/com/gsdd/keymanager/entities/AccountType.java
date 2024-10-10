@@ -1,5 +1,6 @@
 package com.gsdd.keymanager.entities;
 
+import java.io.Serial;
 import java.io.Serializable;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,8 +11,7 @@ import lombok.Setter;
 @Setter
 public class AccountType implements Serializable {
 
-  private static final long serialVersionUID = 1617669387071102479L;
+  @Serial private static final long serialVersionUID = 1617669387071102479L;
   private Long typeId;
   private String name;
-  
 }

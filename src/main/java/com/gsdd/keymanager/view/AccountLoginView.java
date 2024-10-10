@@ -3,6 +3,7 @@ package com.gsdd.keymanager.view;
 import com.gsdd.gui.util.JValidateTextField;
 import com.gsdd.keymanager.constants.KeyManagerConstants;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
+import java.io.Serial;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPasswordField;
@@ -19,7 +20,7 @@ import lombok.Setter;
 @Setter
 public class AccountLoginView extends AbstractCrudView {
 
-  private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
   private static final int INI_X_LABEL_C3 = 480;
   private static final int POS_Y_ROW_3 = 120;
 
@@ -74,7 +75,7 @@ public class AccountLoginView extends AbstractCrudView {
     comboUser = new JComboBox<>();
     comboUser.setBounds(POS_INI_X_TEXT_C2, POS_Y_ROW_1, DEF_WIDTH, DEF_HEIGHT);
     add(comboUser);
-    
+
     comboType = new JComboBox<>();
     comboType.setBounds(POS_INI_X_TEXT_C3, POS_Y_ROW_1, DEF_WIDTH, DEF_HEIGHT);
     add(comboType);

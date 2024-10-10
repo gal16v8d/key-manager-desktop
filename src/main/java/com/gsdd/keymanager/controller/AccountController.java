@@ -8,8 +8,8 @@ import com.gsdd.keymanager.enums.RolEnum;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
 import com.gsdd.keymanager.service.AccountService;
 import com.gsdd.keymanager.util.CipherKeyManager;
-import com.gsdd.keymanager.view.MainView;
 import com.gsdd.keymanager.view.AccountView;
+import com.gsdd.keymanager.view.MainView;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import lombok.Getter;
@@ -97,14 +97,18 @@ public class AccountController implements CrudController<Account> {
               ? Long.parseLong(labelText.trim())
               : (long) (System.nanoTime() * (Math.random())));
       account =
-          Account.builder().accountId(id).firstName(getView().getTextFirstName().getText().trim())
+          Account.builder()
+              .accountId(id)
+              .firstName(getView().getTextFirstName().getText().trim())
               .lastName(getView().getTextLastName().getText().trim())
               .login(getView().getTextLogin().getText().trim())
-              .password(CipherKeyManager
-                  .CYPHER.apply(String.valueOf(getView().getTextPass().getPassword()).trim()))
-              .role(RolEnum.ADMIN.name().equals(getView().getLabelVRole().getText())
-                  ? Long.valueOf(RolEnum.ADMIN.getCode())
-                  : Long.valueOf(RolEnum.USER.getCode()))
+              .password(
+                  CipherKeyManager.CYPHER.apply(
+                      String.valueOf(getView().getTextPass().getPassword()).trim()))
+              .role(
+                  RolEnum.ADMIN.name().equals(getView().getLabelVRole().getText())
+                      ? Long.valueOf(RolEnum.ADMIN.getCode())
+                      : Long.valueOf(RolEnum.USER.getCode()))
               .build();
     } catch (Exception e) {
       log.error(e.getMessage(), e);
@@ -164,7 +168,7 @@ public class AccountController implements CrudController<Account> {
     getView().getTextFirstName().setText(dto.getFirstName());
     getView().getTextLastName().setText(dto.getLastName());
     getView().getTextLogin().setText(dto.getLogin());
-    getView().getTextPass().setText(CipherKeyManager.DECYPHER.apply(dto.getPassword()));
+    getView().getTextPass().setText(CipherKeyManager.DECIPHER.apply(dto.getPassword()));
     getView()
         .getLabelVRole()
         .setText(

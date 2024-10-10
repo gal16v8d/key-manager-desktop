@@ -2,10 +2,9 @@ package com.gsdd.keymanager.lang;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@UtilityClass
 public final class KeyManagerLanguage {
 
   private static final String BUNDLE_RESOURCE = "msg/messages";
