@@ -25,7 +25,7 @@ import org.apache.poi.ss.usermodel.Workbook;
  */
 @Slf4j
 public class XLSWriter {
-  /** El workbook a escribir. */
+  /** Workbook to write. */
   private Workbook workbook;
 
   /**
@@ -34,12 +34,12 @@ public class XLSWriter {
    *     alex.galvis.sistemas@gmail.com <br>
    * @version 1.0
    * @since 2015-12-07
-   * @param objects lista de objetos.
-   * @param sheetName nombre de la hoja definida.
-   * @param headers encabezados del archivo de salida.
-   * @param excelFilePath ruta de salida.
-   * @throws FileNotFoundException cuando no encuentra el archivo.
-   * @throws IOException cuando no se puede abrir el archivo.
+   * @param objects object list.
+   * @param sheetName sheet name.
+   * @param headers headers for output file.
+   * @param excelFilePath file path.
+   * @throws FileNotFoundException if not found on file system.
+   * @throws IOException when can not be open by any reason.
    */
   private void buildSheet(List<?> objects, String sheetName, String[] headers, String excelFilePath)
       throws IOException {
@@ -58,16 +58,15 @@ public class XLSWriter {
   }
 
   /**
-   * Método que escribe en excel los resultados obtenidos.
+   * write to workbook the results.
    *
    * @author Great System Development Dynamic <GSDD> <br>
    *     Alexander Galvis Grisales <br>
    *     alex.galvis.sistemas@gmail.com <br>
-   * @version 1.0
    * @since 2015-12-07
-   * @param listR lista de objetos a mapear.
-   * @param excelFilePath ruta de salida de excel.
-   * @return true si se genera correctamente.
+   * @param listR object list to write.
+   * @param excelFilePath xls file path.
+   * @return true if everything goes well.
    */
   public boolean writeExcel(List<AccountLoginDto> listR, String excelFilePath) {
     try {
@@ -99,11 +98,6 @@ public class XLSWriter {
     return false;
   }
 
-  /**
-   * @version 1.0
-   * @param sheet Hoja en la que se escriben los encabezados.
-   * @param headers tipo de datos al que se agrega el encabezado.
-   */
   private void createHeaderRow(Sheet sheet, String[] headers) {
     Row row = sheet.createRow(0);
     int cellCountC = 0;
@@ -118,10 +112,9 @@ public class XLSWriter {
    * @author Great System Development Dynamic <GSDD> <br>
    *     Alexander Galvis Grisales <br>
    *     alex.galvis.sistemas@gmail.com <br>
-   * @version 1.0
    * @since 2015-12-07
-   * @param dto objeto de tipo CuentaXUsuarioDto.
-   * @param row fila en la que se copian los valores.
+   * @param dto account data.
+   * @param row to copy the diff values.
    */
   private void writeData(AccountLoginDto dto, Row row) {
     Cell cellUser = row.createCell(0);

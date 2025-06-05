@@ -23,17 +23,17 @@ public interface DbService<T extends Serializable> {
   }
 
   default boolean update(T value, T oldValue) {
-    boolean retorno = false;
+    boolean result = false;
     try {
       defineUpdateData(value, oldValue);
       DbConnection.getInstance().getPst().executeUpdate();
-      retorno = true;
+      result = true;
     } catch (SQLException e) {
       getLogger().error(e.getMessage(), e);
     } finally {
       DbConnection.getInstance().closeQuery();
     }
-    return retorno;
+    return result;
   }
 
   default boolean delete(T data) {
@@ -52,17 +52,17 @@ public interface DbService<T extends Serializable> {
     void defineQueryBody(T data) throws SQLException;
 
     default boolean executeDbUpdate(T data) {
-      boolean retorno = false;
+      boolean result = false;
       try {
         defineQueryBody(data);
         DbConnection.getInstance().getPst().executeUpdate();
-        retorno = true;
+        result = true;
       } catch (SQLException e) {
         LoggerFactory.getLogger(DbOperation.class).error(e.getMessage(), e);
       } finally {
         DbConnection.getInstance().closeQuery();
       }
-      return retorno;
+      return result;
     }
   }
 }

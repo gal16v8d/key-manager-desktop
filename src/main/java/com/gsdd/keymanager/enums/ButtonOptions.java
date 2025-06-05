@@ -5,5 +5,5 @@ public enum ButtonOptions {
   UPDATE,
   DELETE,
   SEARCH,
-  BACK;
+  BACK
 }

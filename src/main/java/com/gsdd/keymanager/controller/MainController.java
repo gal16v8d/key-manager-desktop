@@ -95,9 +95,9 @@ public class MainController {
         .addActionListener((ActionEvent evt) -> selectOption(MenuOption.CREDITS));
   }
 
-  private void addPanel(JPanel view, String opcion, String titulo) {
-    getView().getCards().add(view, opcion);
-    getView().sendRedirect(opcion, titulo);
+  private void addPanel(JPanel view, String option, String title) {
+    getView().getCards().add(view, option);
+    getView().sendRedirect(option, title);
   }
 
   private void showMessageBasedOnLogin() {

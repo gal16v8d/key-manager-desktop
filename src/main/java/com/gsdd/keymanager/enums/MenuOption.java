@@ -10,5 +10,5 @@ public enum MenuOption {
   CREDITS,
   EXPORT,
   EXIT,
-  SESSION;
+  SESSION
 }

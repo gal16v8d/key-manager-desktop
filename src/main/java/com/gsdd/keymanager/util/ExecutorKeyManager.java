@@ -5,8 +5,6 @@ import java.util.concurrent.Executors;
 import lombok.Getter;
 
 /**
- * Ejecutor empleado para emplear concurrencia de hilos donde sea posible.
- *
  * @author Great System Development Dynamic <GSDD> <br>
  *     Alexander Galvis Grisales <br>
  *     alex.galvis.sistemas@gmail.com <br>

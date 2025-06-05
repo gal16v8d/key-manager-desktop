@@ -95,26 +95,15 @@ public interface CrudController<T extends Serializable> {
 
   default void selectOption(ButtonOptions op) {
     switch (op) {
-      case SAVE:
-        saveData();
-        break;
-      case UPDATE:
-        updateData(getOld());
-        break;
-      case DELETE:
-        deleteData();
-        break;
-      case SEARCH:
-        searchData();
-        break;
-      case BACK:
-        getParentFrame()
-            .sendRedirect(
-                MenuOption.LOGIN.name(),
-                KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_LOGIN));
-        break;
-      default:
-        break;
+      case SAVE -> saveData();
+      case UPDATE -> updateData(getOld());
+      case DELETE -> deleteData();
+      case SEARCH -> searchData();
+      case BACK -> getParentFrame()
+          .sendRedirect(
+              MenuOption.LOGIN.name(),
+              KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_LOGIN));
+      default -> getLogger().warn("Option not found: {}", op);
     }
   }
 

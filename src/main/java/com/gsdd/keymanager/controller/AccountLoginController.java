@@ -52,7 +52,7 @@ public class AccountLoginController implements CrudController<AccountLogin> {
       (ePass, show) ->
           show.booleanValue()
               ? CipherKeyManager.DECIPHER.apply(ePass)
-              : KeyManagerConstants.MASK_TEXTO;
+              : KeyManagerConstants.MASK_TEXT;
 
   public AccountLoginController(MainView parentFrame) {
     this.model = new AccountLoginService();

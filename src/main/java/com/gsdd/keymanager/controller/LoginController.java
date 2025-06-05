@@ -46,7 +46,7 @@ public class LoginController {
       SessionData sessionData = SessionData.getInstance();
       sessionData.setSessionDto(getModel().login(username, pass));
       if (sessionData.getSessionDto() != null) {
-        getLoged();
+        getLogged();
         sessionData.getSessionDto().setLogin(username);
         getParentFrame()
             .changeTitle(KeyManagerLanguage.getMessageByLocale(KeyManagerLanguage.TITLE_LOGIN));
@@ -81,7 +81,7 @@ public class LoginController {
     getView().getLoginButton().setVisible(flag);
   }
 
-  private void getLoged() {
+  private void getLogged() {
     enableComponents(false);
   }
 

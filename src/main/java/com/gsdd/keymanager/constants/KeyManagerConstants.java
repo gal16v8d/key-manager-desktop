@@ -31,7 +31,6 @@ public final class KeyManagerConstants {
   public static final String DERBY_MAIN_SCHEMA = "APP";
   public static final String DERBY_DATE_FORMAT = "yyyy-MM-dd";
 
-  public static final String QUERY_PROPS = "/query/query.properties";
   public static final String IMAGE_ICON = "/images/KeyMgr-Icon.png";
   public static final String IMAGE_CXU = "/images/KeyMgr-CXU.png";
   public static final String IMAGE_CUENTA = "/images/KeyMgr-Cuenta.png";
@@ -48,7 +47,7 @@ public final class KeyManagerConstants {
   // After 180 days it suggest to update the password.
   public static final int TIME_TO_CHANGE = 180;
 
-  public static final String MASK_TEXTO = "******";
+  public static final String MASK_TEXT = "******";
   public static final char HIDE_TEXT = '*';
 
   protected static final String[] ACCOUNT_TBL_MODEL = {
