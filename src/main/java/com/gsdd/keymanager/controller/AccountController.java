@@ -1,6 +1,7 @@
 package com.gsdd.keymanager.controller;
 
 import com.gsdd.constants.GralConstants;
+import com.gsdd.dbutil.DbConnection;
 import com.gsdd.gui.util.JPaginateTable;
 import com.gsdd.keymanager.constants.KeyManagerConstants;
 import com.gsdd.keymanager.entities.Account;
@@ -33,8 +34,8 @@ public class AccountController implements CrudController<Account> {
   private final MainView parentFrame;
   private Account old;
 
-  public AccountController(MainView parentFrame) {
-    this.model = new AccountService();
+  public AccountController(MainView parentFrame, DbConnection db) {
+    this.model = new AccountService(db);
     this.view = new AccountView();
     this.parentFrame = parentFrame;
     loadView();

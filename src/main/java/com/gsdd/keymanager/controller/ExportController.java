@@ -2,6 +2,7 @@ package com.gsdd.keymanager.controller;
 
 import com.gsdd.constants.GralConstants;
 import com.gsdd.constants.GuiConstants;
+import com.gsdd.dbutil.DbConnection;
 import com.gsdd.gui.util.JOptionUtil;
 import com.gsdd.keymanager.constants.KeyManagerConstants;
 import com.gsdd.keymanager.entities.Account;
@@ -14,13 +15,17 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@RequiredArgsConstructor
 public class ExportController {
 
+  private final DbConnection db;
+
   public AccountLoginService getEjbModel() {
-    return new AccountLoginService();
+    return new AccountLoginService(this.db);
   }
 
   public boolean exportData(String out, Account dto) {

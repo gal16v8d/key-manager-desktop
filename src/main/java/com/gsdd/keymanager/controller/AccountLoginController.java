@@ -1,6 +1,7 @@
 package com.gsdd.keymanager.controller;
 
 import com.gsdd.constants.GralConstants;
+import com.gsdd.dbutil.DbConnection;
 import com.gsdd.gui.util.JPaginateTable;
 import com.gsdd.keymanager.constants.KeyManagerConstants;
 import com.gsdd.keymanager.entities.AccountLogin;
@@ -50,14 +51,12 @@ public class AccountLoginController implements CrudController<AccountLogin> {
 
   private BiFunction<String, Boolean, String> showOrHidePass =
       (ePass, show) ->
-          show.booleanValue()
-              ? CipherKeyManager.DECIPHER.apply(ePass)
-              : KeyManagerConstants.MASK_TEXT;
+          show ? CipherKeyManager.DECIPHER.apply(ePass) : KeyManagerConstants.MASK_TEXT;
 
-  public AccountLoginController(MainView parentFrame) {
-    this.model = new AccountLoginService();
-    this.userModel = new AccountService();
-    this.typeModel = new AccountTypeService();
+  public AccountLoginController(MainView parentFrame, DbConnection db) {
+    this.model = new AccountLoginService(db);
+    this.userModel = new AccountService(db);
+    this.typeModel = new AccountTypeService(db);
     this.view = new AccountLoginView();
     this.parentFrame = parentFrame;
     loadView();

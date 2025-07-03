@@ -18,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class KeyManagerApp {
 
+  private static final DbConnection DB_CONNECTION = new DbConnection();
+
   public static void main(String[] args) {
     EventQueue.invokeLater(
         () -> {
@@ -40,33 +42,23 @@ public final class KeyManagerApp {
 
   private static boolean initDb() {
     boolean success = true;
-    DbConnection.getInstance();
     try {
       System.setProperty("derby.system.home", "." + File.separator + "kmgr" + File.separator);
       System.setProperty(
           "derby.stream.error.file",
           ".." + File.separator + "KMgr-log" + File.separator + "derby.log");
-      boolean b =
-          DbQueryUtil.dbExist(
-              KeyManagerConstants.DERBY_MAIN_TABLE,
-              KeyManagerConstants.DERBY_CONNECTION,
-              KeyManagerConstants.DERBY_LOCATION + KeyManagerConstants.DERBY_CREATE,
-              GralConstants.EMPTY,
-              GralConstants.EMPTY);
+      DB_CONNECTION.connectDB(
+          KeyManagerConstants.DERBY_CONNECTION,
+          KeyManagerConstants.DERBY_LOCATION + KeyManagerConstants.DERBY_CREATE,
+          GralConstants.EMPTY,
+          GralConstants.EMPTY);
+      boolean b = DbQueryUtil.dbExist(KeyManagerConstants.DERBY_MAIN_TABLE, DB_CONNECTION);
       log.info("DB exists -> {}", b);
       if (!b) {
-        DbConnection.getInstance().executeImport(Boolean.TRUE);
+        DB_CONNECTION.executeImport(Boolean.TRUE);
         log.info("[OK]");
       }
-      if (DbConnection.getInstance().getCon() == null) {
-        DbConnection.getInstance()
-            .connectDB(
-                KeyManagerConstants.DERBY_CONNECTION,
-                KeyManagerConstants.DERBY_LOCATION,
-                GralConstants.EMPTY,
-                GralConstants.EMPTY);
-      }
-      log.info("{}", DbConnection.getInstance().getCon().toString());
+      log.info("{}", DB_CONNECTION.getCon().toString());
     } catch (TechnicalException e) {
       log.error("[FAILED]: {}", e, e);
       success = false;
@@ -77,6 +69,6 @@ public final class KeyManagerApp {
   private static void launchGui(MainView view) {
     view.setVisible(true);
     view.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    new MainController(view);
+    new MainController(view, DB_CONNECTION);
   }
 }

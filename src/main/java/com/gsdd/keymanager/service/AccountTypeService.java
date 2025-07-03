@@ -6,11 +6,13 @@ import com.gsdd.keymanager.entities.AccountType;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 
 @Slf4j
-public class AccountTypeService implements DbService<AccountType> {
+public record AccountTypeService(DbConnection db) implements DbService<AccountType> {
 
   @Override
   public Logger getLogger() {
@@ -18,56 +20,44 @@ public class AccountTypeService implements DbService<AccountType> {
   }
 
   @Override
+  public DbConnection getDb() {
+    return db;
+  }
+
+  @Override
   public void defineInsertData(AccountType data) throws SQLException {
-    DbConnection.getInstance()
-        .setPst(
-            DbConnection.getInstance()
-                .getCon()
-                .prepareStatement(QueryConstants.ACCOUNT_TYPE_INSERT));
-    DbConnection.getInstance().getPst().setLong(1, data.getTypeId());
-    DbConnection.getInstance().getPst().setString(2, data.getName());
+    db.setPst(db.getCon().prepareStatement(QueryConstants.ACCOUNT_TYPE_INSERT));
+    db.getPst().setLong(1, data.getTypeId());
+    db.getPst().setString(2, data.getName());
   }
 
   @Override
   public void defineUpdateData(AccountType data, AccountType oldData) throws SQLException {
-    DbConnection.getInstance()
-        .setPst(
-            DbConnection.getInstance()
-                .getCon()
-                .prepareStatement(QueryConstants.ACCOUNT_TYPE_UPDATE));
-    DbConnection.getInstance().getPst().setString(1, data.getName());
-    DbConnection.getInstance().getPst().setLong(2, data.getTypeId());
+    db.setPst(db.getCon().prepareStatement(QueryConstants.ACCOUNT_TYPE_UPDATE));
+    db.getPst().setString(1, data.getName());
+    db.getPst().setLong(2, data.getTypeId());
   }
 
   @Override
   public void defineDeleteData(AccountType data) throws SQLException {
-    DbConnection.getInstance()
-        .setPst(
-            DbConnection.getInstance()
-                .getCon()
-                .prepareStatement(QueryConstants.ACCOUNT_TYPE_DELETE));
-    DbConnection.getInstance().getPst().setLong(1, data.getTypeId());
+    db.setPst(db.getCon().prepareStatement(QueryConstants.ACCOUNT_TYPE_DELETE));
+    db.getPst().setLong(1, data.getTypeId());
   }
 
   @Override
   public List<?> list() {
     List<AccountType> lu = new ArrayList<>();
     try {
-      DbConnection.getInstance()
-          .setPst(
-              DbConnection.getInstance()
-                  .getCon()
-                  .prepareStatement(QueryConstants.ACCOUNT_TYPE_LIST));
-      DbConnection.getInstance().setRs(DbConnection.getInstance().getPst().executeQuery());
-      while (DbConnection.getInstance().getRs().next()) {
-        AccountType accountType =
-            AccountType.builder().name(DbConnection.getInstance().getRs().getString(2)).build();
+      db.setPst(db.getCon().prepareStatement(QueryConstants.ACCOUNT_TYPE_LIST));
+      db.setRs(db.getPst().executeQuery());
+      while (db.getRs().next()) {
+        AccountType accountType = AccountType.builder().name(db.getRs().getString(2)).build();
         lu.add(accountType);
       }
     } catch (SQLException e) {
       log.error(e.getMessage(), e);
     } finally {
-      DbConnection.getInstance().closeQuery();
+      db.closeQuery();
     }
     return lu;
   }
@@ -81,24 +71,20 @@ public class AccountTypeService implements DbService<AccountType> {
   public AccountType search(String key) {
     AccountType accountType = null;
     try {
-      DbConnection.getInstance()
-          .setPst(
-              DbConnection.getInstance()
-                  .getCon()
-                  .prepareStatement(QueryConstants.ACCOUNT_TYPE_SEARCH));
-      DbConnection.getInstance().getPst().setString(1, key);
-      DbConnection.getInstance().setRs(DbConnection.getInstance().getPst().executeQuery());
-      while (DbConnection.getInstance().getRs().next()) {
+      db.setPst(db.getCon().prepareStatement(QueryConstants.ACCOUNT_TYPE_SEARCH));
+      db.getPst().setString(1, key);
+      db.setRs(db.getPst().executeQuery());
+      while (db.getRs().next()) {
         accountType =
-            AccountType.builder()
-                .typeId(DbConnection.getInstance().getRs().getLong(1))
-                .name(DbConnection.getInstance().getRs().getString(2))
-                .build();
+                AccountType.builder()
+                        .typeId(db.getRs().getLong(1))
+                        .name(db.getRs().getString(2))
+                        .build();
       }
     } catch (SQLException e) {
       log.error(e.getMessage(), e);
     } finally {
-      DbConnection.getInstance().closeQuery();
+      db.closeQuery();
     }
     return accountType;
   }

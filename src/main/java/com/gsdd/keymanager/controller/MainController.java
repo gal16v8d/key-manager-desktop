@@ -37,9 +37,11 @@ public class MainController {
   private AccountTypeController accountTypeController;
   private AccountController userController;
   private ExportController exportController;
+  private DbConnection db;
 
-  public MainController(MainView view) {
+  public MainController(MainView view, DbConnection db) {
     this.view = view;
+    this.db = db;
     buildView();
   }
 
@@ -63,7 +65,7 @@ public class MainController {
   private void initPanel() {
     getView().setCards(new JPanel(new CardLayout()));
     if (getLoginController() == null) {
-      setLoginController(new LoginController(getView()));
+      setLoginController(new LoginController(getView(), db));
     }
     getView().getCards().add(getLoginController().getView(), MenuOption.LOGIN.name());
     getView().setCl((CardLayout) (getView().getCards().getLayout()));
@@ -122,7 +124,7 @@ public class MainController {
   private void navigateToUser() {
     if (SessionData.getInstance().getSessionDto() != null) {
       if (getUserController() == null) {
-        setUserController(new AccountController(getView()));
+        setUserController(new AccountController(getView(), db));
       }
       addPanel(
           getUserController().getView(),
@@ -135,7 +137,7 @@ public class MainController {
 
   private void navigateToAccountLogin() {
     if (SessionData.getInstance().getSessionDto() != null) {
-      setAccountLoginController(new AccountLoginController(getView()));
+      setAccountLoginController(new AccountLoginController(getView(), db));
       addPanel(
           getAccountLoginController().getView(),
           MenuOption.ACCOUNT_LOGIN.name(),
@@ -147,7 +149,7 @@ public class MainController {
 
   private void navigateToAccountType() {
     if (SessionData.getInstance().getSessionDto() != null) {
-      setAccountTypeController(new AccountTypeController(getView()));
+      setAccountTypeController(new AccountTypeController(getView(), db));
       addPanel(
           getAccountTypeController().getView(),
           MenuOption.ACCOUNT_TYPE.name(),
@@ -214,7 +216,7 @@ public class MainController {
 
   private void tryToGenerateReport(String out) {
     if (getExportController() == null) {
-      setExportController(new ExportController());
+      setExportController(new ExportController(db));
     }
     boolean e = getExportController().exportData(out, SessionData.getInstance().getSessionDto());
     if (!e) {
@@ -246,7 +248,7 @@ public class MainController {
 
   private void shutdownDB() {
     try {
-      DbConnection.getInstance().disconnectDB();
+      db.disconnectDB();
       DriverManager.getConnection(
           KeyManagerConstants.DERBY_LOCATION + KeyManagerConstants.DERBY_SHUTDOWN);
     } catch (SQLException e) {

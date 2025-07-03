@@ -26,7 +26,7 @@
 		<skip.integration.tests>false</skip.integration.tests>
 
 		<derby.version>10.17.1.0</derby.version>
-		<db-util.version>2.1.4</db-util.version>
+		<db-util.version>2.2.0</db-util.version>
 		<cipher-util.version>2.1.2</cipher-util.version>
 		<gui-util.version>2.1.2</gui-util.version>
 		<xls-util.version>2.1.2</xls-util.version>

@@ -5,11 +5,12 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public interface DbService<T extends Serializable> {
 
   Logger getLogger();
+
+  DbConnection getDb();
 
   void defineInsertData(T data) throws SQLException;
 
@@ -18,27 +19,18 @@ public interface DbService<T extends Serializable> {
   void defineDeleteData(T data) throws SQLException;
 
   default boolean save(T value) {
-    DbOperation<T> dbUpdate = this::defineInsertData;
-    return dbUpdate.executeDbUpdate(value);
+    DbOperation<T> dbUpdate = (newData, oldData) -> defineInsertData(newData);
+    return dbUpdate.executeDbUpdate(getDb(), value, null, getLogger());
   }
 
   default boolean update(T value, T oldValue) {
-    boolean result = false;
-    try {
-      defineUpdateData(value, oldValue);
-      DbConnection.getInstance().getPst().executeUpdate();
-      result = true;
-    } catch (SQLException e) {
-      getLogger().error(e.getMessage(), e);
-    } finally {
-      DbConnection.getInstance().closeQuery();
-    }
-    return result;
+    DbOperation<T> dbUpdate = this::defineUpdateData;
+    return dbUpdate.executeDbUpdate(getDb(), value, oldValue, getLogger());
   }
 
   default boolean delete(T data) {
-    DbOperation<T> dbUpdate = this::defineDeleteData;
-    return dbUpdate.executeDbUpdate(data);
+    DbOperation<T> dbUpdate = (newData, oldData) -> defineDeleteData(newData);
+    return dbUpdate.executeDbUpdate(getDb(), data, null, getLogger());
   }
 
   List<?> list();
@@ -47,20 +39,21 @@ public interface DbService<T extends Serializable> {
 
   T search(String key);
 
+  @FunctionalInterface
   interface DbOperation<T extends Serializable> {
 
-    void defineQueryBody(T data) throws SQLException;
+    void defineQueryBody(T data, T oldData) throws SQLException;
 
-    default boolean executeDbUpdate(T data) {
+    default boolean executeDbUpdate(DbConnection db, T data, T oldData, Logger log) {
       boolean result = false;
       try {
-        defineQueryBody(data);
-        DbConnection.getInstance().getPst().executeUpdate();
+        defineQueryBody(data, oldData);
+        db.getPst().executeUpdate();
         result = true;
       } catch (SQLException e) {
-        LoggerFactory.getLogger(DbOperation.class).error(e.getMessage(), e);
+        log.error(e.getMessage(), e);
       } finally {
-        DbConnection.getInstance().closeQuery();
+        db.closeQuery();
       }
       return result;
     }

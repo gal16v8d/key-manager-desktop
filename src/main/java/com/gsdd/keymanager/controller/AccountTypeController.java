@@ -1,6 +1,7 @@
 package com.gsdd.keymanager.controller;
 
 import com.gsdd.constants.GralConstants;
+import com.gsdd.dbutil.DbConnection;
 import com.gsdd.gui.util.JPaginateTable;
 import com.gsdd.keymanager.constants.KeyManagerConstants;
 import com.gsdd.keymanager.entities.AccountType;
@@ -26,8 +27,8 @@ public class AccountTypeController implements CrudController<AccountType> {
   private final MainView parentFrame;
   private AccountType old;
 
-  public AccountTypeController(MainView parentFrame) {
-    this.model = new AccountTypeService();
+  public AccountTypeController(MainView parentFrame, DbConnection db) {
+    this.model = new AccountTypeService(db);
     this.view = new AccountTypeView();
     this.parentFrame = parentFrame;
     loadView();
@@ -58,11 +59,13 @@ public class AccountTypeController implements CrudController<AccountType> {
   @SuppressWarnings("unchecked")
   public void updateTableModel(DefaultTableModel dtm, List<?> data) {
     AtomicInteger pos = new AtomicInteger();
-    ((List<AccountType>) data).forEach((AccountType type) -> {
-      dtm.addRow(new Object[1]);
-      dtm.setValueAt(type.getName(), pos.get(), 0);
-      pos.getAndIncrement();
-    });
+    ((List<AccountType>) data)
+        .forEach(
+            (AccountType type) -> {
+              dtm.addRow(new Object[1]);
+              dtm.setValueAt(type.getName(), pos.get(), 0);
+              pos.getAndIncrement();
+            });
   }
 
   @Override
@@ -70,8 +73,10 @@ public class AccountTypeController implements CrudController<AccountType> {
     AccountType type;
     try {
       String labelText = getView().getLabelPk().getText();
-      Long id = (labelText != null && !labelText.equals(GralConstants.EMPTY)
-          ? Long.parseLong(labelText.trim()) : (long) (System.nanoTime() * (Math.random())));
+      Long id =
+          (labelText != null && !labelText.equals(GralConstants.EMPTY)
+              ? Long.parseLong(labelText.trim())
+              : (long) (System.nanoTime() * (Math.random())));
       type =
           AccountType.builder().typeId(id).name(getView().getTextName().getText().trim()).build();
     } catch (Exception e) {
@@ -124,5 +129,4 @@ public class AccountTypeController implements CrudController<AccountType> {
     getView().getLabelPk().setText(String.valueOf(dto.getTypeId()));
     getView().getTextName().setText(dto.getName());
   }
-
 }

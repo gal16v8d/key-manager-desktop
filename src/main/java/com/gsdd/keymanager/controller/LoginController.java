@@ -2,6 +2,7 @@ package com.gsdd.keymanager.controller;
 
 import com.gsdd.constants.GralConstants;
 import com.gsdd.constants.GuiConstants;
+import com.gsdd.dbutil.DbConnection;
 import com.gsdd.gui.util.JOptionUtil;
 import com.gsdd.keymanager.lang.KeyManagerLanguage;
 import com.gsdd.keymanager.service.AccountService;
@@ -28,8 +29,8 @@ public class LoginController {
   private final MainView parentFrame;
   private final LoginView view;
 
-  public LoginController(MainView parentFrame) {
-    this.model = new AccountService();
+  public LoginController(MainView parentFrame, DbConnection db) {
+    this.model = new AccountService(db);
     this.view = new LoginView();
     this.parentFrame = parentFrame;
     addButtonActions();
