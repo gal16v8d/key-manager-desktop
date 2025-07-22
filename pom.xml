@@ -25,6 +25,7 @@
 		<!-- If true skips IT test execution -->
 		<skip.integration.tests>false</skip.integration.tests>
 
+		<shade.plugin.version>3.6.0</shade.plugin.version>
 		<derby.version>10.17.1.0</derby.version>
 		<db-util.version>2.2.0</db-util.version>
 		<cipher-util.version>2.1.2</cipher-util.version>
@@ -352,6 +353,27 @@
 						<goals>
 							<goal>jar</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>${shade.plugin.version}</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>com.gsdd.keymanager.KeyManagerApp</mainClass> </transformer>
+							</transformers>
+							<finalName>${project.artifactId}-fat</finalName>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
